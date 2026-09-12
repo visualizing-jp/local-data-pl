@@ -43,6 +43,19 @@ export const SAPPORO_MIC_EXCEL: Readonly<Record<number, string>> = {
 
 export const SAPPORO_CODE = "011002";
 
+/** 岩手県「財政状況資料集」（県内市町村 ZIP）。2019–2024。 */
+export const IWATE_BOOKLET_INDEX =
+  "https://www.pref.iwate.jp/kensei/seisaku/shichouson/zaisei/joukyou/index.html";
+
+export const IWATE_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.iwate.jp/kensei/seisaku/shichouson/zaisei/joukyou/1040859.html",
+  2020: "https://www.pref.iwate.jp/kensei/seisaku/shichouson/zaisei/joukyou/1053314.html",
+  2021: "https://www.pref.iwate.jp/kensei/seisaku/shichouson/zaisei/joukyou/1063639.html",
+  2022: "https://www.pref.iwate.jp/kensei/seisaku/shichouson/zaisei/joukyou/1073053.html",
+  2023: "https://www.pref.iwate.jp/kensei/seisaku/shichouson/zaisei/joukyou/1082232.html",
+  2024: "https://www.pref.iwate.jp/kensei/seisaku/shichouson/zaisei/joukyou/1097113.html",
+};
+
 /** 青森県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const AOMORI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.aomori.lg.jp/soshiki/zaimu/shichoson/2019_zaisei_shiryousyuu.html",

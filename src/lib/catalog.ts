@@ -252,6 +252,43 @@ const AOMORI: readonly LocalGov[] = [
   muni("shingoumura", "024503", "新郷村", "青森県"),
 ];
 
+/** 岩手県の現行市町村。slug はローマ字。Excel はファイル名の6桁コードで対応づける。 */
+const IWATE: readonly LocalGov[] = [
+  muni("morioka", "032018", "盛岡市", "岩手県"),
+  muni("miyako", "032026", "宮古市", "岩手県"),
+  muni("ofunato", "032034", "大船渡市", "岩手県"),
+  muni("hanamaki", "032051", "花巻市", "岩手県"),
+  muni("kitakami", "032069", "北上市", "岩手県"),
+  muni("kuji", "032077", "久慈市", "岩手県"),
+  muni("tono", "032085", "遠野市", "岩手県"),
+  muni("ichinoseki", "032093", "一関市", "岩手県"),
+  muni("rikuzentakata", "032107", "陸前高田市", "岩手県"),
+  muni("kamaishi", "032115", "釜石市", "岩手県"),
+  muni("ninohe", "032131", "二戸市", "岩手県"),
+  muni("hachimantai", "032140", "八幡平市", "岩手県"),
+  muni("oshu", "032158", "奥州市", "岩手県"),
+  muni("takizawa", "032166", "滝沢市", "岩手県"),
+  muni("shizukuishichou", "033014", "雫石町", "岩手県"),
+  muni("kuzumakichou", "033022", "葛巻町", "岩手県"),
+  muni("iwatechou", "033031", "岩手町", "岩手県"),
+  muni("shiwachou", "033219", "紫波町", "岩手県"),
+  muni("yahabachou", "033227", "矢巾町", "岩手県"),
+  muni("nishiwagachou", "033669", "西和賀町", "岩手県"),
+  muni("kanegasakichou", "033812", "金ケ崎町", "岩手県"),
+  muni("hiraizumichou", "034029", "平泉町", "岩手県"),
+  muni("sumitachou", "034410", "住田町", "岩手県"),
+  muni("otsuchichou", "034614", "大槌町", "岩手県"),
+  muni("yamadachou", "034827", "山田町", "岩手県"),
+  muni("iwaizumichou", "034835", "岩泉町", "岩手県"),
+  muni("tanohata", "034843", "田野畑村", "岩手県"),
+  muni("fudai", "034851", "普代村", "岩手県"),
+  muni("karumaichou", "035017", "軽米町", "岩手県"),
+  muni("noda", "035033", "野田村", "岩手県"),
+  muni("kunohe", "035068", "九戸村", "岩手県"),
+  muni("hironochou", "035076", "洋野町", "岩手県"),
+  muni("ichinohechou", "035246", "一戸町", "岩手県"),
+];
+
 /** 東京都の現行区市町村。slug は都「団体別資料集」のパス。 */
 const TOKYO: readonly LocalGov[] = [
   muni("chiyoda", "131016", "千代田区", "東京都"),
@@ -400,7 +437,14 @@ const OKINAWA: readonly LocalGov[] = [
   muni("yonaguni", "473821", "与那国町", "沖縄県"),
 ];
 
-export const CATALOG: readonly LocalGov[] = [...HOKKAIDO, ...AOMORI, ...TOKYO, ...KANAGAWA, ...OKINAWA];
+export const CATALOG: readonly LocalGov[] = [
+  ...HOKKAIDO,
+  ...AOMORI,
+  ...IWATE,
+  ...TOKYO,
+  ...KANAGAWA,
+  ...OKINAWA,
+];
 
 const CHIYODA = TOKYO.find((gov) => gov.code === "131016");
 if (CHIYODA == null) throw new Error("千代田区がカタログにない");
