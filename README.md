@@ -1,6 +1,8 @@
-# 八王子市の財政収支
+# 自治体の財政収支
 
 普通会計の歳入が目的別歳出へどう流れたかを、年度タイムラインつき Sankey で見る。visualizing.jp スタンドアロン（dataviz.jp サブスクツールではない）。
+
+収録は八王子市と沖縄県内の全市町村（41団体）。見出しの団体名から切り替えられる。
 
 ## 開発
 
@@ -13,27 +15,27 @@ npm run dev
 
 | スクリプト | 内容 |
 | --- | --- |
-| `npm run fetch` | 財政状況資料集 Excel（2019–2024）と e-Stat（1989–2018）を `data/raw/` へ取得 |
-| `npm run data` | `public/data/hachioji.json` を構築 |
-| `npm run verify` | 複数年の収支バランスと 2022 年の参照図検算 |
+| `npm run fetch` | 財政状況資料集 Excel（2019–2024）と e-Stat（現行団体コードで取れる年度）を `data/raw/` へ取得 |
+| `npm run data` | `public/data/` に団体ごとの JSON を構築 |
+| `npm run verify` | 収支バランスと、八王子市 2022 年の参照図検算 |
 | `npm run dev` | Vite 開発サーバ |
 | `npm run build` | 本番ビルド |
 | `npm run typecheck` | TypeScript 検査 |
 
-収録年は 1989–2024 年度。データ設計の正本は [`docs/data-sources.md`](docs/data-sources.md)。
+データ設計の正本は [`docs/data-sources.md`](docs/data-sources.md)。
 
 ## パーマリンク
 
 アドレスバーがいま見ている自治体と年度です。コピーして共有できます。
 
 ```
-/?city=hachioji&year=2022
+/?id=132012&year=2022
+/?id=472018&year=2024
 ```
 
 | パラメータ | 内容 |
 | --- | --- |
-| `city` | 自治体のスラッグ。いまは `hachioji`。`八王子市` や団体コード `132012` でも開く |
+| `id` | [全国地方公共団体コード](https://www.soumu.go.jp/denshijiti/code.html)（6桁）。八王子市は `132012`、那覇市は `472018` |
 | `year` | 西暦の決算年度。データに無い年はいちばん近い年度へ寄せる |
 
-`city` も `year` も無いときは八王子市の最新年度を開き、URL をそれに揃える。
-
+`id` も `year` も無いときは八王子市の最新年度を開き、URL をそれに揃える。

@@ -50,7 +50,11 @@ export function YearSlider({ years, year, onYear }: YearSliderProps) {
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
-      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
+      if (
+        event.target instanceof HTMLInputElement ||
+        event.target instanceof HTMLTextAreaElement ||
+        event.target instanceof HTMLSelectElement
+      ) {
         return;
       }
       if (event.key === "ArrowLeft" && !atStart) {

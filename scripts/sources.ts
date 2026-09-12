@@ -10,6 +10,25 @@ export const EXCEL_SOURCES = [
 export const DOWNLOAD_BASE =
   "https://www.city.hachioji.tokyo.jp/shisei/001/010/001/003/p007494_d/fil";
 
+export const FETCH_UA = "Mozilla/5.0 (compatible; pl-sankey-fetch/1.0)";
+
+/** 県の資料集が普通会計シートを欠く年は、団体サイトの完全版を使う。 */
+export const EXCEL_OVERRIDES: Readonly<Record<string, string>> = {
+  "472093:2023":
+    "https://www.city.nago.okinawa.jp/articles/2018071000056/file_contents/R5_47293_2023.xlsx",
+  "473600:2021": "https://www.vill.izena.okinawa.jp/userfiles/files/R3_zaiseisiryou.xlsx",
+};
+
+/** 沖縄県「財政状況資料集」（県内市町村）。2019–2024。 */
+export const OKINAWA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.okinawa.lg.jp/kensei/shinko/1016703/1016705/1016706/1022600/1016725/1016727.html",
+  2020: "https://www.pref.okinawa.lg.jp/kensei/shinko/1016703/1016705/1016706/1022600/1016725/1016726.html",
+  2021: "https://www.pref.okinawa.lg.jp/kensei/shinko/1016703/1016705/1016706/1022600/1016725/1026999.html",
+  2022: "https://www.pref.okinawa.lg.jp/kensei/shinko/1016703/1016705/1016706/1022600/1016725/1028535.html",
+  2023: "https://www.pref.okinawa.lg.jp/kensei/shinko/1016703/1016705/1016706/1022600/1016725/1034163.html",
+  2024: "https://www.pref.okinawa.lg.jp/kensei/shinko/1016703/1016705/1016706/1022600/1016725/1039311.html",
+};
+
 /** e-Stat の市町村コード。全国地方公共団体コード 132012 の先頭 5 桁。 */
 export const ESTAT_AREA = "13201";
 

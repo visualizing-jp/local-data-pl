@@ -1,20 +1,20 @@
 export interface PermalinkQuery {
-  city: string | null;
+  id: string | null;
   year: number | null;
 }
 
 export function parsePermalink(search: string): PermalinkQuery {
   const q = new URLSearchParams(search.startsWith("?") ? search.slice(1) : search);
-  const cityRaw = q.get("city");
+  const idRaw = q.get("id");
   const yearRaw = q.get("year");
-  const city = cityRaw != null && cityRaw.trim() !== "" ? cityRaw.trim() : null;
+  const id = idRaw != null && idRaw.trim() !== "" ? idRaw.trim() : null;
   const year = yearRaw != null && /^\d{4}$/.test(yearRaw) ? Number(yearRaw) : null;
-  return { city, year };
+  return { id, year };
 }
 
-export function formatPermalink(city: string, year: number): string {
+export function formatPermalink(id: string, year: number): string {
   const q = new URLSearchParams();
-  q.set("city", city);
+  q.set("id", id);
   q.set("year", String(year));
   return `?${q.toString()}`;
 }

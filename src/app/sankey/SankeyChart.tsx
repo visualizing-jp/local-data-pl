@@ -46,6 +46,7 @@ export function SankeyChart({ data, year }: SankeyChartProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const firstDraw = useRef(true);
   const yearRef = useRef(year);
+  const codeRef = useRef(data.code);
   const [hover, setHover] = useState<{ title: string; body: string; x: number; y: number } | null>(
     null,
   );
@@ -56,10 +57,12 @@ export function SankeyChart({ data, year }: SankeyChartProps) {
     if (!svg || size.width < 40 || size.height < 40) return;
 
     const yearChanged = yearRef.current !== year;
+    const govChanged = codeRef.current !== data.code;
     const duration =
-      !firstDraw.current && yearChanged && !prefersReducedMotion() ? 600 : 0;
+      !firstDraw.current && (yearChanged || govChanged) && !prefersReducedMotion() ? 600 : 0;
     firstDraw.current = false;
     yearRef.current = year;
+    codeRef.current = data.code;
     setHover(null);
 
     const layoutWidth = Math.max(size.width, 880);
@@ -257,7 +260,7 @@ export function SankeyChart({ data, year }: SankeyChartProps) {
         nodeMerge.style("opacity", 1);
         setHover(null);
       });
-  }, [graph, size.height, size.width, year]);
+  }, [data.code, graph, size.height, size.width, year]);
 
   return (
     <div className="sankey-wrap" ref={wrapRef}>

@@ -7,13 +7,15 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import ExcelJS from "exceljs";
-import { EXCEL_SOURCES } from "./sources.ts";
-import { loadEstatFlows } from "./estat.ts";
+import { CATALOG, estatArea, type LocalGov } from "../src/lib/catalog.ts";
 import { isPurposeLeaf, isRevenueLeaf, normalizeRevenueName, revenueGroup } from "../src/lib/taxonomy.ts";
 import type { CityFinance, FlowItem } from "../src/lib/types.ts";
+import { loadEstatFlows } from "./estat.ts";
+import { EXCEL_SOURCES, OKINAWA_BOOKLET_PAGES } from "./sources.ts";
 
 const RAW_DIR = resolve(import.meta.dirname, "../data/raw");
-const OUT = resolve(import.meta.dirname, "../public/data/hachioji.json");
+const OUT_DIR = resolve(import.meta.dirname, "../public/data");
+const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 
 function cellText(value: ExcelJS.CellValue): string {
   if (value == null) return "";
@@ -151,18 +153,36 @@ function parseSheet(ws: ExcelJS.Worksheet, expectedYear: number): { revenue: Flo
   return { revenue, expenditure };
 }
 
-function logYear(year: number, origin: string, revenue: FlowItem[], expenditure: FlowItem[]): void {
+function logYear(gov: LocalGov, year: number, origin: string, revenue: FlowItem[], expenditure: FlowItem[]): void {
   const total = revenue.reduce((s, x) => s + x.value, 0);
   console.log(
-    `${year} [${origin}] 歳入 ${revenue.length} 項目 / 歳出 ${expenditure.length} 項目 / 歳入計 ${(total / 1000).toFixed(0)} 百万円`,
+    `${gov.city} ${year} [${origin}] 歳入 ${revenue.length} 項目 / 歳出 ${expenditure.length} 項目 / 歳入計 ${(total / 1000).toFixed(0)} 百万円`,
   );
 }
 
-async function main() {
+function sourceDetail(gov: LocalGov): string {
+  if (gov.code === "132012") {
+    return "2019–2024年度は八王子市「財政状況資料集」の「普通会計の状況」。1989–2018年度はe-Stat APIの地方財政状況調査（市町村分）歳入内訳・歳出内訳。いずれも全国統一様式。";
+  }
+  return "2019–2024年度は沖縄県「財政状況資料集」の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+}
+
+async function parseExcel(path: string, year: number): Promise<{ revenue: FlowItem[]; expenditure: FlowItem[] }> {
+  const wb = new ExcelJS.Workbook();
+  await wb.xlsx.readFile(path);
+  const ws =
+    wb.worksheets.find((sheet) => sheet.name.trim() === "普通会計の状況") ??
+    wb.worksheets.find((sheet) => sheet.name.includes("普通会計の状況"));
+  if (!ws) throw new Error(`${path}: シート「普通会計の状況」がない`);
+  return parseSheet(ws, year);
+}
+
+async function buildGov(gov: LocalGov): Promise<CityFinance> {
+  const estatDir = gov.prefecture === "沖縄県" ? OKINAWA_ESTAT_DIR : RAW_DIR;
   const revenueByYear = new Map<number, FlowItem[]>();
   const expenditureByYear = new Map<number, FlowItem[]>();
 
-  const estat = await loadEstatFlows();
+  const estat = await loadEstatFlows({ dir: estatDir, area: estatArea(gov.code) });
   for (const row of estat.revenue) {
     const list = revenueByYear.get(row.year) ?? [];
     list.push(row);
@@ -173,50 +193,54 @@ async function main() {
     list.push(row);
     expenditureByYear.set(row.year, list);
   }
-  for (const year of [...revenueByYear.keys()].sort((a, b) => a - b)) {
-    logYear(year, "e-Stat", revenueByYear.get(year) ?? [], expenditureByYear.get(year) ?? []);
-  }
 
-  for (const { year, file } of EXCEL_SOURCES) {
-    const path = resolve(RAW_DIR, file);
-    const wb = new ExcelJS.Workbook();
-    await wb.xlsx.readFile(path);
-    const ws = wb.getWorksheet("普通会計の状況");
-    if (!ws) throw new Error(`${file}: シート「普通会計の状況」がない`);
-    const parsed = parseSheet(ws, year);
-    logYear(year, "資料集", parsed.revenue, parsed.expenditure);
+  const excelYears =
+    gov.code === "132012"
+      ? EXCEL_SOURCES.map((s) => ({ year: s.year, path: resolve(RAW_DIR, s.file) }))
+      : Object.keys(OKINAWA_BOOKLET_PAGES).map((y) => ({
+          year: Number(y),
+          path: resolve(RAW_DIR, gov.code, `${y}.xlsx`),
+        }));
+
+  for (const { year, path } of excelYears) {
+    const parsed = await parseExcel(path, year);
+    logYear(gov, year, "資料集", parsed.revenue, parsed.expenditure);
     revenueByYear.set(year, parsed.revenue);
     expenditureByYear.set(year, parsed.expenditure);
   }
 
-  const years = [...revenueByYear.keys()].sort((a, b) => a - b);
+  const years = [...new Set([...revenueByYear.keys(), ...expenditureByYear.keys()])]
+    .sort((a, b) => a - b)
+    .filter((year) => (revenueByYear.get(year)?.length ?? 0) > 0 && (expenditureByYear.get(year)?.length ?? 0) > 0);
+
   const revenue: FlowItem[] = [];
   const expenditure: FlowItem[] = [];
   for (const year of years) {
-    const rev = revenueByYear.get(year) ?? [];
-    const exp = expenditureByYear.get(year) ?? [];
-    if (rev.length === 0) throw new Error(`${year}: 歳入がない`);
-    if (exp.length === 0) throw new Error(`${year}: 歳出がない`);
-    revenue.push(...rev);
-    expenditure.push(...exp);
+    revenue.push(...(revenueByYear.get(year) ?? []));
+    expenditure.push(...(expenditureByYear.get(year) ?? []));
   }
 
-  const data: CityFinance = {
-    city: "八王子市",
-    prefecture: "東京都",
-    code: "132012",
+  return {
+    city: gov.city,
+    prefecture: gov.prefecture,
+    code: gov.code,
     unit: "千円",
     source: "総務省「地方財政状況調査」（市町村別決算状況調）",
-    sourceDetail:
-      "2019–2024年度は八王子市「財政状況資料集」の「普通会計の状況」。1989–2018年度はe-Stat APIの地方財政状況調査（市町村分）歳入内訳・歳出内訳。いずれも全国統一様式。",
+    sourceDetail: sourceDetail(gov),
     years,
     revenue,
     expenditure,
   };
+}
 
-  await mkdir(resolve(import.meta.dirname, "../public/data"), { recursive: true });
-  await writeFile(OUT, `${JSON.stringify(data, null, 2)}\n`, "utf8");
-  console.log(`wrote ${OUT}`);
+async function main() {
+  await mkdir(OUT_DIR, { recursive: true });
+  for (const gov of CATALOG) {
+    const data = await buildGov(gov);
+    const out = resolve(import.meta.dirname, `../public${gov.dataUrl}`);
+    await writeFile(out, `${JSON.stringify(data, null, 2)}\n`, "utf8");
+    console.log(`wrote ${out} (${data.years[0]}–${data.years.at(-1)}, ${data.years.length}年)`);
+  }
 }
 
 await main();

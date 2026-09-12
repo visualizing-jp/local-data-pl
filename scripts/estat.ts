@@ -9,7 +9,7 @@ import {
 import { revenueGroup } from "../src/lib/taxonomy.ts";
 import type { FlowItem } from "../src/lib/types.ts";
 
-const RAW_DIR = resolve(import.meta.dirname, "../data/raw");
+const DEFAULT_DIR = resolve(import.meta.dirname, "../data/raw");
 
 interface EstatValue {
   "@cat01"?: string;
@@ -35,7 +35,7 @@ function valuesOf(json: EstatStatsData, file: string): EstatValue[] {
     throw new Error(`${file}: e-Stat ${result?.ERROR_MSG ?? "取得失敗"}`);
   }
   const raw = json.GET_STATS_DATA?.STATISTICAL_DATA?.DATA_INF?.VALUE;
-  if (raw == null) throw new Error(`${file}: 値が空`);
+  if (raw == null) return [];
   return Array.isArray(raw) ? raw : [raw];
 }
 
@@ -53,15 +53,20 @@ function parseAmount(raw: string | undefined): number | null {
   return Number.isFinite(n) ? n : null;
 }
 
-async function readJson(file: string): Promise<EstatStatsData> {
-  const text = await readFile(resolve(RAW_DIR, file), "utf8");
+async function readJson(dir: string, file: string): Promise<EstatStatsData> {
+  const text = await readFile(resolve(dir, file), "utf8");
   return JSON.parse(text) as EstatStatsData;
 }
 
-export async function loadEstatFlows(): Promise<{ revenue: FlowItem[]; expenditure: FlowItem[] }> {
-  const revenueJson = await readJson(ESTAT_REVENUE.file);
+export async function loadEstatFlows(opts: {
+  dir?: string;
+  area: string;
+}): Promise<{ revenue: FlowItem[]; expenditure: FlowItem[] }> {
+  const dir = opts.dir ?? DEFAULT_DIR;
+  const revenueJson = await readJson(dir, ESTAT_REVENUE.file);
   const revenue: FlowItem[] = [];
   for (const row of valuesOf(revenueJson, ESTAT_REVENUE.file)) {
+    if (row["@area"] != null && row["@area"] !== opts.area) continue;
     const year = parseYear(row["@time"]);
     const item = ESTAT_REVENUE.cat01[row["@cat01"] as keyof typeof ESTAT_REVENUE.cat01];
     const value = parseAmount(row.$);
@@ -72,8 +77,9 @@ export async function loadEstatFlows(): Promise<{ revenue: FlowItem[]; expenditu
   const expenditure: FlowItem[] = [];
   const seen = new Set<string>();
   for (const table of ESTAT_EXPENDITURE) {
-    const json = await readJson(table.file);
+    const json = await readJson(dir, table.file);
     for (const row of valuesOf(json, table.file)) {
+      if (row["@area"] != null && row["@area"] !== opts.area) continue;
       if (row["@cat03"] != null && row["@cat03"] !== ESTAT_EXP_TOTAL) continue;
       const year = parseYear(row["@time"]);
       const item = ESTAT_PURPOSE[row["@cat01"] as keyof typeof ESTAT_PURPOSE];

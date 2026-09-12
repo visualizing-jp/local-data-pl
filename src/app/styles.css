@@ -78,6 +78,46 @@ h1 .sep {
   color: var(--muted);
 }
 
+.place-pref {
+  margin-right: 0.35em;
+}
+
+.place-field {
+  display: inline-block;
+  max-width: 100%;
+}
+
+.place-select {
+  appearance: none;
+  max-width: min(100%, 22rem);
+  margin: 0;
+  padding: 0 1.35em 2px 0;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  border-radius: 0;
+  background-color: transparent;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'><path fill='%235d6b76' d='M1.1 1.2 6 6.8 10.9 1.2'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.05em center;
+  background-size: 0.72em 0.48em;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  cursor: pointer;
+  transition: border-color 150ms ease;
+}
+
+.place-select:hover {
+  border-bottom-color: var(--shu);
+}
+
+.place-select:focus-visible {
+  outline: 2px solid var(--ai);
+  outline-offset: 3px;
+  border-bottom-color: var(--shu);
+}
+
 .yearblock {
   margin: 0;
   text-align: right;
@@ -346,6 +386,10 @@ h1 .sep {
   .yearblock {
     text-align: left;
     margin-top: 12px;
+  }
+
+  .place-select {
+    max-width: 100%;
   }
 
   .facts {

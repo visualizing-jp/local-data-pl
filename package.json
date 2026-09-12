@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "八王子市の普通会計歳入歳出を、年度スライダーつき Sankey で見る",
+  "description": "普通会計の歳入歳出を、年度スライダーつき Sankey で見る",
   "license": "MIT",
   "engines": {
     "node": ">=22.18"
