@@ -30,7 +30,9 @@ function verifyOne(data: CityFinance, filename: string): void {
     if (curr === prev + 1) continue;
     const tokyoGap2019 =
       gov.prefecture === "東京都" && gov.code !== "132012" && prev === 2018 && curr === 2020;
-    if (!tokyoGap2019) fail(`${filename}: 年度が連続していない: ${prev} → ${curr}`);
+    const hokkaidoGapBooklet =
+      gov.prefecture === "北海道" && gov.code !== "011002" && prev === 2018 && curr === 2024;
+    if (!tokyoGap2019 && !hokkaidoGapBooklet) fail(`${filename}: 年度が連続していない: ${prev} → ${curr}`);
   }
 
   for (const year of data.years) {
@@ -41,7 +43,10 @@ function verifyOne(data: CityFinance, filename: string): void {
     const balance = revSum - expSum;
     if (revSum <= 0) fail(`${data.city} ${year}: 歳入合計が 0`);
     if (expSum <= 0) fail(`${data.city} ${year}: 歳出合計が 0`);
-    if (Math.abs(balance) / revSum > 0.3) fail(`${data.city} ${year}: 形式収支が歳入の 30% 超`);
+    const yubariReconstruction = data.code === "012092" && year >= 2006 && year <= 2008;
+    if (Math.abs(balance) / revSum > 0.3 && !yubariReconstruction) {
+      fail(`${data.city} ${year}: 形式収支が歳入の 30% 超`);
+    }
     for (const row of exp) {
       if (!PURPOSE_INDEX.has(row.item)) fail(`${data.city} ${year}: 目的外の歳出 ${row.item}`);
     }

@@ -12,12 +12,13 @@ import { CATALOG, estatArea, type LocalGov } from "../src/lib/catalog.ts";
 import { isPurposeLeaf, isRevenueLeaf, normalizeRevenueName, revenueGroup } from "../src/lib/taxonomy.ts";
 import type { CityFinance, FlowItem } from "../src/lib/types.ts";
 import { loadEstatFlows } from "./estat.ts";
-import { KANAGAWA_BOOKLET_PAGES, OKINAWA_BOOKLET_PAGES, TOKYO_BOOKLET_YEARS } from "./sources.ts";
+import { HOKKAIDO_BOOKLET_YEAR, KANAGAWA_BOOKLET_PAGES, OKINAWA_BOOKLET_PAGES, SAPPORO_CODE, SAPPORO_MIC_EXCEL, TOKYO_BOOKLET_YEARS } from "./sources.ts";
 
 const RAW_DIR = resolve(import.meta.dirname, "../data/raw");
 const OUT_DIR = resolve(import.meta.dirname, "../public/data");
 const TOKYO_ESTAT_DIR = resolve(RAW_DIR, "estat-tokyo");
 const KANAGAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-kanagawa");
+const HOKKAIDO_ESTAT_DIR = resolve(RAW_DIR, "estat-hokkaido");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 const TOKYO_EXCEL_YEARS = [2019, ...TOKYO_BOOKLET_YEARS] as const;
 
@@ -171,6 +172,12 @@ function sourceDetail(gov: LocalGov): string {
   if (gov.prefecture === "神奈川県") {
     return "2019–2024年度は神奈川県「財政状況資料集」の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
   }
+  if (gov.code === SAPPORO_CODE) {
+    return "2019–2024年度は総務省「財政状況資料集」（政令指定都市）の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  }
+  if (gov.prefecture === "北海道") {
+    return "2024年度は北海道「財政状況資料集」の「普通会計の状況」。2019–2023年度は道が最新年の ZIP だけを残すため公開がない。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  }
   if (gov.code === "132012") {
     return "2019年度は八王子市「財政状況資料集」、2020–2024年度は東京都「団体別資料集」の「普通会計の状況」。1989–2018年度はe-Stat APIの地方財政状況調査（市町村分）歳入内訳・歳出内訳。いずれも全国統一様式。";
   }
@@ -183,6 +190,7 @@ function sourceDetail(gov: LocalGov): string {
 function estatDir(gov: LocalGov): string {
   if (gov.prefecture === "沖縄県") return OKINAWA_ESTAT_DIR;
   if (gov.prefecture === "神奈川県") return KANAGAWA_ESTAT_DIR;
+  if (gov.prefecture === "北海道") return HOKKAIDO_ESTAT_DIR;
   if (gov.prefecture === "東京都") return TOKYO_ESTAT_DIR;
   throw new Error(`e-Stat の置き場がない: ${gov.prefecture}`);
 }
@@ -199,6 +207,20 @@ function excelJobs(gov: LocalGov): { year: number; path: string }[] {
       year: Number(year),
       path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
     }));
+  }
+  if (gov.code === SAPPORO_CODE) {
+    return Object.keys(SAPPORO_MIC_EXCEL).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
+  }
+  if (gov.prefecture === "北海道") {
+    return [
+      {
+        year: HOKKAIDO_BOOKLET_YEAR,
+        path: resolve(RAW_DIR, gov.code, `${HOKKAIDO_BOOKLET_YEAR}.xlsx`),
+      },
+    ];
   }
   if (gov.prefecture === "東京都") {
     return TOKYO_EXCEL_YEARS.map((year) => ({

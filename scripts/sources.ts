@@ -25,6 +25,24 @@ export const EXCEL_OVERRIDES: Readonly<Record<string, string>> = {
   "473600:2021": "https://www.vill.izena.okinawa.jp/userfiles/files/R3_zaiseisiryou.xlsx",
 };
 
+/** 北海道内市町村の財政状況資料集。道サイトは最新年の ZIP だけを残す。札幌市は載らない。 */
+export const HOKKAIDO_BOOKLET_PAGE =
+  "https://www.pref.hokkaido.lg.jp/ss/scs/zaisei/shi-zaisei-4-1-0.html";
+
+export const HOKKAIDO_BOOKLET_YEAR = 2024;
+
+/** 札幌市は政令市のため道の ZIP に無い。総務省の政令指定都市資料集。 */
+export const SAPPORO_MIC_EXCEL: Readonly<Record<number, string>> = {
+  2019: "https://www.soumu.go.jp/main_content/000740640.xlsx",
+  2020: "https://www.soumu.go.jp/main_content/000840033.xlsx",
+  2021: "https://www.soumu.go.jp/main_content/000873233.xlsx",
+  2022: "https://www.soumu.go.jp/main_content/000970303.xlsx",
+  2023: "https://www.soumu.go.jp/main_content/000999765.xlsx",
+  2024: "https://www.soumu.go.jp/main_content/001063423.xlsx",
+};
+
+export const SAPPORO_CODE = "011002";
+
 /** 神奈川県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const KANAGAWA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.kanagawa.jp/docs/v2x/cnt/f360417/p1223729.html",
