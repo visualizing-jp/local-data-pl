@@ -56,6 +56,23 @@ export const IWATE_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: "https://www.pref.iwate.jp/kensei/seisaku/shichouson/zaisei/joukyou/1097113.html",
 };
 
+/** 宮城県「財政状況資料集」。1ページに 2019–2024。仙台市は載らない。 */
+export const MIYAGI_BOOKLET_PAGE = "https://www.pref.miyagi.jp/soshiki/sichouson/mieruka.html";
+
+export const MIYAGI_BOOKLET_YEARS = [2019, 2020, 2021, 2022, 2023, 2024] as const;
+
+/** 仙台市は政令市のため県ページに無い。総務省の政令指定都市資料集。 */
+export const SENDAI_MIC_EXCEL: Readonly<Record<number, string>> = {
+  2019: "https://www.soumu.go.jp/main_content/000740641.xlsx",
+  2020: "https://www.soumu.go.jp/main_content/000839175.xlsx",
+  2021: "https://www.soumu.go.jp/main_content/000873234.xlsx",
+  2022: "https://www.soumu.go.jp/main_content/000970304.xlsx",
+  2023: "https://www.soumu.go.jp/main_content/000999766.xlsx",
+  2024: "https://www.soumu.go.jp/main_content/001063424.xlsx",
+};
+
+export const SENDAI_CODE = "041009";
+
 /** 青森県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const AOMORI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.aomori.lg.jp/soshiki/zaimu/shichoson/2019_zaisei_shiryousyuu.html",

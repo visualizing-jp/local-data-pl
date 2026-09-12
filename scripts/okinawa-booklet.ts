@@ -1,6 +1,6 @@
 import type { LocalGov } from "../src/lib/catalog.ts";
 
-const XLSX_HREF = /<a\s[^>]*href="([^"]+\.xlsx)"[^>]*>([\s\S]*?)<\/a>/gi;
+const FILE_HREF = /<a\s[^>]*href="([^"]+\.(?:xlsx|zip))"[^>]*>([\s\S]*?)<\/a>/gi;
 
 function decodeEntities(raw: string): string {
   return raw
@@ -16,7 +16,10 @@ function decodeEntities(raw: string): string {
 }
 
 function cityLabel(html: string): string {
-  return decodeEntities(html).replace(/（Excel.*$/u, "").replace(/[、,]+$/u, "").trim();
+  return decodeEntities(html)
+    .replace(/[（(](?:Excel|エクセル|ZIP|zip).*$/iu, "")
+    .replace(/[、,]+$/u, "")
+    .trim();
 }
 
 function foldCity(name: string): string {
@@ -32,7 +35,7 @@ export function parseCityBooklet(html: string, pageUrl: string, govs: readonly L
   const allowed = new Set(govs.map((gov) => gov.code));
   const byName = new Map(govs.map((gov) => [foldCity(gov.city), gov.code]));
   const found = new Map<string, string>();
-  for (const match of html.matchAll(XLSX_HREF)) {
+  for (const match of html.matchAll(FILE_HREF)) {
     const href = match[1];
     const label = match[2];
     if (href == null || label == null) continue;

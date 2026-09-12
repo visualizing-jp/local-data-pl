@@ -289,6 +289,45 @@ const IWATE: readonly LocalGov[] = [
   muni("ichinohechou", "035246", "一戸町", "岩手県"),
 ];
 
+/** 宮城県の現行市町村。slug は県の令和6年度資料集ファイル名。仙台市は総務省資料集。川崎町は神奈川の川崎市と衝突するため kawasakichou。 */
+const MIYAGI: readonly LocalGov[] = [
+  muni("sendai", "041009", "仙台市", "宮城県"),
+  muni("ishinomaki", "042021", "石巻市", "宮城県"),
+  muni("shiogama", "042030", "塩竈市", "宮城県"),
+  muni("kesennuma", "042056", "気仙沼市", "宮城県"),
+  muni("shiroishi", "042064", "白石市", "宮城県"),
+  muni("natori", "042072", "名取市", "宮城県"),
+  muni("kakuda", "042081", "角田市", "宮城県"),
+  muni("tagazyo", "042099", "多賀城市", "宮城県"),
+  muni("iwanuma", "042111", "岩沼市", "宮城県"),
+  muni("tome", "042129", "登米市", "宮城県"),
+  muni("kurihara", "042137", "栗原市", "宮城県"),
+  muni("higashimatsushima", "042145", "東松島市", "宮城県"),
+  muni("oosaki", "042153", "大崎市", "宮城県"),
+  muni("tomiya", "042161", "富谷市", "宮城県"),
+  muni("zao", "043010", "蔵王町", "宮城県"),
+  muni("shichikasyuku", "043028", "七ヶ宿町", "宮城県"),
+  muni("ogawara", "043214", "大河原町", "宮城県"),
+  muni("murata", "043222", "村田町", "宮城県"),
+  muni("shibata", "043231", "柴田町", "宮城県"),
+  muni("kawasakichou", "043249", "川崎町", "宮城県"),
+  muni("marumori", "043419", "丸森町", "宮城県"),
+  muni("watari", "043613", "亘理町", "宮城県"),
+  muni("yamamoto", "043621", "山元町", "宮城県"),
+  muni("matsushima", "044016", "松島町", "宮城県"),
+  muni("shichigahama", "044041", "七ヶ浜町", "宮城県"),
+  muni("rifu", "044067", "利府町", "宮城県"),
+  muni("taiwa", "044211", "大和町", "宮城県"),
+  muni("oosato", "044229", "大郷町", "宮城県"),
+  muni("oohira", "044245", "大衡村", "宮城県"),
+  muni("shikama", "044440", "色麻町", "宮城県"),
+  muni("kami", "044458", "加美町", "宮城県"),
+  muni("wakuya", "045012", "涌谷町", "宮城県"),
+  muni("misato", "045055", "美里町", "宮城県"),
+  muni("onagawa", "045811", "女川町", "宮城県"),
+  muni("minamisanriku", "046060", "南三陸町", "宮城県"),
+];
+
 /** 東京都の現行区市町村。slug は都「団体別資料集」のパス。 */
 const TOKYO: readonly LocalGov[] = [
   muni("chiyoda", "131016", "千代田区", "東京都"),
@@ -441,6 +480,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...HOKKAIDO,
   ...AOMORI,
   ...IWATE,
+  ...MIYAGI,
   ...TOKYO,
   ...KANAGAWA,
   ...OKINAWA,

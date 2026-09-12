@@ -44,7 +44,10 @@ function verifyOne(data: CityFinance, filename: string): void {
     if (revSum <= 0) fail(`${data.city} ${year}: 歳入合計が 0`);
     if (expSum <= 0) fail(`${data.city} ${year}: 歳出合計が 0`);
     const yubariReconstruction = data.code === "012092" && year >= 2006 && year <= 2008;
-    if (Math.abs(balance) / revSum > 0.3 && !yubariReconstruction) {
+    const tohokuCarryover =
+      (data.code === "042056" && year === 2015) ||
+      (data.code === "044016" && year >= 2013 && year <= 2015);
+    if (Math.abs(balance) / revSum > 0.3 && !yubariReconstruction && !tohokuCarryover) {
       fail(`${data.city} ${year}: 形式収支が歳入の 30% 超`);
     }
     for (const row of exp) {

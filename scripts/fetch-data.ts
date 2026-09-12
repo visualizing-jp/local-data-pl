@@ -14,6 +14,7 @@ import { CATALOG, estatArea } from "../src/lib/catalog.ts";
 import { loadDotEnv } from "./env.ts";
 import { codeFromHokkaidoExcelName, parseHokkaidoBookletZips } from "./hokkaido-booklet.ts";
 import { parseIwateBookletZips } from "./iwate-booklet.ts";
+import { parseMiyagiBookletYear } from "./miyagi-booklet.ts";
 import { parseCityBooklet } from "./okinawa-booklet.ts";
 import { parseTokyoBooklet } from "./tokyo-booklet.ts";
 import {
@@ -29,9 +30,13 @@ import {
   HOKKAIDO_BOOKLET_YEAR,
   IWATE_BOOKLET_PAGES,
   KANAGAWA_BOOKLET_PAGES,
+  MIYAGI_BOOKLET_PAGE,
+  MIYAGI_BOOKLET_YEARS,
   OKINAWA_BOOKLET_PAGES,
   SAPPORO_CODE,
   SAPPORO_MIC_EXCEL,
+  SENDAI_CODE,
+  SENDAI_MIC_EXCEL,
   TOKYO_BOOKLET_BASE,
   TOKYO_BOOKLET_YEARS,
   tokyoBookletPage,
@@ -45,6 +50,7 @@ const KANAGAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-kanagawa");
 const HOKKAIDO_ESTAT_DIR = resolve(RAW_DIR, "estat-hokkaido");
 const AOMORI_ESTAT_DIR = resolve(RAW_DIR, "estat-aomori");
 const IWATE_ESTAT_DIR = resolve(RAW_DIR, "estat-iwate");
+const MIYAGI_ESTAT_DIR = resolve(RAW_DIR, "estat-miyagi");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 const ESTAT_ENDPOINT = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData";
 const HACHIOJI_2019 = `${DOWNLOAD_BASE}/${HACHIOJI_2019_FILE}`;
@@ -316,6 +322,57 @@ async function fetchExcelIwate(force: boolean) {
   }
 }
 
+async function saveBookletExcel(url: string, dest: string, force: boolean, label: string) {
+  if (!force && existsSync(dest)) {
+    console.log(`cached ${label}`);
+    return;
+  }
+  if (url.toLowerCase().endsWith(".zip")) {
+    const zipDest = dest.replace(/\.xlsx$/i, ".zip");
+    await saveIfNeeded(zipDest, force, () => download(url), `${label} ZIP`);
+    await execFileAsync("python3", [resolve(import.meta.dirname, "extract-booklet-zip.py"), zipDest, dest]);
+    await sleep(80);
+    return;
+  }
+  await saveIfNeeded(dest, force, () => download(url), label);
+  await sleep(80);
+}
+
+async function fetchExcelMiyagi(force: boolean) {
+  const expected = CATALOG.filter((gov) => gov.prefecture === "宮城県" && gov.code !== SENDAI_CODE);
+  const allPresent = expected.every((gov) =>
+    MIYAGI_BOOKLET_YEARS.every((year) => existsSync(resolve(RAW_DIR, gov.code, `${year}.xlsx`))),
+  );
+  if (!force && allPresent) {
+    console.log(`cached 2019–2024 宮城県資料集（${expected.length}団体）`);
+  } else {
+    const pageUrl = MIYAGI_BOOKLET_PAGE;
+    console.log(`index 宮城県 ${pageUrl}`);
+    const html = (await download(pageUrl)).toString("utf8");
+    for (const year of MIYAGI_BOOKLET_YEARS) {
+      const links = parseMiyagiBookletYear(html, pageUrl, expected, year);
+      const missing = expected.filter((gov) => !links.has(gov.code)).map((gov) => gov.city);
+      if (missing.length > 0) {
+        throw new Error(`宮城県 ${year}: 資料集に Excel がない: ${missing.join("、")}`);
+      }
+      for (const gov of expected) {
+        const url = links.get(gov.code);
+        if (url == null) continue;
+        const dest = resolve(RAW_DIR, gov.code, `${year}.xlsx`);
+        await saveBookletExcel(url, dest, force, `${year} ${gov.city}`);
+      }
+    }
+  }
+
+  for (const [yearRaw, url] of Object.entries(SENDAI_MIC_EXCEL)) {
+    const y = Number(yearRaw);
+    const dest = resolve(RAW_DIR, SENDAI_CODE, `${y}.xlsx`);
+    const existed = existsSync(dest);
+    await saveIfNeeded(dest, force, () => download(url), `${y} 仙台市（総務省）`);
+    if (force || !existed) await sleep(80);
+  }
+}
+
 async function fetchExcelHokkaido(force: boolean) {
   const expected = CATALOG.filter((gov) => gov.prefecture === "北海道" && gov.code !== SAPPORO_CODE);
   const year = HOKKAIDO_BOOKLET_YEAR;
@@ -397,6 +454,7 @@ async function main() {
   await fetchExcelHokkaido(force);
   await fetchExcelAomori(force);
   await fetchExcelIwate(force);
+  await fetchExcelMiyagi(force);
   await fetchExcelOkinawa(force);
 
   const appId = requireAppId();
@@ -406,6 +464,8 @@ async function main() {
   await fetchEstatBundle(appId, AOMORI_ESTAT_DIR, aomoriAreas, force);
   const iwateAreas = CATALOG.filter((gov) => gov.prefecture === "岩手県").map((gov) => estatArea(gov.code));
   await fetchEstatBundle(appId, IWATE_ESTAT_DIR, iwateAreas, force);
+  const miyagiAreas = CATALOG.filter((gov) => gov.prefecture === "宮城県").map((gov) => estatArea(gov.code));
+  await fetchEstatBundle(appId, MIYAGI_ESTAT_DIR, miyagiAreas, force);
   const tokyoAreas = CATALOG.filter((gov) => gov.prefecture === "東京都").map((gov) => estatArea(gov.code));
   await fetchEstatBundle(appId, TOKYO_ESTAT_DIR, tokyoAreas, force);
   const kanagawaAreas = CATALOG.filter((gov) => gov.prefecture === "神奈川県").map((gov) => estatArea(gov.code));
