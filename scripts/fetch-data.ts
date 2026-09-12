@@ -23,6 +23,7 @@ import {
   ESTAT_REVENUE,
   EXCEL_OVERRIDES,
   FETCH_UA,
+  AOMORI_BOOKLET_PAGES,
   HOKKAIDO_BOOKLET_PAGE,
   HOKKAIDO_BOOKLET_YEAR,
   KANAGAWA_BOOKLET_PAGES,
@@ -40,6 +41,7 @@ const RAW_DIR = resolve(import.meta.dirname, "../data/raw");
 const TOKYO_ESTAT_DIR = resolve(RAW_DIR, "estat-tokyo");
 const KANAGAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-kanagawa");
 const HOKKAIDO_ESTAT_DIR = resolve(RAW_DIR, "estat-hokkaido");
+const AOMORI_ESTAT_DIR = resolve(RAW_DIR, "estat-aomori");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 const ESTAT_ENDPOINT = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData";
 const HACHIOJI_2019 = `${DOWNLOAD_BASE}/${HACHIOJI_2019_FILE}`;
@@ -261,6 +263,10 @@ async function fetchExcelKanagawa(force: boolean) {
   await fetchExcelPrefecture("神奈川県", KANAGAWA_BOOKLET_PAGES, force);
 }
 
+async function fetchExcelAomori(force: boolean) {
+  await fetchExcelPrefecture("青森県", AOMORI_BOOKLET_PAGES, force);
+}
+
 async function fetchExcelHokkaido(force: boolean) {
   const expected = CATALOG.filter((gov) => gov.prefecture === "北海道" && gov.code !== SAPPORO_CODE);
   const year = HOKKAIDO_BOOKLET_YEAR;
@@ -340,11 +346,14 @@ async function main() {
   await fetchExcelTokyo(force);
   await fetchExcelKanagawa(force);
   await fetchExcelHokkaido(force);
+  await fetchExcelAomori(force);
   await fetchExcelOkinawa(force);
 
   const appId = requireAppId();
   const hokkaidoAreas = CATALOG.filter((gov) => gov.prefecture === "北海道").map((gov) => estatArea(gov.code));
   await fetchEstatBundle(appId, HOKKAIDO_ESTAT_DIR, hokkaidoAreas, force);
+  const aomoriAreas = CATALOG.filter((gov) => gov.prefecture === "青森県").map((gov) => estatArea(gov.code));
+  await fetchEstatBundle(appId, AOMORI_ESTAT_DIR, aomoriAreas, force);
   const tokyoAreas = CATALOG.filter((gov) => gov.prefecture === "東京都").map((gov) => estatArea(gov.code));
   await fetchEstatBundle(appId, TOKYO_ESTAT_DIR, tokyoAreas, force);
   const kanagawaAreas = CATALOG.filter((gov) => gov.prefecture === "神奈川県").map((gov) => estatArea(gov.code));

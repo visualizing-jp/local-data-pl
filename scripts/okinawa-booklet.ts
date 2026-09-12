@@ -16,7 +16,11 @@ function decodeEntities(raw: string): string {
 }
 
 function cityLabel(html: string): string {
-  return decodeEntities(html).replace(/（Excel.*$/u, "").trim();
+  return decodeEntities(html).replace(/（Excel.*$/u, "").replace(/[、,]+$/u, "").trim();
+}
+
+function foldCity(name: string): string {
+  return name.replace(/[ヶケ]/gu, "ケ");
 }
 
 function absUrl(pageUrl: string, href: string): string {
@@ -26,7 +30,7 @@ function absUrl(pageUrl: string, href: string): string {
 /** 県の資料集ページから、団体コード → Excel URL。ファイル名の6桁か団体名で対応づける。 */
 export function parseCityBooklet(html: string, pageUrl: string, govs: readonly LocalGov[]): Map<string, string> {
   const allowed = new Set(govs.map((gov) => gov.code));
-  const byName = new Map(govs.map((gov) => [gov.city, gov.code]));
+  const byName = new Map(govs.map((gov) => [foldCity(gov.city), gov.code]));
   const found = new Map<string, string>();
   for (const match of html.matchAll(XLSX_HREF)) {
     const href = match[1];
@@ -36,7 +40,7 @@ export function parseCityBooklet(html: string, pageUrl: string, govs: readonly L
     const file = url.split("/").pop() ?? "";
     const coded = file.match(/^(\d{6})_/);
     const byFile = coded?.[1];
-    const byCity = byName.get(cityLabel(label));
+    const byCity = byName.get(foldCity(cityLabel(label)));
     const code = byFile ?? byCity;
     if (code == null || !allowed.has(code)) continue;
     found.set(code, url);

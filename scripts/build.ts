@@ -12,13 +12,14 @@ import { CATALOG, estatArea, type LocalGov } from "../src/lib/catalog.ts";
 import { isPurposeLeaf, isRevenueLeaf, normalizeRevenueName, revenueGroup } from "../src/lib/taxonomy.ts";
 import type { CityFinance, FlowItem } from "../src/lib/types.ts";
 import { loadEstatFlows } from "./estat.ts";
-import { HOKKAIDO_BOOKLET_YEAR, KANAGAWA_BOOKLET_PAGES, OKINAWA_BOOKLET_PAGES, SAPPORO_CODE, SAPPORO_MIC_EXCEL, TOKYO_BOOKLET_YEARS } from "./sources.ts";
+import { AOMORI_BOOKLET_PAGES, HOKKAIDO_BOOKLET_YEAR, KANAGAWA_BOOKLET_PAGES, OKINAWA_BOOKLET_PAGES, SAPPORO_CODE, SAPPORO_MIC_EXCEL, TOKYO_BOOKLET_YEARS } from "./sources.ts";
 
 const RAW_DIR = resolve(import.meta.dirname, "../data/raw");
 const OUT_DIR = resolve(import.meta.dirname, "../public/data");
 const TOKYO_ESTAT_DIR = resolve(RAW_DIR, "estat-tokyo");
 const KANAGAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-kanagawa");
 const HOKKAIDO_ESTAT_DIR = resolve(RAW_DIR, "estat-hokkaido");
+const AOMORI_ESTAT_DIR = resolve(RAW_DIR, "estat-aomori");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 const TOKYO_EXCEL_YEARS = [2019, ...TOKYO_BOOKLET_YEARS] as const;
 
@@ -172,6 +173,9 @@ function sourceDetail(gov: LocalGov): string {
   if (gov.prefecture === "神奈川県") {
     return "2019–2024年度は神奈川県「財政状況資料集」の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
   }
+  if (gov.prefecture === "青森県") {
+    return "2019–2024年度は青森県「財政状況資料集」の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  }
   if (gov.code === SAPPORO_CODE) {
     return "2019–2024年度は総務省「財政状況資料集」（政令指定都市）の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
   }
@@ -191,6 +195,7 @@ function estatDir(gov: LocalGov): string {
   if (gov.prefecture === "沖縄県") return OKINAWA_ESTAT_DIR;
   if (gov.prefecture === "神奈川県") return KANAGAWA_ESTAT_DIR;
   if (gov.prefecture === "北海道") return HOKKAIDO_ESTAT_DIR;
+  if (gov.prefecture === "青森県") return AOMORI_ESTAT_DIR;
   if (gov.prefecture === "東京都") return TOKYO_ESTAT_DIR;
   throw new Error(`e-Stat の置き場がない: ${gov.prefecture}`);
 }
@@ -204,6 +209,12 @@ function excelJobs(gov: LocalGov): { year: number; path: string }[] {
   }
   if (gov.prefecture === "神奈川県") {
     return Object.keys(KANAGAWA_BOOKLET_PAGES).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
+  }
+  if (gov.prefecture === "青森県") {
+    return Object.keys(AOMORI_BOOKLET_PAGES).map((year) => ({
       year: Number(year),
       path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
     }));

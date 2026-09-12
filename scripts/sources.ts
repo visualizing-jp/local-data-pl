@@ -43,6 +43,16 @@ export const SAPPORO_MIC_EXCEL: Readonly<Record<number, string>> = {
 
 export const SAPPORO_CODE = "011002";
 
+/** 青森県「財政状況資料集」（県内市町村）。2019–2024。 */
+export const AOMORI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.aomori.lg.jp/soshiki/zaimu/shichoson/2019_zaisei_shiryousyuu.html",
+  2020: "https://www.pref.aomori.lg.jp/soshiki/zaimu/shichoson/2020_zaisei_shiryousyuu.html",
+  2021: "https://www.pref.aomori.lg.jp/soshiki/zaimu/shichoson/2021_zaisei_shiryousyuu.html",
+  2022: "https://www.pref.aomori.lg.jp/soshiki/zaimu/shichoson/2022_zaisei_shiryousyuu.html",
+  2023: "https://www.pref.aomori.lg.jp/soshiki/zaimu/shichoson/2023_zaisei_shiryousyuu.html",
+  2024: "https://www.pref.aomori.lg.jp/soshiki/zaimu/shichoson/2024_zaisei_shiryousyuu.html",
+};
+
 /** 神奈川県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const KANAGAWA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.kanagawa.jp/docs/v2x/cnt/f360417/p1223729.html",

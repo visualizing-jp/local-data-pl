@@ -208,6 +208,50 @@ const HOKKAIDO: readonly LocalGov[] = [
   muni("rausuchou", "016942", "羅臼町", "北海道"),
 ];
 
+/** 青森県の現行市町村。slug は県の令和6年度資料集ファイル名。 */
+const AOMORI: readonly LocalGov[] = [
+  muni("aomorishi", "022012", "青森市", "青森県"),
+  muni("hirosakishi", "022021", "弘前市", "青森県"),
+  muni("hachinoheshi", "022039", "八戸市", "青森県"),
+  muni("kuroishishi", "022047", "黒石市", "青森県"),
+  muni("gosyogawarashi", "022055", "五所川原市", "青森県"),
+  muni("towadashi", "022063", "十和田市", "青森県"),
+  muni("misawashi", "022071", "三沢市", "青森県"),
+  muni("mutsushi", "022080", "むつ市", "青森県"),
+  muni("tsugarushi", "022098", "つがる市", "青森県"),
+  muni("hirakawashi", "022101", "平川市", "青森県"),
+  muni("hiranaimachi", "023019", "平内町", "青森県"),
+  muni("imabetsumachi", "023035", "今別町", "青森県"),
+  muni("yomogitamura", "023043", "蓬田村", "青森県"),
+  muni("sotogahamamachi", "023078", "外ヶ浜町", "青森県"),
+  muni("ajigasawamachi", "023213", "鰺ヶ沢町", "青森県"),
+  muni("fukauramachi", "023230", "深浦町", "青森県"),
+  muni("nishimeyamura", "023434", "西目屋村", "青森県"),
+  muni("fujisakimachi", "023612", "藤崎町", "青森県"),
+  muni("owanimachi", "023621", "大鰐町", "青森県"),
+  muni("inakadatemura", "023671", "田舎館村", "青森県"),
+  muni("itayanagimachi", "023817", "板柳町", "青森県"),
+  muni("tsurutamachi", "023841", "鶴田町", "青森県"),
+  muni("nakadomarimachi", "023876", "中泊町", "青森県"),
+  muni("nohejimachi", "024015", "野辺地町", "青森県"),
+  muni("shichinohemachi", "024023", "七戸町", "青森県"),
+  muni("rokunohemachi", "024058", "六戸町", "青森県"),
+  muni("yokohamamachi", "024066", "横浜町", "青森県"),
+  muni("touhokumachi", "024082", "東北町", "青森県"),
+  muni("rokkasyomura", "024112", "六ヶ所村", "青森県"),
+  muni("oirasechou", "024121", "おいらせ町", "青森県"),
+  muni("omamachi", "024236", "大間町", "青森県"),
+  muni("higashidoorimura", "024244", "東通村", "青森県"),
+  muni("kazamauramura", "024252", "風間浦村", "青森県"),
+  muni("saimura", "024261", "佐井村", "青森県"),
+  muni("sannohemachi", "024414", "三戸町", "青森県"),
+  muni("gonohemachi", "024422", "五戸町", "青森県"),
+  muni("takkomachi", "024431", "田子町", "青森県"),
+  muni("nanbuchou", "024457", "南部町", "青森県"),
+  muni("hashikamichou", "024465", "階上町", "青森県"),
+  muni("shingoumura", "024503", "新郷村", "青森県"),
+];
+
 /** 東京都の現行区市町村。slug は都「団体別資料集」のパス。 */
 const TOKYO: readonly LocalGov[] = [
   muni("chiyoda", "131016", "千代田区", "東京都"),
@@ -356,7 +400,7 @@ const OKINAWA: readonly LocalGov[] = [
   muni("yonaguni", "473821", "与那国町", "沖縄県"),
 ];
 
-export const CATALOG: readonly LocalGov[] = [...HOKKAIDO, ...TOKYO, ...KANAGAWA, ...OKINAWA];
+export const CATALOG: readonly LocalGov[] = [...HOKKAIDO, ...AOMORI, ...TOKYO, ...KANAGAWA, ...OKINAWA];
 
 const CHIYODA = TOKYO.find((gov) => gov.code === "131016");
 if (CHIYODA == null) throw new Error("千代田区がカタログにない");
