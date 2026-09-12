@@ -11,26 +11,31 @@ import { resolve } from "node:path";
 import { CATALOG, estatArea } from "../src/lib/catalog.ts";
 import { loadDotEnv } from "./env.ts";
 import { parseOkinawaBooklet } from "./okinawa-booklet.ts";
+import { parseTokyoBooklet } from "./tokyo-booklet.ts";
 import {
   DOWNLOAD_BASE,
-  ESTAT_AREA,
+  HACHIOJI_2019_FILE,
   ESTAT_EXP_TOTAL,
   ESTAT_EXPENDITURE,
   ESTAT_REVENUE,
   EXCEL_OVERRIDES,
-  EXCEL_SOURCES,
   FETCH_UA,
   OKINAWA_BOOKLET_PAGES,
+  TOKYO_BOOKLET_BASE,
+  TOKYO_BOOKLET_YEARS,
+  tokyoBookletPage,
 } from "./sources.ts";
 
 const RAW_DIR = resolve(import.meta.dirname, "../data/raw");
+const TOKYO_ESTAT_DIR = resolve(RAW_DIR, "estat-tokyo");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 const ESTAT_ENDPOINT = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData";
+const HACHIOJI_2019 = `${DOWNLOAD_BASE}/${HACHIOJI_2019_FILE}`;
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-async function download(url: string): Promise<Buffer> {
-  const res = await fetch(url, { headers: { "User-Agent": FETCH_UA } });
+async function download(url: string, extraHeaders: Record<string, string> = {}): Promise<Buffer> {
+  const res = await fetch(url, { headers: { "User-Agent": FETCH_UA, ...extraHeaders } });
   if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText} for ${url}`);
   return Buffer.from(await res.arrayBuffer());
 }
@@ -150,10 +155,31 @@ async function saveIfNeeded(dest: string, force: boolean, run: () => Promise<str
   console.log(`  ${size.toLocaleString()} → ${dest.replace(RAW_DIR + "/", "data/raw/")}`);
 }
 
-async function fetchExcelHachioji(force: boolean) {
-  for (const { year, file } of EXCEL_SOURCES) {
-    const dest = resolve(RAW_DIR, file);
-    await saveIfNeeded(dest, force, () => download(`${DOWNLOAD_BASE}/${file}`), `${year} ${file}`);
+async function fetchExcelHachioji2019(force: boolean) {
+  const dest = resolve(RAW_DIR, "132012", "2019.xlsx");
+  await saveIfNeeded(dest, force, () => download(HACHIOJI_2019), "2019 八王子市（市サイト）");
+}
+
+async function fetchExcelTokyo(force: boolean) {
+  const expected = CATALOG.filter((gov) => gov.prefecture === "東京都");
+  const indexReferer = `${TOKYO_BOOKLET_BASE}/`;
+  for (const gov of expected) {
+    const pageUrl = tokyoBookletPage(gov.slug);
+    console.log(`index ${gov.city} ${pageUrl}`);
+    const html = (await download(pageUrl, { Referer: indexReferer })).toString("utf8");
+    const links = parseTokyoBooklet(html, pageUrl);
+    const missing = TOKYO_BOOKLET_YEARS.filter((year) => !links.has(year));
+    if (missing.length > 0) {
+      throw new Error(`${gov.city}: 資料集にない年度: ${missing.join("、")}`);
+    }
+    for (const year of TOKYO_BOOKLET_YEARS) {
+      const url = links.get(year);
+      if (url == null) continue;
+      const dest = resolve(RAW_DIR, gov.code, `${year}.xlsx`);
+      const existed = existsSync(dest);
+      await saveIfNeeded(dest, force, () => download(url, { Referer: pageUrl }), `${year} ${gov.city}`);
+      if (force || !existed) await sleep(80);
+    }
   }
 }
 
@@ -203,11 +229,13 @@ async function main() {
   const force = process.argv.includes("--force");
   await mkdir(RAW_DIR, { recursive: true });
 
-  await fetchExcelHachioji(force);
+  await fetchExcelHachioji2019(force);
+  await fetchExcelTokyo(force);
   await fetchExcelOkinawa(force);
 
   const appId = requireAppId();
-  await fetchEstatBundle(appId, RAW_DIR, [ESTAT_AREA], force);
+  const tokyoAreas = CATALOG.filter((gov) => gov.prefecture === "東京都").map((gov) => estatArea(gov.code));
+  await fetchEstatBundle(appId, TOKYO_ESTAT_DIR, tokyoAreas, force);
   const okinawaAreas = CATALOG.filter((gov) => gov.prefecture === "沖縄県").map((gov) => estatArea(gov.code));
   await fetchEstatBundle(appId, OKINAWA_ESTAT_DIR, okinawaAreas, force);
 }

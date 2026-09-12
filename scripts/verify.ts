@@ -26,9 +26,11 @@ function verifyOne(data: CityFinance, filename: string): void {
   for (let i = 1; i < data.years.length; i++) {
     const prev = data.years[i - 1];
     const curr = data.years[i];
-    if (prev == null || curr == null || curr !== prev + 1) {
-      fail(`${filename}: 年度が連続していない: ${prev} → ${curr}`);
-    }
+    if (prev == null || curr == null) fail(`${filename}: 年度が空`);
+    if (curr === prev + 1) continue;
+    const tokyoGap2019 =
+      gov.prefecture === "東京都" && gov.code !== "132012" && prev === 2018 && curr === 2020;
+    if (!tokyoGap2019) fail(`${filename}: 年度が連続していない: ${prev} → ${curr}`);
   }
 
   for (const year of data.years) {

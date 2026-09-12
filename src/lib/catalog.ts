@@ -2,7 +2,7 @@ export type GovKind = "municipality" | "prefecture";
 
 /**
  * URL とデータファイルの対応。自治体を足すときはここに1行足す。
- * `code` は総務省「全国地方公共団体コード」（6桁）。
+ * `code` は総務省「全国地方公共団体コード」（6桁）。配信用 JSON は `/data/{code}.json`。
  * https://www.soumu.go.jp/denshijiti/code.html
  */
 export interface LocalGov {
@@ -14,22 +14,82 @@ export interface LocalGov {
   dataUrl: string;
 }
 
-function muni(
-  slug: string,
-  code: string,
-  city: string,
-  prefecture: string,
-  dataUrl?: string,
-): LocalGov {
+function muni(slug: string, code: string, city: string, prefecture: string): LocalGov {
   return {
     slug,
     code,
     city,
     prefecture,
     kind: "municipality",
-    dataUrl: dataUrl ?? `/data/${code}.json`,
+    dataUrl: `/data/${code}.json`,
   };
 }
+
+/** 東京都の現行区市町村。slug は都「団体別資料集」のパス。 */
+const TOKYO: readonly LocalGov[] = [
+  muni("chiyoda", "131016", "千代田区", "東京都"),
+  muni("chuo", "131024", "中央区", "東京都"),
+  muni("minato", "131032", "港区", "東京都"),
+  muni("shinzyuku", "131041", "新宿区", "東京都"),
+  muni("bunkyo", "131059", "文京区", "東京都"),
+  muni("taito", "131067", "台東区", "東京都"),
+  muni("sumida", "131075", "墨田区", "東京都"),
+  muni("koto", "131083", "江東区", "東京都"),
+  muni("shinagawa", "131091", "品川区", "東京都"),
+  muni("meguro", "131105", "目黒区", "東京都"),
+  muni("ohta", "131113", "大田区", "東京都"),
+  muni("setagaya", "131121", "世田谷区", "東京都"),
+  muni("shibuya", "131130", "渋谷区", "東京都"),
+  muni("nakano", "131148", "中野区", "東京都"),
+  muni("suginami", "131156", "杉並区", "東京都"),
+  muni("toshima", "131164", "豊島区", "東京都"),
+  muni("kita", "131172", "北区", "東京都"),
+  muni("arakawa", "131181", "荒川区", "東京都"),
+  muni("itabashi", "131199", "板橋区", "東京都"),
+  muni("nerima", "131202", "練馬区", "東京都"),
+  muni("adachi", "131211", "足立区", "東京都"),
+  muni("katsushika", "131229", "葛飾区", "東京都"),
+  muni("edogawa", "131237", "江戸川区", "東京都"),
+  muni("hachiouzi", "132012", "八王子市", "東京都"),
+  muni("tachikawa", "132021", "立川市", "東京都"),
+  muni("musashino", "132039", "武蔵野市", "東京都"),
+  muni("mitaka", "132047", "三鷹市", "東京都"),
+  muni("ome", "132055", "青梅市", "東京都"),
+  muni("huchu", "132063", "府中市", "東京都"),
+  muni("akishima", "132071", "昭島市", "東京都"),
+  muni("chouhu", "132080", "調布市", "東京都"),
+  muni("machida", "132098", "町田市", "東京都"),
+  muni("koganei", "132101", "小金井市", "東京都"),
+  muni("kodaira", "132110", "小平市", "東京都"),
+  muni("hino", "132128", "日野市", "東京都"),
+  muni("higashimurayama", "132136", "東村山市", "東京都"),
+  muni("kokubunzi", "132144", "国分寺市", "東京都"),
+  muni("kunitachi", "132152", "国立市", "東京都"),
+  muni("hussa", "132187", "福生市", "東京都"),
+  muni("komae", "132195", "狛江市", "東京都"),
+  muni("higasiyamato", "132209", "東大和市", "東京都"),
+  muni("kiyose", "132217", "清瀬市", "東京都"),
+  muni("higasikurume", "132225", "東久留米市", "東京都"),
+  muni("musashimurayama", "132233", "武蔵村山市", "東京都"),
+  muni("tama", "132241", "多摩市", "東京都"),
+  muni("inagi", "132250", "稲城市", "東京都"),
+  muni("hamura", "132276", "羽村市", "東京都"),
+  muni("akiruno", "132284", "あきる野市", "東京都"),
+  muni("nishitoukyo", "132292", "西東京市", "東京都"),
+  muni("mizuhomati", "133035", "瑞穂町", "東京都"),
+  muni("hinode", "133051", "日の出町", "東京都"),
+  muni("hinohara", "133078", "檜原村", "東京都"),
+  muni("okutama", "133086", "奥多摩町", "東京都"),
+  muni("oshima", "133612", "大島町", "東京都"),
+  muni("toshimamura", "133621", "利島村", "東京都"),
+  muni("nijima", "133639", "新島村", "東京都"),
+  muni("koudushima", "133647", "神津島村", "東京都"),
+  muni("miyake", "133817", "三宅村", "東京都"),
+  muni("mikura", "133825", "御蔵島村", "東京都"),
+  muni("hachijo", "134015", "八丈町", "東京都"),
+  muni("aogashima", "134023", "青ヶ島村", "東京都"),
+  muni("ogasawara", "134210", "小笠原村", "東京都"),
+];
 
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
@@ -76,12 +136,11 @@ const OKINAWA: readonly LocalGov[] = [
   muni("yonaguni", "473821", "与那国町", "沖縄県"),
 ];
 
-export const CATALOG: readonly LocalGov[] = [
-  muni("hachioji", "132012", "八王子市", "東京都", "/data/hachioji.json"),
-  ...OKINAWA,
-];
+export const CATALOG: readonly LocalGov[] = [...TOKYO, ...OKINAWA];
 
-export const DEFAULT_GOV = CATALOG[0]!;
+const HACHIOJI = TOKYO.find((gov) => gov.code === "132012");
+if (HACHIOJI == null) throw new Error("八王子市がカタログにない");
+export const DEFAULT_GOV = HACHIOJI;
 
 /** e-Stat の市町村コードは全国地方公共団体コードの先頭5桁。 */
 export function estatArea(code: string): string {

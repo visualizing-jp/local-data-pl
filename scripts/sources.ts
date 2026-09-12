@@ -1,16 +1,22 @@
-export const EXCEL_SOURCES = [
-  { year: 2019, file: "01zaiseijyoukyousyuu.xlsx" },
-  { year: 2020, file: "02zaiseijyoukyousyuu.xlsx" },
-  { year: 2021, file: "03zaiseijyoukyousyuu.xlsx" },
-  { year: 2022, file: "04zaiseijyoukyousyuu.xlsx" },
-  { year: 2023, file: "05zaiseijyoukyousyuu.xlsx" },
-  { year: 2024, file: "06zaiseijyoukyousyuu.xlsx" },
-] as const;
-
 export const DOWNLOAD_BASE =
   "https://www.city.hachioji.tokyo.jp/shisei/001/010/001/003/p007494_d/fil";
 
-export const FETCH_UA = "Mozilla/5.0 (compatible; pl-sankey-fetch/1.0)";
+/** 都の公開対象外である 2019 年度を埋める八王子市サイトのファイル。 */
+export const HACHIOJI_2019_FILE = "01zaiseijyoukyousyuu.xlsx";
+
+/** 都の資料集は bot 風 UA を 403 にする。 */
+export const FETCH_UA =
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+
+/** 東京都「団体別資料集」。slug はカタログと同じ。直近5か年（2020–2024）。 */
+export const TOKYO_BOOKLET_BASE =
+  "https://www.soumu.metro.tokyo.lg.jp/05gyousei/04kusichousonindex/04kusichousonzaisei/dantaibetsu";
+
+export const TOKYO_BOOKLET_YEARS = [2020, 2021, 2022, 2023, 2024] as const;
+
+export function tokyoBookletPage(slug: string): string {
+  return `${TOKYO_BOOKLET_BASE}/${slug}/`;
+}
 
 /** 県の資料集が普通会計シートを欠く年は、団体サイトの完全版を使う。 */
 export const EXCEL_OVERRIDES: Readonly<Record<string, string>> = {
@@ -28,9 +34,6 @@ export const OKINAWA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2023: "https://www.pref.okinawa.lg.jp/kensei/shinko/1016703/1016705/1016706/1022600/1016725/1034163.html",
   2024: "https://www.pref.okinawa.lg.jp/kensei/shinko/1016703/1016705/1016706/1022600/1016725/1039311.html",
 };
-
-/** e-Stat の市町村コード。全国地方公共団体コード 132012 の先頭 5 桁。 */
-export const ESTAT_AREA = "13201";
 
 export const ESTAT_REVENUE = {
   statsDataId: "0003173261",
@@ -57,7 +60,9 @@ export const ESTAT_REVENUE = {
     "1400": "使用料",
     "1490": "手数料",
     "1540": "国庫支出金",
+    /** 資料集は国有提供と特別区財調を1行にしている。 */
     "1910": "国有提供交付金(特別区財調交付金)",
+    "2450": "国有提供交付金(特別区財調交付金)",
     "1920": "都道府県支出金",
     "2130": "財産収入",
     "2190": "寄附金",

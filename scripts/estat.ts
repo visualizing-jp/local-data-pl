@@ -71,7 +71,9 @@ export async function loadEstatFlows(opts: {
     const item = ESTAT_REVENUE.cat01[row["@cat01"] as keyof typeof ESTAT_REVENUE.cat01];
     const value = parseAmount(row.$);
     if (year == null || item == null || value == null || value === 0) continue;
-    revenue.push({ year, item, value, group: revenueGroup(item) });
+    const existing = revenue.find((x) => x.year === year && x.item === item);
+    if (existing) existing.value += value;
+    else revenue.push({ year, item, value, group: revenueGroup(item) });
   }
 
   const expenditure: FlowItem[] = [];

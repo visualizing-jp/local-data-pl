@@ -5,17 +5,20 @@
  */
 
 import { mkdir, writeFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import ExcelJS from "exceljs";
 import { CATALOG, estatArea, type LocalGov } from "../src/lib/catalog.ts";
 import { isPurposeLeaf, isRevenueLeaf, normalizeRevenueName, revenueGroup } from "../src/lib/taxonomy.ts";
 import type { CityFinance, FlowItem } from "../src/lib/types.ts";
 import { loadEstatFlows } from "./estat.ts";
-import { EXCEL_SOURCES, OKINAWA_BOOKLET_PAGES } from "./sources.ts";
+import { OKINAWA_BOOKLET_PAGES, TOKYO_BOOKLET_YEARS } from "./sources.ts";
 
 const RAW_DIR = resolve(import.meta.dirname, "../data/raw");
 const OUT_DIR = resolve(import.meta.dirname, "../public/data");
+const TOKYO_ESTAT_DIR = resolve(RAW_DIR, "estat-tokyo");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
+const TOKYO_EXCEL_YEARS = [2019, ...TOKYO_BOOKLET_YEARS] as const;
 
 function cellText(value: ExcelJS.CellValue): string {
   if (value == null) return "";
@@ -161,10 +164,35 @@ function logYear(gov: LocalGov, year: number, origin: string, revenue: FlowItem[
 }
 
 function sourceDetail(gov: LocalGov): string {
-  if (gov.code === "132012") {
-    return "2019–2024年度は八王子市「財政状況資料集」の「普通会計の状況」。1989–2018年度はe-Stat APIの地方財政状況調査（市町村分）歳入内訳・歳出内訳。いずれも全国統一様式。";
+  if (gov.prefecture === "沖縄県") {
+    return "2019–2024年度は沖縄県「財政状況資料集」の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
   }
-  return "2019–2024年度は沖縄県「財政状況資料集」の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  if (gov.code === "132012") {
+    return "2019年度は八王子市「財政状況資料集」、2020–2024年度は東京都「団体別資料集」の「普通会計の状況」。1989–2018年度はe-Stat APIの地方財政状況調査（市町村分）歳入内訳・歳出内訳。いずれも全国統一様式。";
+  }
+  return "2020–2024年度は東京都「団体別資料集」の「普通会計の状況」。2019年度は都の公開対象外。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+}
+
+function estatDir(gov: LocalGov): string {
+  if (gov.prefecture === "沖縄県") return OKINAWA_ESTAT_DIR;
+  if (gov.prefecture === "東京都") return TOKYO_ESTAT_DIR;
+  throw new Error(`e-Stat の置き場がない: ${gov.prefecture}`);
+}
+
+function excelJobs(gov: LocalGov): { year: number; path: string }[] {
+  if (gov.prefecture === "沖縄県") {
+    return Object.keys(OKINAWA_BOOKLET_PAGES).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
+  }
+  if (gov.prefecture === "東京都") {
+    return TOKYO_EXCEL_YEARS.map((year) => ({
+      year,
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    })).filter((job) => existsSync(job.path));
+  }
+  throw new Error(`資料集の置き場がない: ${gov.prefecture}`);
 }
 
 async function parseExcel(path: string, year: number): Promise<{ revenue: FlowItem[]; expenditure: FlowItem[] }> {
@@ -178,11 +206,10 @@ async function parseExcel(path: string, year: number): Promise<{ revenue: FlowIt
 }
 
 async function buildGov(gov: LocalGov): Promise<CityFinance> {
-  const estatDir = gov.prefecture === "沖縄県" ? OKINAWA_ESTAT_DIR : RAW_DIR;
   const revenueByYear = new Map<number, FlowItem[]>();
   const expenditureByYear = new Map<number, FlowItem[]>();
 
-  const estat = await loadEstatFlows({ dir: estatDir, area: estatArea(gov.code) });
+  const estat = await loadEstatFlows({ dir: estatDir(gov), area: estatArea(gov.code) });
   for (const row of estat.revenue) {
     const list = revenueByYear.get(row.year) ?? [];
     list.push(row);
@@ -194,15 +221,7 @@ async function buildGov(gov: LocalGov): Promise<CityFinance> {
     expenditureByYear.set(row.year, list);
   }
 
-  const excelYears =
-    gov.code === "132012"
-      ? EXCEL_SOURCES.map((s) => ({ year: s.year, path: resolve(RAW_DIR, s.file) }))
-      : Object.keys(OKINAWA_BOOKLET_PAGES).map((y) => ({
-          year: Number(y),
-          path: resolve(RAW_DIR, gov.code, `${y}.xlsx`),
-        }));
-
-  for (const { year, path } of excelYears) {
+  for (const { year, path } of excelJobs(gov)) {
     const parsed = await parseExcel(path, year);
     logYear(gov, year, "資料集", parsed.revenue, parsed.expenditure);
     revenueByYear.set(year, parsed.revenue);
