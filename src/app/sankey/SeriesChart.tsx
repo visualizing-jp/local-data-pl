@@ -6,7 +6,7 @@ import type { SankeyLink, SankeyNode } from "d3-sankey";
 import { useSize } from "../hooks/useSize.ts";
 import { formatShare, formatYen, type GraphLink } from "./buildGraph.ts";
 import { buildSeriesGraph, type SeriesKind, type SeriesNode } from "./buildSeriesGraph.ts";
-import { seriesFill } from "./colors.ts";
+import { LINK_STROKE_OPACITY, seriesFill } from "./colors.ts";
 import type { CityFinance } from "../../lib/types.ts";
 
 interface SeriesChartProps {
@@ -46,15 +46,6 @@ function labeledYears(years: number[]): number[] {
   return [...labels].sort((a, b) => a - b);
 }
 
-function itemOrderList(nodes: SeriesNode[]): string[] {
-  const order = new Map<string, number>();
-  for (const node of nodes) {
-    const prev = order.get(node.item);
-    if (prev == null || node.order < prev) order.set(node.item, node.order);
-  }
-  return [...order.entries()].sort((a, b) => a[1] - b[1]).map(([item]) => item);
-}
-
 /** d3-sankey は列の余り高さを科目の間に配る。時系列は上に詰めて帯を隣接させる。 */
 function packColumns(nodes: SNode[], yTop: number, padding: number): void {
   const byYear = new Map<number, SNode[]>();
@@ -84,7 +75,6 @@ export function SeriesChart({ data, kind }: SeriesChartProps) {
     null,
   );
   const graph = useMemo(() => buildSeriesGraph(data, kind), [data, kind]);
-  const items = useMemo(() => itemOrderList(graph.nodes), [graph.nodes]);
   const layoutWidth = Math.max(size.width, 140 + graph.years.length * COL_GAP);
 
   useEffect(() => {
@@ -123,7 +113,7 @@ export function SeriesChart({ data, kind }: SeriesChartProps) {
     const links = laid.links;
     const path = sankeyLinkHorizontal<SNode, SLink>();
     const root = select(svg);
-    const fillOf = (node: SeriesNode) => seriesFill(node, items);
+    const fill = seriesFill(kind);
 
     const linkSel = root
       .select<SVGGElement>("g.links")
@@ -137,12 +127,12 @@ export function SeriesChart({ data, kind }: SeriesChartProps) {
       .append("path")
       .attr("d", path)
       .attr("fill", "none")
-      .attr("stroke-opacity", 0.42)
+      .attr("stroke-opacity", LINK_STROKE_OPACITY)
       .style("opacity", 0);
 
     const linkMerge = linkEnter.merge(linkSel);
     linkMerge
-      .attr("stroke", (d) => fillOf(d.source as SNode))
+      .attr("stroke", fill)
       .transition()
       .duration(duration)
       .ease(EASE_OUT)
@@ -168,7 +158,7 @@ export function SeriesChart({ data, kind }: SeriesChartProps) {
 
     const nodeMerge = nodeEnter.merge(nodeSel);
     nodeMerge
-      .attr("fill", (d) => fillOf(d))
+      .attr("fill", fill)
       .transition()
       .duration(duration)
       .ease(EASE_OUT)
@@ -272,7 +262,7 @@ export function SeriesChart({ data, kind }: SeriesChartProps) {
         highlight(null);
         setHover(null);
       });
-  }, [data.code, graph, items, layoutWidth, size.height, size.width]);
+  }, [data.code, graph, kind, layoutWidth, size.height, size.width]);
 
   const title = kind === "revenue" ? "歳入の時系列" : "歳出の時系列";
 

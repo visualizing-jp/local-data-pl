@@ -241,7 +241,7 @@ h1 .sep {
 
 .year-rail {
   touch-action: none;
-  cursor: grab;
+  cursor: pointer;
   padding: 2px 0;
 }
 
@@ -297,8 +297,12 @@ h1 .sep {
   border-radius: 2px;
   transform: translateX(-50%);
   box-shadow: 0 1px 3px rgba(27, 36, 48, 0.22);
-  pointer-events: none;
+  cursor: grab;
   transition: left 180ms var(--ease-out);
+}
+
+.year-rail__head:active {
+  cursor: grabbing;
 }
 
 .year-slider__ticks {

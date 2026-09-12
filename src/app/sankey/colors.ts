@@ -1,7 +1,7 @@
 import { hcl } from "d3-color";
-import { interpolatePiYG, schemePiYG } from "d3-scale-chromatic";
+import { schemePiYG } from "d3-scale-chromatic";
 import type { GraphNode } from "./buildGraph.ts";
-import type { SeriesKind, SeriesNode } from "./buildSeriesGraph.ts";
+import type { SeriesKind } from "./buildSeriesGraph.ts";
 
 const piyg = schemePiYG[7]!;
 
@@ -21,6 +21,9 @@ function retint(hex: string, hue: number): string {
 
 export const COLOR_BALANCE = retint(COLOR_EXPENDITURE, BALANCE_HUE);
 
+/** ノードは不透明、リンクは同じ色の薄い帯。年度・時系列で共通。 */
+export const LINK_STROKE_OPACITY = 0.38;
+
 export function nodeFill(node: GraphNode): string {
   if (node.kind === "revenue" || node.kind === "group") return COLOR_REVENUE;
   if (node.kind === "expenditure") return COLOR_EXPENDITURE;
@@ -33,13 +36,6 @@ export function linkStroke(source: GraphNode, target: GraphNode): string {
   return nodeFill(source);
 }
 
-export function seriesItemFill(kind: SeriesKind, index: number, count: number): string {
-  const t = count <= 1 ? 0 : index / (count - 1);
-  if (kind === "revenue") return interpolatePiYG(0.12 + 0.28 * t);
-  return interpolatePiYG(0.62 + 0.28 * t);
-}
-
-export function seriesFill(node: SeriesNode, items: readonly string[]): string {
-  const index = items.indexOf(node.item);
-  return seriesItemFill(node.kind, Math.max(0, index), items.length);
+export function seriesFill(kind: SeriesKind): string {
+  return kind === "revenue" ? COLOR_REVENUE : COLOR_EXPENDITURE;
 }

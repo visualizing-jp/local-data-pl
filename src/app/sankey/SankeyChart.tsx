@@ -11,7 +11,7 @@ import {
   type GraphLink,
   type GraphNode,
 } from "./buildGraph.ts";
-import { linkStroke, nodeFill } from "./colors.ts";
+import { linkStroke, nodeFill, LINK_STROKE_OPACITY } from "./colors.ts";
 import type { CityFinance } from "../../lib/types.ts";
 
 interface SankeyChartProps {
@@ -108,7 +108,7 @@ export function SankeyChart({ data, year }: SankeyChartProps) {
       .append("path")
       .attr("d", path)
       .attr("fill", "none")
-      .attr("stroke-opacity", 0.38)
+      .attr("stroke-opacity", LINK_STROKE_OPACITY)
       .style("opacity", 0);
 
     const linkMerge = linkEnter.merge(linkSel);
