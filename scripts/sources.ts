@@ -93,6 +93,19 @@ export const YAMAGATA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: "https://www.pref.yamagata.jp/020024/kensei/information/zaisei/zaiseijoukyou/shiryo06.html",
 };
 
+/** 福島県「財政状況資料集」（県内市町村）。2019–2024。 */
+export const FUKUSHIMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.fukushima.lg.jp/sec/01145b/31dantaibetsu-index.html",
+  2020: "https://www.pref.fukushima.lg.jp/sec/01145b/02dantaibetsu-index.html",
+  2021: "https://www.pref.fukushima.lg.jp/sec/01145b/03dantaibetsu-index.html",
+  2022: "https://www.pref.fukushima.lg.jp/sec/01145b/04dantaibetsu-index.html",
+  2023: "https://www.pref.fukushima.lg.jp/sec/01145b/05dantaibetsu-index.html",
+  2024: "https://www.pref.fukushima.lg.jp/sec/01145b/06dantaibetsu-index.html",
+};
+
+/** 県の2019掲載が公会計シートのみで「普通会計の状況」が無い。 */
+export const FUKUSHIMA_SKIP_EXCEL: ReadonlySet<string> = new Set(["073628:2019", "073644:2019", "074071:2019"]);
+
 /** 青森県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const AOMORI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.aomori.lg.jp/soshiki/zaimu/shichoson/2019_zaisei_shiryousyuu.html",

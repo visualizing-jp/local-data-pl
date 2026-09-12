@@ -9,6 +9,7 @@ import { resolve } from "node:path";
 import { CATALOG } from "../src/lib/catalog.ts";
 import type { CityFinance } from "../src/lib/types.ts";
 import { PURPOSE_INDEX } from "../src/lib/taxonomy.ts";
+import { FUKUSHIMA_SKIP_EXCEL } from "./sources.ts";
 
 const DIR = resolve(import.meta.dirname, "../public/data");
 const REF_2022_MILLION = 237_366;
@@ -32,7 +33,9 @@ function verifyOne(data: CityFinance, filename: string): void {
       gov.prefecture === "東京都" && gov.code !== "132012" && prev === 2018 && curr === 2020;
     const hokkaidoGapBooklet =
       gov.prefecture === "北海道" && gov.code !== "011002" && prev === 2018 && curr === 2024;
-    if (!tokyoGap2019 && !hokkaidoGapBooklet) fail(`${filename}: 年度が連続していない: ${prev} → ${curr}`);
+    const fukushimaGap2019 =
+      FUKUSHIMA_SKIP_EXCEL.has(`${gov.code}:2019`) && prev === 2018 && curr === 2020;
+    if (!tokyoGap2019 && !hokkaidoGapBooklet && !fukushimaGap2019) fail(`${filename}: 年度が連続していない: ${prev} → ${curr}`);
   }
 
   for (const year of data.years) {
