@@ -1,4 +1,4 @@
-import { CATALOG } from "../src/lib/catalog.ts";
+import type { LocalGov } from "../src/lib/catalog.ts";
 
 const XLSX_HREF = /<a\s[^>]*href="([^"]+\.xlsx)"[^>]*>([\s\S]*?)<\/a>/gi;
 
@@ -23,11 +23,10 @@ function absUrl(pageUrl: string, href: string): string {
   return new URL(href, pageUrl).href;
 }
 
-const OKINAWA = CATALOG.filter((gov) => gov.prefecture === "沖縄県");
-
-/** 県の資料集ページから、団体コード → Excel URL。 */
-export function parseOkinawaBooklet(html: string, pageUrl: string): Map<string, string> {
-  const byName = new Map(OKINAWA.map((gov) => [gov.city, gov.code]));
+/** 県の資料集ページから、団体コード → Excel URL。ファイル名の6桁か団体名で対応づける。 */
+export function parseCityBooklet(html: string, pageUrl: string, govs: readonly LocalGov[]): Map<string, string> {
+  const allowed = new Set(govs.map((gov) => gov.code));
+  const byName = new Map(govs.map((gov) => [gov.city, gov.code]));
   const found = new Map<string, string>();
   for (const match of html.matchAll(XLSX_HREF)) {
     const href = match[1];
@@ -39,8 +38,7 @@ export function parseOkinawaBooklet(html: string, pageUrl: string): Map<string, 
     const byFile = coded?.[1];
     const byCity = byName.get(cityLabel(label));
     const code = byFile ?? byCity;
-    if (code == null) continue;
-    if (!OKINAWA.some((gov) => gov.code === code)) continue;
+    if (code == null || !allowed.has(code)) continue;
     found.set(code, url);
   }
   return found;

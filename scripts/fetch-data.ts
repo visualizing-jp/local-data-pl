@@ -10,7 +10,7 @@ import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { CATALOG, estatArea } from "../src/lib/catalog.ts";
 import { loadDotEnv } from "./env.ts";
-import { parseOkinawaBooklet } from "./okinawa-booklet.ts";
+import { parseCityBooklet } from "./okinawa-booklet.ts";
 import { parseTokyoBooklet } from "./tokyo-booklet.ts";
 import {
   DOWNLOAD_BASE,
@@ -20,6 +20,7 @@ import {
   ESTAT_REVENUE,
   EXCEL_OVERRIDES,
   FETCH_UA,
+  KANAGAWA_BOOKLET_PAGES,
   OKINAWA_BOOKLET_PAGES,
   TOKYO_BOOKLET_BASE,
   TOKYO_BOOKLET_YEARS,
@@ -28,6 +29,7 @@ import {
 
 const RAW_DIR = resolve(import.meta.dirname, "../data/raw");
 const TOKYO_ESTAT_DIR = resolve(RAW_DIR, "estat-tokyo");
+const KANAGAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-kanagawa");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 const ESTAT_ENDPOINT = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData";
 const HACHIOJI_2019 = `${DOWNLOAD_BASE}/${HACHIOJI_2019_FILE}`;
@@ -183,16 +185,20 @@ async function fetchExcelTokyo(force: boolean) {
   }
 }
 
-async function fetchExcelOkinawa(force: boolean) {
-  const expected = CATALOG.filter((gov) => gov.prefecture === "沖縄県");
-  for (const [yearRaw, pageUrl] of Object.entries(OKINAWA_BOOKLET_PAGES)) {
+async function fetchExcelPrefecture(
+  prefecture: string,
+  pages: Readonly<Record<number, string>>,
+  force: boolean,
+) {
+  const expected = CATALOG.filter((gov) => gov.prefecture === prefecture);
+  for (const [yearRaw, pageUrl] of Object.entries(pages)) {
     const year = Number(yearRaw);
     console.log(`index ${year} ${pageUrl}`);
     const html = (await download(pageUrl)).toString("utf8");
-    const links = parseOkinawaBooklet(html, pageUrl);
+    const links = parseCityBooklet(html, pageUrl, expected);
     const missing = expected.filter((gov) => !links.has(gov.code)).map((gov) => gov.city);
     if (missing.length > 0) {
-      throw new Error(`${year}: 資料集に Excel がない: ${missing.join("、")}`);
+      throw new Error(`${prefecture} ${year}: 資料集に Excel がない: ${missing.join("、")}`);
     }
     for (const gov of expected) {
       const override = EXCEL_OVERRIDES[`${gov.code}:${year}`];
@@ -204,6 +210,14 @@ async function fetchExcelOkinawa(force: boolean) {
       if (force || !existed) await sleep(80);
     }
   }
+}
+
+async function fetchExcelOkinawa(force: boolean) {
+  await fetchExcelPrefecture("沖縄県", OKINAWA_BOOKLET_PAGES, force);
+}
+
+async function fetchExcelKanagawa(force: boolean) {
+  await fetchExcelPrefecture("神奈川県", KANAGAWA_BOOKLET_PAGES, force);
 }
 
 async function fetchEstatBundle(appId: string, destDir: string, areas: string[], force: boolean) {
@@ -231,11 +245,14 @@ async function main() {
 
   await fetchExcelHachioji2019(force);
   await fetchExcelTokyo(force);
+  await fetchExcelKanagawa(force);
   await fetchExcelOkinawa(force);
 
   const appId = requireAppId();
   const tokyoAreas = CATALOG.filter((gov) => gov.prefecture === "東京都").map((gov) => estatArea(gov.code));
   await fetchEstatBundle(appId, TOKYO_ESTAT_DIR, tokyoAreas, force);
+  const kanagawaAreas = CATALOG.filter((gov) => gov.prefecture === "神奈川県").map((gov) => estatArea(gov.code));
+  await fetchEstatBundle(appId, KANAGAWA_ESTAT_DIR, kanagawaAreas, force);
   const okinawaAreas = CATALOG.filter((gov) => gov.prefecture === "沖縄県").map((gov) => estatArea(gov.code));
   await fetchEstatBundle(appId, OKINAWA_ESTAT_DIR, okinawaAreas, force);
 }

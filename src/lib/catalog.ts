@@ -91,6 +91,43 @@ const TOKYO: readonly LocalGov[] = [
   muni("ogasawara", "134210", "小笠原村", "東京都"),
 ];
 
+/** 神奈川県の現行市町村。slug は県の財政状況資料集ファイル名。 */
+const KANAGAWA: readonly LocalGov[] = [
+  muni("yokohama", "141003", "横浜市", "神奈川県"),
+  muni("kawasaki", "141305", "川崎市", "神奈川県"),
+  muni("sagamihara", "141500", "相模原市", "神奈川県"),
+  muni("yokosuka", "142018", "横須賀市", "神奈川県"),
+  muni("hiratsuka", "142034", "平塚市", "神奈川県"),
+  muni("kamakura", "142042", "鎌倉市", "神奈川県"),
+  muni("fujisawa", "142051", "藤沢市", "神奈川県"),
+  muni("odawara", "142069", "小田原市", "神奈川県"),
+  muni("chigasaki", "142077", "茅ヶ崎市", "神奈川県"),
+  muni("zushi", "142085", "逗子市", "神奈川県"),
+  muni("miura", "142107", "三浦市", "神奈川県"),
+  muni("hadano", "142115", "秦野市", "神奈川県"),
+  muni("atsugi", "142123", "厚木市", "神奈川県"),
+  muni("yamato", "142131", "大和市", "神奈川県"),
+  muni("isehara", "142140", "伊勢原市", "神奈川県"),
+  muni("ebina", "142158", "海老名市", "神奈川県"),
+  muni("zama", "142166", "座間市", "神奈川県"),
+  muni("minamiashigara", "142174", "南足柄市", "神奈川県"),
+  muni("ayase", "142182", "綾瀬市", "神奈川県"),
+  muni("hayama", "143014", "葉山町", "神奈川県"),
+  muni("samukawa", "143219", "寒川町", "神奈川県"),
+  muni("oiso", "143413", "大磯町", "神奈川県"),
+  muni("ninomiya", "143421", "二宮町", "神奈川県"),
+  muni("nakai", "143618", "中井町", "神奈川県"),
+  muni("oi", "143626", "大井町", "神奈川県"),
+  muni("matsuda", "143634", "松田町", "神奈川県"),
+  muni("yamakita", "143642", "山北町", "神奈川県"),
+  muni("kaisei", "143669", "開成町", "神奈川県"),
+  muni("hakone", "143821", "箱根町", "神奈川県"),
+  muni("manazuru", "143839", "真鶴町", "神奈川県"),
+  muni("yugawara", "143847", "湯河原町", "神奈川県"),
+  muni("aikawa", "144011", "愛川町", "神奈川県"),
+  muni("kiyokawa", "144029", "清川村", "神奈川県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -136,7 +173,7 @@ const OKINAWA: readonly LocalGov[] = [
   muni("yonaguni", "473821", "与那国町", "沖縄県"),
 ];
 
-export const CATALOG: readonly LocalGov[] = [...TOKYO, ...OKINAWA];
+export const CATALOG: readonly LocalGov[] = [...TOKYO, ...KANAGAWA, ...OKINAWA];
 
 const CHIYODA = TOKYO.find((gov) => gov.code === "131016");
 if (CHIYODA == null) throw new Error("千代田区がカタログにない");

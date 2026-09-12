@@ -25,6 +25,16 @@ export const EXCEL_OVERRIDES: Readonly<Record<string, string>> = {
   "473600:2021": "https://www.vill.izena.okinawa.jp/userfiles/files/R3_zaiseisiryou.xlsx",
 };
 
+/** 神奈川県「財政状況資料集」（県内市町村）。2019–2024。 */
+export const KANAGAWA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.kanagawa.jp/docs/v2x/cnt/f360417/p1223729.html",
+  2020: "https://www.pref.kanagawa.jp/docs/v2x/cnt/f360417/p1223734.html",
+  2021: "https://www.pref.kanagawa.jp/docs/v2x/cnt/f360417/p1223741.html",
+  2022: "https://www.pref.kanagawa.jp/docs/v2x/cnt/f360417/p1223744.html",
+  2023: "https://www.pref.kanagawa.jp/docs/v2x/cnt/f360417/p1223748.html",
+  2024: "https://www.pref.kanagawa.jp/docs/v2x/cnt/f360417/p1223752.html",
+};
+
 /** 沖縄県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const OKINAWA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.okinawa.lg.jp/kensei/shinko/1016703/1016705/1016706/1022600/1016725/1016727.html",
