@@ -1,6 +1,16 @@
+export const VIEW_IDS = ["year", "revenue", "expenditure"] as const;
+export type ViewId = (typeof VIEW_IDS)[number];
+export const DEFAULT_VIEW: ViewId = "year";
+
 export interface PermalinkQuery {
   id: string | null;
   year: number | null;
+  view: ViewId;
+}
+
+export function parseView(raw: string | null): ViewId {
+  if (raw === "revenue" || raw === "expenditure" || raw === "year") return raw;
+  return DEFAULT_VIEW;
 }
 
 export function parsePermalink(search: string): PermalinkQuery {
@@ -9,13 +19,14 @@ export function parsePermalink(search: string): PermalinkQuery {
   const yearRaw = q.get("year");
   const id = idRaw != null && idRaw.trim() !== "" ? idRaw.trim() : null;
   const year = yearRaw != null && /^\d{4}$/.test(yearRaw) ? Number(yearRaw) : null;
-  return { id, year };
+  return { id, year, view: parseView(q.get("view")) };
 }
 
-export function formatPermalink(id: string, year: number): string {
+export function formatPermalink(id: string, year: number, view: ViewId = DEFAULT_VIEW): string {
   const q = new URLSearchParams();
   q.set("id", id);
   q.set("year", String(year));
+  if (view !== DEFAULT_VIEW) q.set("view", view);
   return `?${q.toString()}`;
 }
 

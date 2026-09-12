@@ -1,17 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 import { DEFAULT_GOV, lookupGov, type LocalGov } from "../lib/catalog.ts";
-import { formatEraYear } from "../lib/era.ts";
-import { formatPermalink, parsePermalink, snapYear } from "../lib/permalink.ts";
+import {
+  formatPermalink,
+  parsePermalink,
+  snapYear,
+  type ViewId,
+} from "../lib/permalink.ts";
 import type { CityFinance } from "../lib/types.ts";
 import { GovSelect } from "./GovSelect.tsx";
-import { buildYearGraph, formatShare, formatYen } from "./sankey/buildGraph.ts";
-import { SankeyChart } from "./sankey/SankeyChart.tsx";
-import { YearSlider } from "./sankey/YearSlider.tsx";
+import { ViewNav } from "./ViewNav.tsx";
+import { buildYearGraph, formatYen } from "./sankey/buildGraph.ts";
+import { SeriesView } from "./views/SeriesView.tsx";
+import { YearView } from "./views/YearView.tsx";
 
-function applyPermalink(id: string, year: number): void {
-  const next = formatPermalink(id, year);
+function applyPermalink(id: string, year: number, view: ViewId): void {
+  const next = formatPermalink(id, year, view);
   if (window.location.search === next) return;
-  window.history.replaceState({ id, year }, "", `${window.location.pathname}${next}`);
+  window.history.replaceState({ id, year, view }, "", `${window.location.pathname}${next}`);
 }
 
 function govFromSearch(): { gov: LocalGov | null; unknownId: string | null } {
@@ -21,6 +26,30 @@ function govFromSearch(): { gov: LocalGov | null; unknownId: string | null } {
   return matched == null ? { gov: null, unknownId: query.id } : { gov: matched, unknownId: null };
 }
 
+function pageTitle(gov: LocalGov, year: number, view: ViewId): string {
+  if (view === "revenue") return `${gov.prefecture} ${gov.city} 歳入の時系列`;
+  if (view === "expenditure") return `${gov.prefecture} ${gov.city} 歳出の時系列`;
+  return `${gov.prefecture} ${gov.city} ${year}年度の財政収支`;
+}
+
+function ledeText(
+  view: ViewId,
+  data: CityFinance | null,
+  year: number | null,
+): string {
+  if (view === "revenue") {
+    return "歳入の科目が、収録の全市度でどう厚みを変えたか。";
+  }
+  if (view === "expenditure") {
+    return "目的別歳出が、収録の全市度でどう厚みを変えたか。";
+  }
+  if (data != null && year != null) {
+    const graph = buildYearGraph(data, year);
+    return `歳入 ${formatYen(graph.total)} が、目的別歳出と形式収支へどう分かれたか。タイムラインでひとつの年度を選ぶ。`;
+  }
+  return "歳入が、目的別歳出と形式収支へどう分かれたか。タイムラインでひとつの年度を選ぶ。";
+}
+
 export function App() {
   const boot = govFromSearch();
   const [gov, setGov] = useState<LocalGov | null>(boot.gov);
@@ -28,6 +57,7 @@ export function App() {
   const [data, setData] = useState<CityFinance | null>(null);
   const [error, setError] = useState<string | null>(unknownId ? `団体コード「${unknownId}」はまだありません。` : null);
   const [year, setYear] = useState<number | null>(null);
+  const [view, setView] = useState<ViewId>(parsePermalink(window.location.search).view);
   const yearRef = useRef<number | null>(parsePermalink(window.location.search).year);
 
   useEffect(() => {
@@ -58,9 +88,9 @@ export function App() {
 
   useEffect(() => {
     if (gov == null || year == null) return;
-    applyPermalink(gov.code, year);
-    document.title = `${gov.prefecture} ${gov.city} ${year}年度の財政収支`;
-  }, [gov, year]);
+    applyPermalink(gov.code, year, view);
+    document.title = pageTitle(gov, year, view);
+  }, [gov, year, view]);
 
   const chooseGov = (code: string) => {
     const next = lookupGov(code);
@@ -83,8 +113,10 @@ export function App() {
     );
   }
 
-  const graph = data && year != null ? buildYearGraph(data, year) : null;
-  const era = year != null ? formatEraYear(year) : "";
+  const yearSpan =
+    data != null && data.years.length > 0
+      ? `${data.years[0]}–${data.years[data.years.length - 1]}`
+      : null;
 
   return (
     <div className="page">
@@ -96,40 +128,20 @@ export function App() {
             <GovSelect gov={gov} onGov={chooseGov} />
             <span className="sep">の財政収支</span>
           </h1>
-          {year != null ? (
-            <p className="yearblock">
-              <span className="yearblock__n">{year}</span>
-              <span className="yearblock__era">{era}</span>
-            </p>
-          ) : null}
+          <ViewNav view={view} onView={setView} yearSpan={yearSpan} />
         </div>
-        <p className="lede">
-          {graph
-            ? `歳入 ${formatYen(graph.total)} が、目的別歳出と形式収支へどう分かれたか。タイムラインでひとつの年度を選ぶ。`
-            : "歳入が、目的別歳出と形式収支へどう分かれたか。タイムラインでひとつの年度を選ぶ。"}
-        </p>
       </header>
+      <p className="lede">{ledeText(view, data, year)}</p>
 
       {error ? <p className="status">{error}</p> : null}
 
-      {data && year != null && graph ? (
+      {data && year != null ? (
         <>
-          <YearSlider years={data.years} year={year} onYear={setYear} />
-          <SankeyChart data={data} year={year} />
-          <dl className="facts">
-            <div>
-              <dt>歳出</dt>
-              <dd>{formatYen(graph.expenditureTotal)}</dd>
-            </div>
-            <div>
-              <dt>{graph.balance >= 0 ? "形式収支（黒字）" : "形式収支（赤字）"}</dt>
-              <dd>{formatYen(Math.abs(graph.balance))}</dd>
-            </div>
-            <div>
-              <dt>黒字の割合</dt>
-              <dd>{formatShare(Math.abs(graph.balance), graph.total)}</dd>
-            </div>
-          </dl>
+          {view === "year" ? (
+            <YearView key="year" data={data} year={year} onYear={setYear} />
+          ) : (
+            <SeriesView key={view} data={data} kind={view} />
+          )}
           <footer className="source">
             出典: {data.source}。{data.sourceDetail} 千円を百万円に四捨五入し、億・万で表記。形式収支は歳入合計−歳出合計。
           </footer>

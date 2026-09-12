@@ -26,7 +26,7 @@ export interface YearGraph {
   links: GraphLink[];
 }
 
-const MIN_SHARE = 0.0004;
+export const MIN_SHARE = 0.0004;
 
 export function itemsForYear(rows: FlowItem[], year: number): FlowItem[] {
   return rows.filter((row) => row.year === year && row.value > 0);

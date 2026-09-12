@@ -1,6 +1,7 @@
 import { hcl } from "d3-color";
-import { schemePiYG } from "d3-scale-chromatic";
+import { interpolatePiYG, schemePiYG } from "d3-scale-chromatic";
 import type { GraphNode } from "./buildGraph.ts";
+import type { SeriesKind, SeriesNode } from "./buildSeriesGraph.ts";
 
 const piyg = schemePiYG[7]!;
 
@@ -30,4 +31,15 @@ export function nodeFill(node: GraphNode): string {
 export function linkStroke(source: GraphNode, target: GraphNode): string {
   if (target.kind === "expenditure" || target.kind === "balance") return nodeFill(target);
   return nodeFill(source);
+}
+
+export function seriesItemFill(kind: SeriesKind, index: number, count: number): string {
+  const t = count <= 1 ? 0 : index / (count - 1);
+  if (kind === "revenue") return interpolatePiYG(0.12 + 0.28 * t);
+  return interpolatePiYG(0.62 + 0.28 * t);
+}
+
+export function seriesFill(node: SeriesNode, items: readonly string[]): string {
+  const index = items.indexOf(node.item);
+  return seriesItemFill(node.kind, Math.max(0, index), items.length);
 }

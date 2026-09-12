@@ -45,7 +45,7 @@ body {
 
 .masthead {
   border-bottom: 1px solid var(--rule);
-  padding-bottom: 18px;
+  padding-bottom: 0;
 }
 
 .eyebrow {
@@ -60,6 +60,7 @@ body {
   align-items: flex-end;
   justify-content: space-between;
   gap: 24px;
+  flex-wrap: wrap;
 }
 
 h1 {
@@ -76,6 +77,7 @@ h1 .sep {
   font-size: 0.62em;
   margin-left: 0.35em;
   color: var(--muted);
+  white-space: nowrap;
 }
 
 .place-pref {
@@ -138,6 +140,54 @@ h1 .sep {
   font-size: 12px;
   color: var(--muted);
   letter-spacing: 0.08em;
+}
+
+.view-nav {
+  display: flex;
+  gap: 4px;
+  margin: 0 0 -1px;
+}
+
+.view-nav button {
+  appearance: none;
+  margin: 0;
+  padding: 4px 12px 10px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: color 150ms ease, border-color 150ms ease;
+}
+
+.view-nav button:active {
+  transform: scale(0.97);
+}
+
+.view-nav button:focus-visible {
+  outline: 2px solid var(--ai);
+  outline-offset: 2px;
+}
+
+.view-nav button[aria-current="page"] {
+  border-bottom-color: var(--shu);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .view-nav button:hover {
+    color: var(--ink);
+  }
+}
+
+.view-nav__hint {
+  margin-left: 6px;
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--faint);
 }
 
 .lede {
@@ -282,6 +332,7 @@ h1 .sep {
   min-height: 460px;
   margin-top: 8px;
   overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .sankey-wrap svg {
@@ -289,7 +340,21 @@ h1 .sep {
   overflow: visible;
 }
 
-.nodes rect {
+.sankey-wrap--series {
+  margin-top: 18px;
+}
+
+.years .year-col {
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  fill: var(--faint);
+  paint-order: stroke;
+  stroke: var(--paper);
+  stroke-width: 3px;
+}
+
+.nodes rect,
+.links path {
   cursor: pointer;
 }
 
@@ -379,15 +444,6 @@ h1 .sep {
     padding: 18px 16px 36px;
   }
 
-  .masthead__row {
-    display: block;
-  }
-
-  .yearblock {
-    text-align: left;
-    margin-top: 12px;
-  }
-
   .place-select {
     max-width: 100%;
   }
@@ -399,11 +455,21 @@ h1 .sep {
   .sankey-wrap {
     min-height: 480px;
   }
+
+  .view-nav {
+    width: 100%;
+  }
+
+  .view-nav button {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .year-slider__step,
-  .year-rail__head {
+  .year-rail__head,
+  .view-nav button {
     transition: none;
   }
 }
