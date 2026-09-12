@@ -138,9 +138,9 @@ const OKINAWA: readonly LocalGov[] = [
 
 export const CATALOG: readonly LocalGov[] = [...TOKYO, ...OKINAWA];
 
-const HACHIOJI = TOKYO.find((gov) => gov.code === "132012");
-if (HACHIOJI == null) throw new Error("八王子市がカタログにない");
-export const DEFAULT_GOV = HACHIOJI;
+const CHIYODA = TOKYO.find((gov) => gov.code === "131016");
+if (CHIYODA == null) throw new Error("千代田区がカタログにない");
+export const DEFAULT_GOV = CHIYODA;
 
 /** e-Stat の市町村コードは全国地方公共団体コードの先頭5桁。 */
 export function estatArea(code: string): string {
