@@ -27,6 +27,7 @@ import {
   FETCH_UA,
   AOMORI_BOOKLET_PAGES,
   AKITA_BOOKLET_PAGES,
+  YAMAGATA_BOOKLET_PAGES,
   HOKKAIDO_BOOKLET_PAGE,
   HOKKAIDO_BOOKLET_YEAR,
   IWATE_BOOKLET_PAGES,
@@ -53,6 +54,7 @@ const AOMORI_ESTAT_DIR = resolve(RAW_DIR, "estat-aomori");
 const IWATE_ESTAT_DIR = resolve(RAW_DIR, "estat-iwate");
 const MIYAGI_ESTAT_DIR = resolve(RAW_DIR, "estat-miyagi");
 const AKITA_ESTAT_DIR = resolve(RAW_DIR, "estat-akita");
+const YAMAGATA_ESTAT_DIR = resolve(RAW_DIR, "estat-yamagata");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 const ESTAT_ENDPOINT = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData";
 const HACHIOJI_2019 = `${DOWNLOAD_BASE}/${HACHIOJI_2019_FILE}`;
@@ -282,6 +284,10 @@ async function fetchExcelAkita(force: boolean) {
   await fetchExcelPrefecture("秋田県", AKITA_BOOKLET_PAGES, force);
 }
 
+async function fetchExcelYamagata(force: boolean) {
+  await fetchExcelPrefecture("山形県", YAMAGATA_BOOKLET_PAGES, force);
+}
+
 async function fetchExcelIwate(force: boolean) {
   const expected = CATALOG.filter((gov) => gov.prefecture === "岩手県");
   for (const [yearRaw, pageUrl] of Object.entries(IWATE_BOOKLET_PAGES)) {
@@ -462,6 +468,7 @@ async function main() {
   await fetchExcelIwate(force);
   await fetchExcelMiyagi(force);
   await fetchExcelAkita(force);
+  await fetchExcelYamagata(force);
   await fetchExcelOkinawa(force);
 
   const appId = requireAppId();
@@ -475,6 +482,8 @@ async function main() {
   await fetchEstatBundle(appId, MIYAGI_ESTAT_DIR, miyagiAreas, force);
   const akitaAreas = CATALOG.filter((gov) => gov.prefecture === "秋田県").map((gov) => estatArea(gov.code));
   await fetchEstatBundle(appId, AKITA_ESTAT_DIR, akitaAreas, force);
+  const yamagataAreas = CATALOG.filter((gov) => gov.prefecture === "山形県").map((gov) => estatArea(gov.code));
+  await fetchEstatBundle(appId, YAMAGATA_ESTAT_DIR, yamagataAreas, force);
   const tokyoAreas = CATALOG.filter((gov) => gov.prefecture === "東京都").map((gov) => estatArea(gov.code));
   await fetchEstatBundle(appId, TOKYO_ESTAT_DIR, tokyoAreas, force);
   const kanagawaAreas = CATALOG.filter((gov) => gov.prefecture === "神奈川県").map((gov) => estatArea(gov.code));

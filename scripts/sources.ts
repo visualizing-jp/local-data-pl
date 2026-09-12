@@ -83,6 +83,16 @@ export const AKITA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: "https://www.pref.akita.lg.jp/pages/archive/94258",
 };
 
+/** 山形県「財政状況資料集」（県内市町村）。2019–2024。 */
+export const YAMAGATA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.yamagata.jp/020024/kensei/information/zaisei/zaiseijoukyou/siryou01.html",
+  2020: "https://www.pref.yamagata.jp/020024/kensei/information/zaisei/zaiseijoukyou/siryou02.html",
+  2021: "https://www.pref.yamagata.jp/020024/kensei/information/zaisei/zaiseijoukyou/shiryo03.html",
+  2022: "https://www.pref.yamagata.jp/020024/kensei/information/zaisei/zaiseijoukyou/shiryo04.html",
+  2023: "https://www.pref.yamagata.jp/020024/kensei/information/zaisei/zaiseijoukyou/shiryo05.html",
+  2024: "https://www.pref.yamagata.jp/020024/kensei/information/zaisei/zaiseijoukyou/shiryo06.html",
+};
+
 /** 青森県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const AOMORI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.aomori.lg.jp/soshiki/zaimu/shichoson/2019_zaisei_shiryousyuu.html",

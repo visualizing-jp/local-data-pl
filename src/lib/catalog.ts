@@ -357,6 +357,45 @@ const AKITA: readonly LocalGov[] = [
   muni("higashinaruse", "054640", "東成瀬村", "秋田県"),
 ];
 
+/** 山形県の現行市町村。slug は県の令和6年度資料集ファイル名。 */
+const YAMAGATA: readonly LocalGov[] = [
+  muni("yamagata", "062014", "山形市", "山形県"),
+  muni("yonezawa", "062022", "米沢市", "山形県"),
+  muni("tsuruoka", "062031", "鶴岡市", "山形県"),
+  muni("sakata", "062049", "酒田市", "山形県"),
+  muni("shinjo", "062057", "新庄市", "山形県"),
+  muni("sagae", "062065", "寒河江市", "山形県"),
+  muni("kaminoyama", "062073", "上山市", "山形県"),
+  muni("murayama", "062081", "村山市", "山形県"),
+  muni("nagai", "062090", "長井市", "山形県"),
+  muni("tendo", "062103", "天童市", "山形県"),
+  muni("higashine", "062111", "東根市", "山形県"),
+  muni("obanazawa", "062120", "尾花沢市", "山形県"),
+  muni("nanyo", "062138", "南陽市", "山形県"),
+  muni("yamanobe", "063011", "山辺町", "山形県"),
+  muni("nakayama", "063029", "中山町", "山形県"),
+  muni("kahoku", "063215", "河北町", "山形県"),
+  muni("nishikawa", "063223", "西川町", "山形県"),
+  muni("asahi", "063231", "朝日町", "山形県"),
+  muni("oe", "063240", "大江町", "山形県"),
+  muni("oishida", "063410", "大石田町", "山形県"),
+  muni("kaneyama", "063614", "金山町", "山形県"),
+  muni("mogami", "063622", "最上町", "山形県"),
+  muni("funagata", "063631", "舟形町", "山形県"),
+  muni("mamurogawa", "063649", "真室川町", "山形県"),
+  muni("okura", "063657", "大蔵村", "山形県"),
+  muni("sakegawa", "063665", "鮭川村", "山形県"),
+  muni("tozawa", "063673", "戸沢村", "山形県"),
+  muni("takahata", "063819", "高畠町", "山形県"),
+  muni("kawanishi", "063827", "川西町", "山形県"),
+  muni("oguni", "064017", "小国町", "山形県"),
+  muni("shirataka", "064025", "白鷹町", "山形県"),
+  muni("iide", "064033", "飯豊町", "山形県"),
+  muni("mikawa", "064262", "三川町", "山形県"),
+  muni("shonai", "064289", "庄内町", "山形県"),
+  muni("yuza", "064611", "遊佐町", "山形県"),
+];
+
 /** 東京都の現行区市町村。slug は都「団体別資料集」のパス。 */
 const TOKYO: readonly LocalGov[] = [
   muni("chiyoda", "131016", "千代田区", "東京都"),
@@ -511,6 +550,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...IWATE,
   ...MIYAGI,
   ...AKITA,
+  ...YAMAGATA,
   ...TOKYO,
   ...KANAGAWA,
   ...OKINAWA,
