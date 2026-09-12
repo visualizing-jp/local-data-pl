@@ -73,6 +73,16 @@ export const SENDAI_MIC_EXCEL: Readonly<Record<number, string>> = {
 
 export const SENDAI_CODE = "041009";
 
+/** 秋田県「財政状況資料集」（県内市町村）。2019–2024。 */
+export const AKITA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.akita.lg.jp/pages/archive/55843",
+  2020: "https://www.pref.akita.lg.jp/pages/archive/63273",
+  2021: "https://www.pref.akita.lg.jp/pages/archive/71434",
+  2022: "https://www.pref.akita.lg.jp/pages/archive/80350",
+  2023: "https://www.pref.akita.lg.jp/pages/archive/87876",
+  2024: "https://www.pref.akita.lg.jp/pages/archive/94258",
+};
+
 /** 青森県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const AOMORI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.aomori.lg.jp/soshiki/zaimu/shichoson/2019_zaisei_shiryousyuu.html",

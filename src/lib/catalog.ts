@@ -328,6 +328,35 @@ const MIYAGI: readonly LocalGov[] = [
   muni("minamisanriku", "046060", "南三陸町", "宮城県"),
 ];
 
+/** 秋田県の現行市町村。slug はローマ字。美郷町は宮城の美里町と衝突するため misatochou。 */
+const AKITA: readonly LocalGov[] = [
+  muni("akita", "052019", "秋田市", "秋田県"),
+  muni("noshiro", "052027", "能代市", "秋田県"),
+  muni("yokote", "052035", "横手市", "秋田県"),
+  muni("odate", "052043", "大館市", "秋田県"),
+  muni("oga", "052060", "男鹿市", "秋田県"),
+  muni("yuzawa", "052078", "湯沢市", "秋田県"),
+  muni("kazuno", "052094", "鹿角市", "秋田県"),
+  muni("yurihonjo", "052108", "由利本荘市", "秋田県"),
+  muni("katagami", "052116", "潟上市", "秋田県"),
+  muni("daisen", "052124", "大仙市", "秋田県"),
+  muni("kitaakita", "052132", "北秋田市", "秋田県"),
+  muni("nikaho", "052141", "にかほ市", "秋田県"),
+  muni("senboku", "052159", "仙北市", "秋田県"),
+  muni("kosaka", "053031", "小坂町", "秋田県"),
+  muni("kamikoani", "053279", "上小阿仁村", "秋田県"),
+  muni("fujisato", "053465", "藤里町", "秋田県"),
+  muni("mitane", "053481", "三種町", "秋田県"),
+  muni("happo", "053490", "八峰町", "秋田県"),
+  muni("gojome", "053619", "五城目町", "秋田県"),
+  muni("hachirogata", "053635", "八郎潟町", "秋田県"),
+  muni("ikawa", "053660", "井川町", "秋田県"),
+  muni("ogata", "053686", "大潟村", "秋田県"),
+  muni("misatochou", "054348", "美郷町", "秋田県"),
+  muni("ugo", "054631", "羽後町", "秋田県"),
+  muni("higashinaruse", "054640", "東成瀬村", "秋田県"),
+];
+
 /** 東京都の現行区市町村。slug は都「団体別資料集」のパス。 */
 const TOKYO: readonly LocalGov[] = [
   muni("chiyoda", "131016", "千代田区", "東京都"),
@@ -481,6 +510,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...AOMORI,
   ...IWATE,
   ...MIYAGI,
+  ...AKITA,
   ...TOKYO,
   ...KANAGAWA,
   ...OKINAWA,
