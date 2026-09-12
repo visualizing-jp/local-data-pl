@@ -3,7 +3,9 @@ import type { ViewId } from "../lib/permalink.ts";
 const TABS: { id: ViewId; label: string }[] = [
   { id: "year", label: "年度" },
   { id: "revenue", label: "歳入" },
+  { id: "revenue-stream", label: "歳入（streamgraph）" },
   { id: "expenditure", label: "歳出" },
+  { id: "expenditure-stream", label: "歳出（streamgraph）" },
 ];
 
 interface ViewNavProps {

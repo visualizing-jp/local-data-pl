@@ -144,6 +144,7 @@ h1 .sep {
 
 .view-nav {
   display: flex;
+  flex-wrap: wrap;
   gap: 4px;
   margin: 0 0 -1px;
 }
@@ -358,7 +359,8 @@ h1 .sep {
 }
 
 .nodes rect,
-.links path {
+.links path,
+.layers path {
   cursor: pointer;
 }
 

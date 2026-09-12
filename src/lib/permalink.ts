@@ -1,4 +1,10 @@
-export const VIEW_IDS = ["year", "revenue", "expenditure"] as const;
+export const VIEW_IDS = [
+  "year",
+  "revenue",
+  "revenue-stream",
+  "expenditure",
+  "expenditure-stream",
+] as const;
 export type ViewId = (typeof VIEW_IDS)[number];
 export const DEFAULT_VIEW: ViewId = "year";
 
@@ -9,7 +15,7 @@ export interface PermalinkQuery {
 }
 
 export function parseView(raw: string | null): ViewId {
-  if (raw === "revenue" || raw === "expenditure" || raw === "year") return raw;
+  if (raw != null && (VIEW_IDS as readonly string[]).includes(raw)) return raw as ViewId;
   return DEFAULT_VIEW;
 }
 

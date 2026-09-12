@@ -1,5 +1,6 @@
 import { hcl } from "d3-color";
 import { schemePiYG } from "d3-scale-chromatic";
+import { revenueGroup } from "../../lib/taxonomy.ts";
 import type { GraphNode } from "./buildGraph.ts";
 import type { SeriesKind } from "./buildSeriesGraph.ts";
 
@@ -38,4 +39,13 @@ export function linkStroke(source: GraphNode, target: GraphNode): string {
 
 export function seriesFill(kind: SeriesKind): string {
   return kind === "revenue" ? COLOR_REVENUE : COLOR_EXPENDITURE;
+}
+
+/** streamgraph の層。歳入は自主／依存で色相を分け、歳出は緑の濃淡。 */
+export function streamFill(kind: SeriesKind, item: string, index: number, count: number): string {
+  const base = hcl(kind === "revenue" ? COLOR_REVENUE : COLOR_EXPENDITURE);
+  const t = count <= 1 ? 0.45 : index / (count - 1);
+  const hue =
+    kind === "revenue" ? (revenueGroup(item) === "自主財源" ? base.h : base.h + 26) : base.h;
+  return hcl(hue, Math.max(18, base.c * (0.62 + 0.38 * t)), 40 + t * 30).formatHex();
 }

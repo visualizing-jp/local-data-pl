@@ -11,6 +11,7 @@ import { GovSelect } from "./GovSelect.tsx";
 import { ViewNav } from "./ViewNav.tsx";
 import { buildYearGraph, formatYen } from "./sankey/buildGraph.ts";
 import { SeriesView } from "./views/SeriesView.tsx";
+import { StreamgraphView } from "./views/StreamgraphView.tsx";
 import { YearView } from "./views/YearView.tsx";
 
 function applyPermalink(id: string, year: number, view: ViewId): void {
@@ -28,7 +29,9 @@ function govFromSearch(): { gov: LocalGov | null; unknownId: string | null } {
 
 function pageTitle(gov: LocalGov, year: number, view: ViewId): string {
   if (view === "revenue") return `${gov.prefecture} ${gov.city} 歳入の時系列`;
+  if (view === "revenue-stream") return `${gov.prefecture} ${gov.city} 歳入の時系列（streamgraph）`;
   if (view === "expenditure") return `${gov.prefecture} ${gov.city} 歳出の時系列`;
+  if (view === "expenditure-stream") return `${gov.prefecture} ${gov.city} 歳出の時系列（streamgraph）`;
   return `${gov.prefecture} ${gov.city} ${year}年度の財政収支`;
 }
 
@@ -40,8 +43,14 @@ function ledeText(
   if (view === "revenue") {
     return "歳入の科目が、収録の全市度でどう厚みを変えたか。";
   }
+  if (view === "revenue-stream") {
+    return "歳入の科目が、収録の全市度でどう厚みを変えたか。streamgraph。";
+  }
   if (view === "expenditure") {
     return "目的別歳出が、収録の全市度でどう厚みを変えたか。";
+  }
+  if (view === "expenditure-stream") {
+    return "目的別歳出が、収録の全市度でどう厚みを変えたか。streamgraph。";
   }
   if (data != null && year != null) {
     const graph = buildYearGraph(data, year);
@@ -139,6 +148,12 @@ export function App() {
         <>
           {view === "year" ? (
             <YearView key="year" data={data} year={year} onYear={setYear} />
+          ) : view === "revenue-stream" || view === "expenditure-stream" ? (
+            <StreamgraphView
+              key={view}
+              data={data}
+              kind={view === "revenue-stream" ? "revenue" : "expenditure"}
+            />
           ) : (
             <SeriesView key={view} data={data} kind={view} />
           )}
