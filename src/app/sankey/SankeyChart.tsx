@@ -6,11 +6,12 @@ import type { SankeyLink, SankeyNode } from "d3-sankey";
 import { useSize } from "../hooks/useSize.ts";
 import {
   buildYearGraph,
-  formatMillion,
+  formatYen,
   formatShare,
   type GraphLink,
   type GraphNode,
 } from "./buildGraph.ts";
+import { linkStroke, nodeFill } from "./colors.ts";
 import type { CityFinance } from "../../lib/types.ts";
 
 interface SankeyChartProps {
@@ -23,15 +24,6 @@ type SLink = SankeyLink<GraphNode, GraphLink>;
 
 const EASE_OUT = (t: number) => 1 - (1 - t) ** 4;
 
-function nodeFill(node: GraphNode): string {
-  if (node.kind === "revenue" || node.kind === "group") return "var(--shu)";
-  if (node.kind === "expenditure") return "var(--ai)";
-  if (node.kind === "balance") {
-    return node.label.includes("赤字") ? "var(--shu)" : "var(--kuroji)";
-  }
-  return "var(--sumi)";
-}
-
 function endpointId(end: SLink["source"] | SLink["target"]): string {
   if (typeof end === "object" && end !== null) return (end as SNode).id;
   return String(end);
@@ -39,6 +31,14 @@ function endpointId(end: SLink["source"] | SLink["target"]): string {
 
 function prefersReducedMotion(): boolean {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function nodeHeight(node: SNode): number {
+  return (node.y1 ?? 0) - (node.y0 ?? 0);
+}
+
+function showLabel(node: SNode): boolean {
+  return node.kind === "balance" || nodeHeight(node) >= 11;
 }
 
 export function SankeyChart({ data, year }: SankeyChartProps) {
@@ -113,10 +113,7 @@ export function SankeyChart({ data, year }: SankeyChartProps) {
 
     const linkMerge = linkEnter.merge(linkSel);
     linkMerge
-      .attr("stroke", (d) => {
-        const source = d.source as SNode;
-        return nodeFill(source);
-      })
+      .attr("stroke", (d) => linkStroke(d.source as SNode, d.target as SNode))
       .transition()
       .duration(duration)
       .ease(EASE_OUT)
@@ -174,7 +171,9 @@ export function SankeyChart({ data, year }: SankeyChartProps) {
     labelEnter.append("text").attr("class", "label-meta");
 
     const labelPos = (d: SNode) => {
-      const y = ((d.y0 ?? 0) + (d.y1 ?? 0)) / 2;
+      const h = nodeHeight(d);
+      let y = ((d.y0 ?? 0) + (d.y1 ?? 0)) / 2;
+      if (d.kind === "balance" && h < 22) y = (d.y1 ?? 0) + 8;
       if (d.kind === "total") {
         const x = ((d.x0 ?? 0) + (d.x1 ?? 0)) / 2;
         return `translate(${x},${y})`;
@@ -200,10 +199,7 @@ export function SankeyChart({ data, year }: SankeyChartProps) {
         return d.kind === "revenue" ? "end" : "start";
       })
       .attr("dy", "-0.15em")
-      .text((d) => {
-        const h = (d.y1 ?? 0) - (d.y0 ?? 0);
-        return h < 11 ? "" : d.label;
-      });
+      .text((d) => (showLabel(d) ? d.label : ""));
     labelMerge.select(".label-meta")
       .attr("class", (d) => (d.kind === "total" ? "label-meta is-on-ink" : "label-meta"))
       .attr("text-anchor", (d) => {
@@ -212,10 +208,9 @@ export function SankeyChart({ data, year }: SankeyChartProps) {
       })
       .attr("dy", "1.05em")
       .text((d) => {
-        const h = (d.y1 ?? 0) - (d.y0 ?? 0);
-        if (h < 11) return "";
-        if (d.kind === "total") return formatMillion(graph.total);
-        return `${formatShare(d.value, graph.total)}  ${formatMillion(d.value)}`;
+        if (!showLabel(d)) return "";
+        if (d.kind === "total") return formatYen(graph.total);
+        return `${formatShare(d.value, graph.total)}  ${formatYen(d.value)}`;
       });
 
     const relatedIds = (node: SNode) => {
@@ -235,7 +230,7 @@ export function SankeyChart({ data, year }: SankeyChartProps) {
       const box = svg.getBoundingClientRect();
       setHover({
         title: node.label,
-        body: `${formatMillion(node.value)}（歳入比 ${formatShare(node.value, graph.total)}）`,
+        body: `${formatYen(node.value)}（歳入比 ${formatShare(node.value, graph.total)}）`,
         x: event.clientX - box.left,
         y: event.clientY - box.top,
       });

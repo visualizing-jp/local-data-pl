@@ -105,8 +105,27 @@ export function senToMillion(value: number): number {
   return Math.round(value / 1000);
 }
 
-export function formatMillion(value: number): string {
-  return `${senToMillion(value).toLocaleString("ja-JP")} 百万円`;
+const YEN_PER_MAN = 10_000;
+const YEN_PER_OKU = 100_000_000;
+const YEN_PER_CHO = 1_000_000_000_000;
+
+function groupInt(n: number): string {
+  return n.toLocaleString("ja-JP");
+}
+
+/** 千円を百万円に四捨五入し、兆・億・万で表記する。 */
+export function formatYen(sen: number): string {
+  const yen = senToMillion(sen) * 1_000_000;
+  const abs = Math.abs(yen);
+  if (abs === 0) return "0円";
+  const cho = Math.floor(abs / YEN_PER_CHO);
+  const oku = Math.floor((abs % YEN_PER_CHO) / YEN_PER_OKU);
+  const man = Math.floor((abs % YEN_PER_OKU) / YEN_PER_MAN);
+  let out = "";
+  if (cho > 0) out += `${groupInt(cho)}兆`;
+  if (oku > 0) out += `${groupInt(oku)}億`;
+  if (man > 0) out += `${groupInt(man)}万`;
+  return `${out}円`;
 }
 
 export function formatShare(value: number, total: number): string {

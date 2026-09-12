@@ -4,7 +4,7 @@ import { formatEraYear } from "../lib/era.ts";
 import { formatPermalink, parsePermalink, snapYear } from "../lib/permalink.ts";
 import type { CityFinance } from "../lib/types.ts";
 import { GovSelect } from "./GovSelect.tsx";
-import { buildYearGraph, formatMillion, formatShare } from "./sankey/buildGraph.ts";
+import { buildYearGraph, formatShare, formatYen } from "./sankey/buildGraph.ts";
 import { SankeyChart } from "./sankey/SankeyChart.tsx";
 import { YearSlider } from "./sankey/YearSlider.tsx";
 
@@ -105,7 +105,7 @@ export function App() {
         </div>
         <p className="lede">
           {graph
-            ? `歳入 ${formatMillion(graph.total)} が、目的別歳出と形式収支へどう分かれたか。タイムラインでひとつの年度を選ぶ。`
+            ? `歳入 ${formatYen(graph.total)} が、目的別歳出と形式収支へどう分かれたか。タイムラインでひとつの年度を選ぶ。`
             : "歳入が、目的別歳出と形式収支へどう分かれたか。タイムラインでひとつの年度を選ぶ。"}
         </p>
       </header>
@@ -119,11 +119,11 @@ export function App() {
           <dl className="facts">
             <div>
               <dt>歳出</dt>
-              <dd>{formatMillion(graph.expenditureTotal)}</dd>
+              <dd>{formatYen(graph.expenditureTotal)}</dd>
             </div>
             <div>
               <dt>{graph.balance >= 0 ? "形式収支（黒字）" : "形式収支（赤字）"}</dt>
-              <dd>{formatMillion(Math.abs(graph.balance))}</dd>
+              <dd>{formatYen(Math.abs(graph.balance))}</dd>
             </div>
             <div>
               <dt>黒字の割合</dt>
@@ -131,7 +131,7 @@ export function App() {
             </div>
           </dl>
           <footer className="source">
-            出典: {data.source}。{data.sourceDetail} 単位は千円を百万円に四捨五入。形式収支は歳入合計−歳出合計。
+            出典: {data.source}。{data.sourceDetail} 千円を百万円に四捨五入し、億・万で表記。形式収支は歳入合計−歳出合計。
           </footer>
         </>
       ) : error ? null : (
