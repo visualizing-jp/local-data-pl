@@ -106,6 +106,16 @@ export const FUKUSHIMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
 /** 県の2019掲載が公会計シートのみで「普通会計の状況」が無い。 */
 export const FUKUSHIMA_SKIP_EXCEL: ReadonlySet<string> = new Set(["073628:2019", "073644:2019", "074071:2019"]);
 
+/** 茨城県「財政状況資料集」（県内市町村）。2019–2024。 */
+export const IBARAKI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.ibaraki.jp/somu/shichoson/zaisei/saisyutsubunnseki/r1/zaisei-jyokyo-shiryosyu.html",
+  2020: "https://www.pref.ibaraki.jp/somu/shichoson/zaisei/saisyutsubunnseki/r2/zaisei-jyokyo-shiryosyu.html",
+  2021: "https://www.pref.ibaraki.jp/somu/shichoson/zaisei/zaisei_jokyo_shiryoshu/r3.html",
+  2022: "https://www.pref.ibaraki.jp/somu/shichoson/zaisei/zaisei_jokyo_shiryoshu/r4.html",
+  2023: "https://www.pref.ibaraki.jp/somu/shichoson/zaisei/zaisei_jokyo_shiryoshu/r5.html",
+  2024: "https://www.pref.ibaraki.jp/somu/shichoson/zaisei/zaisei_jokyo_shiryoshu/r6.html",
+};
+
 /** 青森県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const AOMORI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.aomori.lg.jp/soshiki/zaimu/shichoson/2019_zaisei_shiryousyuu.html",

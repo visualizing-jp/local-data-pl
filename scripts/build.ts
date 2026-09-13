@@ -12,7 +12,7 @@ import { CATALOG, estatArea, type LocalGov } from "../src/lib/catalog.ts";
 import { isPurposeLeaf, isRevenueLeaf, normalizeRevenueName, revenueGroup } from "../src/lib/taxonomy.ts";
 import type { CityFinance, FlowItem } from "../src/lib/types.ts";
 import { loadEstatFlows } from "./estat.ts";
-import { AKITA_BOOKLET_PAGES, AOMORI_BOOKLET_PAGES, FUKUSHIMA_BOOKLET_PAGES, FUKUSHIMA_SKIP_EXCEL, HOKKAIDO_BOOKLET_YEAR, IWATE_BOOKLET_PAGES, KANAGAWA_BOOKLET_PAGES, MIYAGI_BOOKLET_YEARS, OKINAWA_BOOKLET_PAGES, SAPPORO_CODE, SAPPORO_MIC_EXCEL, SENDAI_CODE, SENDAI_MIC_EXCEL, TOKYO_BOOKLET_YEARS, YAMAGATA_BOOKLET_PAGES } from "./sources.ts";
+import { AKITA_BOOKLET_PAGES, AOMORI_BOOKLET_PAGES, FUKUSHIMA_BOOKLET_PAGES, FUKUSHIMA_SKIP_EXCEL, HOKKAIDO_BOOKLET_YEAR, IBARAKI_BOOKLET_PAGES, IWATE_BOOKLET_PAGES, KANAGAWA_BOOKLET_PAGES, MIYAGI_BOOKLET_YEARS, OKINAWA_BOOKLET_PAGES, SAPPORO_CODE, SAPPORO_MIC_EXCEL, SENDAI_CODE, SENDAI_MIC_EXCEL, TOKYO_BOOKLET_YEARS, YAMAGATA_BOOKLET_PAGES } from "./sources.ts";
 
 const RAW_DIR = resolve(import.meta.dirname, "../data/raw");
 const OUT_DIR = resolve(import.meta.dirname, "../public/data");
@@ -25,6 +25,7 @@ const MIYAGI_ESTAT_DIR = resolve(RAW_DIR, "estat-miyagi");
 const AKITA_ESTAT_DIR = resolve(RAW_DIR, "estat-akita");
 const YAMAGATA_ESTAT_DIR = resolve(RAW_DIR, "estat-yamagata");
 const FUKUSHIMA_ESTAT_DIR = resolve(RAW_DIR, "estat-fukushima");
+const IBARAKI_ESTAT_DIR = resolve(RAW_DIR, "estat-ibaraki");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 const TOKYO_EXCEL_YEARS = [2019, ...TOKYO_BOOKLET_YEARS] as const;
 
@@ -199,6 +200,9 @@ function sourceDetail(gov: LocalGov): string {
   if (gov.prefecture === "福島県") {
     return "2019–2024年度は福島県「財政状況資料集」の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
   }
+  if (gov.prefecture === "茨城県") {
+    return "2019–2024年度は茨城県「財政状況資料集」の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  }
   if (gov.code === SAPPORO_CODE) {
     return "2019–2024年度は総務省「財政状況資料集」（政令指定都市）の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
   }
@@ -224,6 +228,7 @@ function estatDir(gov: LocalGov): string {
   if (gov.prefecture === "秋田県") return AKITA_ESTAT_DIR;
   if (gov.prefecture === "山形県") return YAMAGATA_ESTAT_DIR;
   if (gov.prefecture === "福島県") return FUKUSHIMA_ESTAT_DIR;
+  if (gov.prefecture === "茨城県") return IBARAKI_ESTAT_DIR;
   if (gov.prefecture === "東京都") return TOKYO_ESTAT_DIR;
   throw new Error(`e-Stat の置き場がない: ${gov.prefecture}`);
 }
@@ -284,6 +289,12 @@ function excelJobs(gov: LocalGov): { year: number; path: string }[] {
         path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
       }))
       .filter((job) => !FUKUSHIMA_SKIP_EXCEL.has(`${gov.code}:${job.year}`));
+  }
+  if (gov.prefecture === "茨城県") {
+    return Object.keys(IBARAKI_BOOKLET_PAGES).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
   }
   if (gov.code === SAPPORO_CODE) {
     return Object.keys(SAPPORO_MIC_EXCEL).map((year) => ({
