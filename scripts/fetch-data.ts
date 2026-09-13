@@ -37,6 +37,9 @@ import {
   SAITAMA_BOOKLET_PAGES,
   SAITAMA_CODE,
   SAITAMA_MIC_EXCEL,
+  CHIBA_BOOKLET_PAGES,
+  CHIBA_CODE,
+  CHIBA_MIC_EXCEL,
   YAMAGATA_BOOKLET_PAGES,
   HOKKAIDO_BOOKLET_PAGE,
   HOKKAIDO_BOOKLET_YEAR,
@@ -70,6 +73,7 @@ const IBARAKI_ESTAT_DIR = resolve(RAW_DIR, "estat-ibaraki");
 const TOCHIGI_ESTAT_DIR = resolve(RAW_DIR, "estat-tochigi");
 const GUNMA_ESTAT_DIR = resolve(RAW_DIR, "estat-gunma");
 const SAITAMA_ESTAT_DIR = resolve(RAW_DIR, "estat-saitama");
+const CHIBA_ESTAT_DIR = resolve(RAW_DIR, "estat-chiba");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 const ESTAT_ENDPOINT = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData";
 const HACHIOJI_2019 = `${DOWNLOAD_BASE}/${HACHIOJI_2019_FILE}`;
@@ -347,6 +351,17 @@ async function fetchExcelSaitama(force: boolean) {
   }
 }
 
+async function fetchExcelChiba(force: boolean) {
+  await fetchExcelPrefecture("千葉県", CHIBA_BOOKLET_PAGES, force, parseCityBooklet, [CHIBA_CODE]);
+  for (const [yearRaw, url] of Object.entries(CHIBA_MIC_EXCEL)) {
+    const y = Number(yearRaw);
+    const dest = resolve(RAW_DIR, CHIBA_CODE, `${y}.xlsx`);
+    const existed = existsSync(dest);
+    await saveIfNeeded(dest, force, () => download(url), `${y} 千葉市（総務省）`);
+    if (force || !existed) await sleep(80);
+  }
+}
+
 async function fetchExcelIwate(force: boolean) {
   const expected = CATALOG.filter((gov) => gov.prefecture === "岩手県");
   for (const [yearRaw, pageUrl] of Object.entries(IWATE_BOOKLET_PAGES)) {
@@ -552,6 +567,7 @@ async function main() {
     { pref: "栃木県", run: fetchExcelTochigi },
     { pref: "群馬県", run: fetchExcelGunma },
     { pref: "埼玉県", run: fetchExcelSaitama },
+    { pref: "千葉県", run: fetchExcelChiba },
     { pref: "沖縄県", run: fetchExcelOkinawa },
   ];
   for (const job of excelJobs) {
@@ -572,6 +588,7 @@ async function main() {
     { pref: "栃木県", dir: TOCHIGI_ESTAT_DIR },
     { pref: "群馬県", dir: GUNMA_ESTAT_DIR },
     { pref: "埼玉県", dir: SAITAMA_ESTAT_DIR },
+    { pref: "千葉県", dir: CHIBA_ESTAT_DIR },
     { pref: "東京都", dir: TOKYO_ESTAT_DIR },
     { pref: "神奈川県", dir: KANAGAWA_ESTAT_DIR },
     { pref: "沖縄県", dir: OKINAWA_ESTAT_DIR },

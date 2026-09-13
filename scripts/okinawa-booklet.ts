@@ -28,8 +28,14 @@ function foldCity(name: string): string {
   return name.replace(/[ヶケ]/gu, "ケ");
 }
 
+/** Wayback の再生 URL から元のファイル URL を取り出す。 */
+function liveUrl(url: string): string {
+  const m = url.match(/\/web\/\d+[a-z_]*\/(https?:\/\/.+)$/i);
+  return m?.[1] ?? url;
+}
+
 function absUrl(pageUrl: string, href: string): string {
-  return new URL(href, pageUrl).href;
+  return liveUrl(new URL(href, pageUrl).href);
 }
 
 /** 県の資料集ページから、団体コード → Excel URL。ファイル名の6桁か団体名で対応づける。 */
@@ -43,7 +49,7 @@ export function parseCityBooklet(html: string, pageUrl: string, govs: readonly L
     if (href == null || label == null) continue;
     const url = absUrl(pageUrl, href);
     const file = url.split("/").pop() ?? "";
-    const coded = file.match(/^(\d{6})_/);
+    const coded = file.match(/^(\d{6})[-_]/);
     const byFile = coded?.[1];
     const byCity = byName.get(foldCity(cityLabel(label)));
     const code = byFile ?? byCity;
