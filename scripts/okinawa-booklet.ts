@@ -19,7 +19,7 @@ function cityLabel(html: string): string {
   return decodeEntities(html)
     .replace(/[（(](?:Excel|エクセル|ZIP|zip).*$/iu, "")
     .replace(/\s*\[[0-9,.]+\s*KB\]\s*$/iu, "")
-    .replace(/^\d+\s+/u, "")
+    .replace(/^\d+[_\s]+/u, "")
     .replace(/[、,]+$/u, "")
     .trim();
 }

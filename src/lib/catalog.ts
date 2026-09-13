@@ -536,6 +536,45 @@ const TOCHIGI: readonly LocalGov[] = [
   muni("nakagawa", "094111", "那珂川町", "栃木県"),
 ];
 
+/** 群馬県の現行市町村。slug はローマ字。千代田町・昭和村は都・福島と衝突しない名前。 */
+const GUNMA: readonly LocalGov[] = [
+  muni("maebashi", "102016", "前橋市", "群馬県"),
+  muni("takasaki", "102024", "高崎市", "群馬県"),
+  muni("kiryu", "102032", "桐生市", "群馬県"),
+  muni("isesaki", "102041", "伊勢崎市", "群馬県"),
+  muni("ota", "102059", "太田市", "群馬県"),
+  muni("numata", "102067", "沼田市", "群馬県"),
+  muni("tatebayashi", "102075", "館林市", "群馬県"),
+  muni("shibukawa", "102083", "渋川市", "群馬県"),
+  muni("fujioka", "102091", "藤岡市", "群馬県"),
+  muni("tomiokashi", "102105", "富岡市", "群馬県"),
+  muni("annaka", "102113", "安中市", "群馬県"),
+  muni("midori", "102121", "みどり市", "群馬県"),
+  muni("shinto", "103446", "榛東村", "群馬県"),
+  muni("yoshioka", "103454", "吉岡町", "群馬県"),
+  muni("ueno", "103667", "上野村", "群馬県"),
+  muni("kanna", "103675", "神流町", "群馬県"),
+  muni("shimonita", "103829", "下仁田町", "群馬県"),
+  muni("nanmoku", "103837", "南牧村", "群馬県"),
+  muni("kanra", "103845", "甘楽町", "群馬県"),
+  muni("nakanojo", "104213", "中之条町", "群馬県"),
+  muni("naganohara", "104248", "長野原町", "群馬県"),
+  muni("tsumagoi", "104256", "嬬恋村", "群馬県"),
+  muni("kusatsu", "104264", "草津町", "群馬県"),
+  muni("takayama", "104281", "高山村", "群馬県"),
+  muni("higashiagatsuma", "104299", "東吾妻町", "群馬県"),
+  muni("katashina", "104434", "片品村", "群馬県"),
+  muni("kawaba", "104442", "川場村", "群馬県"),
+  muni("showamura", "104485", "昭和村", "群馬県"),
+  muni("minakami", "104493", "みなかみ町", "群馬県"),
+  muni("tamamura", "104647", "玉村町", "群馬県"),
+  muni("itakura", "105210", "板倉町", "群馬県"),
+  muni("meiwa", "105228", "明和町", "群馬県"),
+  muni("chiyodamachi", "105236", "千代田町", "群馬県"),
+  muni("oizumi", "105244", "大泉町", "群馬県"),
+  muni("ora", "105252", "邑楽町", "群馬県"),
+];
+
 /** 東京都の現行区市町村。slug は都「団体別資料集」のパス。 */
 const TOKYO: readonly LocalGov[] = [
   muni("chiyoda", "131016", "千代田区", "東京都"),
@@ -694,6 +733,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...FUKUSHIMA,
   ...IBARAKI,
   ...TOCHIGI,
+  ...GUNMA,
   ...TOKYO,
   ...KANAGAWA,
   ...OKINAWA,

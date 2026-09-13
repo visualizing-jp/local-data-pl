@@ -126,6 +126,16 @@ export const TOCHIGI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: "https://www.pref.tochigi.lg.jp/a02/pref/shichouson/zaisei/r06zaiseijoukyou.html",
 };
 
+/** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
+export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",
+  2020: "https://www.pref.gunma.jp/site/shichousonzai/14513.html",
+  2021: "https://www.pref.gunma.jp/site/shichousonzai/197482.html",
+  2022: "https://www.pref.gunma.jp/site/shichousonzai/636041.html",
+  2023: "https://www.pref.gunma.jp/site/shichousonzai/692573.html",
+  2024: "https://www.pref.gunma.jp/site/shichousonzai/749582.html",
+};
+
 /** 青森県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const AOMORI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.aomori.lg.jp/soshiki/zaimu/shichoson/2019_zaisei_shiryousyuu.html",
