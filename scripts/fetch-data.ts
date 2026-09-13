@@ -3,6 +3,7 @@
  *
  *   npm run fetch
  *   npm run fetch -- --force
+ *   npm run fetch -- --pref=群馬県
  */
 
 import { execFile } from "node:child_process";
@@ -11,6 +12,7 @@ import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { promisify } from "node:util";
 import { CATALOG, estatArea } from "../src/lib/catalog.ts";
+import { cliPrefecture, requireCatalogPrefecture } from "./cli.ts";
 import { loadDotEnv } from "./env.ts";
 import { codeFromHokkaidoExcelName, parseHokkaidoBookletZips } from "./hokkaido-booklet.ts";
 import { parseIwateBookletZips } from "./iwate-booklet.ts";
@@ -31,6 +33,13 @@ import {
   FUKUSHIMA_BOOKLET_PAGES,
   IBARAKI_BOOKLET_PAGES,
   TOCHIGI_BOOKLET_PAGES,
+  GUNMA_BOOKLET_PAGES,
+  SAITAMA_BOOKLET_PAGES,
+  SAITAMA_CODE,
+  SAITAMA_MIC_EXCEL,
+  CHIBA_BOOKLET_PAGES,
+  CHIBA_CODE,
+  CHIBA_MIC_EXCEL,
   YAMAGATA_BOOKLET_PAGES,
   HOKKAIDO_BOOKLET_PAGE,
   HOKKAIDO_BOOKLET_YEAR,
@@ -62,6 +71,9 @@ const YAMAGATA_ESTAT_DIR = resolve(RAW_DIR, "estat-yamagata");
 const FUKUSHIMA_ESTAT_DIR = resolve(RAW_DIR, "estat-fukushima");
 const IBARAKI_ESTAT_DIR = resolve(RAW_DIR, "estat-ibaraki");
 const TOCHIGI_ESTAT_DIR = resolve(RAW_DIR, "estat-tochigi");
+const GUNMA_ESTAT_DIR = resolve(RAW_DIR, "estat-gunma");
+const SAITAMA_ESTAT_DIR = resolve(RAW_DIR, "estat-saitama");
+const CHIBA_ESTAT_DIR = resolve(RAW_DIR, "estat-chiba");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 const ESTAT_ENDPOINT = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData";
 const HACHIOJI_2019 = `${DOWNLOAD_BASE}/${HACHIOJI_2019_FILE}`;
@@ -229,6 +241,11 @@ async function fetchExcelTokyo(force: boolean) {
   const expected = CATALOG.filter((gov) => gov.prefecture === "東京都");
   const indexReferer = `${TOKYO_BOOKLET_BASE}/`;
   for (const gov of expected) {
+    const yearsPresent = TOKYO_BOOKLET_YEARS.every((year) => existsSync(resolve(RAW_DIR, gov.code, `${year}.xlsx`)));
+    if (!force && yearsPresent) {
+      console.log(`cached ${gov.city} 資料集`);
+      continue;
+    }
     const pageUrl = tokyoBookletPage(gov.slug);
     console.log(`index ${gov.city} ${pageUrl}`);
     const html = (await download(pageUrl, { Referer: indexReferer })).toString("utf8");
@@ -253,10 +270,17 @@ async function fetchExcelPrefecture(
   pages: Readonly<Record<number, string>>,
   force: boolean,
   parse = parseCityBooklet,
+  exclude: readonly string[] = [],
 ) {
-  const expected = CATALOG.filter((gov) => gov.prefecture === prefecture);
+  const excluded = new Set(exclude);
+  const expected = CATALOG.filter((gov) => gov.prefecture === prefecture && !excluded.has(gov.code));
   for (const [yearRaw, pageUrl] of Object.entries(pages)) {
     const year = Number(yearRaw);
+    const allPresent = expected.every((gov) => existsSync(resolve(RAW_DIR, gov.code, `${year}.xlsx`)));
+    if (!force && allPresent) {
+      console.log(`cached ${year} ${prefecture}資料集（${expected.length}団体）`);
+      continue;
+    }
     console.log(`index ${year} ${pageUrl}`);
     const html = (await download(pageUrl)).toString("utf8");
     const links = parse(html, pageUrl, expected);
@@ -270,8 +294,12 @@ async function fetchExcelPrefecture(
       if (url == null) continue;
       const dest = resolve(RAW_DIR, gov.code, `${year}.xlsx`);
       const existed = existsSync(dest);
-      await saveIfNeeded(dest, force || Boolean(override), () => download(url), `${year} ${gov.city}`);
-      if (force || !existed) await sleep(80);
+      if (url.toLowerCase().endsWith(".xlsb") || url.toLowerCase().endsWith(".zip")) {
+        await saveBookletExcel(url, dest, force || Boolean(override), `${year} ${gov.city}`);
+      } else {
+        await saveIfNeeded(dest, force || Boolean(override), () => download(url), `${year} ${gov.city}`);
+        if (force || !existed) await sleep(80);
+      }
     }
   }
 }
@@ -306,6 +334,32 @@ async function fetchExcelIbaraki(force: boolean) {
 
 async function fetchExcelTochigi(force: boolean) {
   await fetchExcelPrefecture("栃木県", TOCHIGI_BOOKLET_PAGES, force);
+}
+
+async function fetchExcelGunma(force: boolean) {
+  await fetchExcelPrefecture("群馬県", GUNMA_BOOKLET_PAGES, force);
+}
+
+async function fetchExcelSaitama(force: boolean) {
+  await fetchExcelPrefecture("埼玉県", SAITAMA_BOOKLET_PAGES, force, parseCityBooklet, [SAITAMA_CODE]);
+  for (const [yearRaw, url] of Object.entries(SAITAMA_MIC_EXCEL)) {
+    const y = Number(yearRaw);
+    const dest = resolve(RAW_DIR, SAITAMA_CODE, `${y}.xlsx`);
+    const existed = existsSync(dest);
+    await saveIfNeeded(dest, force, () => download(url), `${y} さいたま市（総務省）`);
+    if (force || !existed) await sleep(80);
+  }
+}
+
+async function fetchExcelChiba(force: boolean) {
+  await fetchExcelPrefecture("千葉県", CHIBA_BOOKLET_PAGES, force, parseCityBooklet, [CHIBA_CODE]);
+  for (const [yearRaw, url] of Object.entries(CHIBA_MIC_EXCEL)) {
+    const y = Number(yearRaw);
+    const dest = resolve(RAW_DIR, CHIBA_CODE, `${y}.xlsx`);
+    const existed = existsSync(dest);
+    await saveIfNeeded(dest, force, () => download(url), `${y} 千葉市（総務省）`);
+    if (force || !existed) await sleep(80);
+  }
 }
 
 async function fetchExcelIwate(force: boolean) {
@@ -363,6 +417,15 @@ async function saveBookletExcel(url: string, dest: string, force: boolean, label
     const zipDest = dest.replace(/\.xlsx$/i, ".zip");
     await saveIfNeeded(zipDest, force, () => download(url), `${label} ZIP`);
     await execFileAsync("python3", [resolve(import.meta.dirname, "extract-booklet-zip.py"), zipDest, dest]);
+    await sleep(80);
+    return;
+  }
+  if (url.toLowerCase().endsWith(".xlsb")) {
+    const xlsbDest = dest.replace(/\.xlsx$/i, ".xlsb");
+    await saveIfNeeded(xlsbDest, force, () => download(url), `${label} XLSB`);
+    if (force || !existsSync(dest)) {
+      await execFileAsync("python3", [resolve(import.meta.dirname, "convert-xlsb.py"), xlsbDest, dest]);
+    }
     await sleep(80);
     return;
   }
@@ -478,47 +541,63 @@ async function fetchEstatBundle(appId: string, destDir: string, areas: string[],
 async function main() {
   loadDotEnv();
   const force = process.argv.includes("--force");
+  const pref = requireCatalogPrefecture(
+    cliPrefecture(),
+    CATALOG.map((gov) => gov.prefecture),
+  );
   await mkdir(RAW_DIR, { recursive: true });
 
-  await fetchExcelHachioji2019(force);
-  await fetchExcelTokyo(force);
-  await fetchExcelKanagawa(force);
-  await fetchExcelHokkaido(force);
-  await fetchExcelAomori(force);
-  await fetchExcelIwate(force);
-  await fetchExcelMiyagi(force);
-  await fetchExcelAkita(force);
-  await fetchExcelYamagata(force);
-  await fetchExcelFukushima(force);
-  await fetchExcelIbaraki(force);
-  await fetchExcelTochigi(force);
-  await fetchExcelOkinawa(force);
+  const excelJobs: { pref: string; run: (force: boolean) => Promise<void> }[] = [
+    {
+      pref: "東京都",
+      run: async (f) => {
+        await fetchExcelHachioji2019(f);
+        await fetchExcelTokyo(f);
+      },
+    },
+    { pref: "神奈川県", run: fetchExcelKanagawa },
+    { pref: "北海道", run: fetchExcelHokkaido },
+    { pref: "青森県", run: fetchExcelAomori },
+    { pref: "岩手県", run: fetchExcelIwate },
+    { pref: "宮城県", run: fetchExcelMiyagi },
+    { pref: "秋田県", run: fetchExcelAkita },
+    { pref: "山形県", run: fetchExcelYamagata },
+    { pref: "福島県", run: fetchExcelFukushima },
+    { pref: "茨城県", run: fetchExcelIbaraki },
+    { pref: "栃木県", run: fetchExcelTochigi },
+    { pref: "群馬県", run: fetchExcelGunma },
+    { pref: "埼玉県", run: fetchExcelSaitama },
+    { pref: "千葉県", run: fetchExcelChiba },
+    { pref: "沖縄県", run: fetchExcelOkinawa },
+  ];
+  for (const job of excelJobs) {
+    if (pref && job.pref !== pref) continue;
+    await job.run(force);
+  }
 
   const appId = requireAppId();
-  const hokkaidoAreas = CATALOG.filter((gov) => gov.prefecture === "北海道").map((gov) => estatArea(gov.code));
-  await fetchEstatBundle(appId, HOKKAIDO_ESTAT_DIR, hokkaidoAreas, force);
-  const aomoriAreas = CATALOG.filter((gov) => gov.prefecture === "青森県").map((gov) => estatArea(gov.code));
-  await fetchEstatBundle(appId, AOMORI_ESTAT_DIR, aomoriAreas, force);
-  const iwateAreas = CATALOG.filter((gov) => gov.prefecture === "岩手県").map((gov) => estatArea(gov.code));
-  await fetchEstatBundle(appId, IWATE_ESTAT_DIR, iwateAreas, force);
-  const miyagiAreas = CATALOG.filter((gov) => gov.prefecture === "宮城県").map((gov) => estatArea(gov.code));
-  await fetchEstatBundle(appId, MIYAGI_ESTAT_DIR, miyagiAreas, force);
-  const akitaAreas = CATALOG.filter((gov) => gov.prefecture === "秋田県").map((gov) => estatArea(gov.code));
-  await fetchEstatBundle(appId, AKITA_ESTAT_DIR, akitaAreas, force);
-  const yamagataAreas = CATALOG.filter((gov) => gov.prefecture === "山形県").map((gov) => estatArea(gov.code));
-  await fetchEstatBundle(appId, YAMAGATA_ESTAT_DIR, yamagataAreas, force);
-  const fukushimaAreas = CATALOG.filter((gov) => gov.prefecture === "福島県").map((gov) => estatArea(gov.code));
-  await fetchEstatBundle(appId, FUKUSHIMA_ESTAT_DIR, fukushimaAreas, force);
-  const ibarakiAreas = CATALOG.filter((gov) => gov.prefecture === "茨城県").map((gov) => estatArea(gov.code));
-  await fetchEstatBundle(appId, IBARAKI_ESTAT_DIR, ibarakiAreas, force);
-  const tochigiAreas = CATALOG.filter((gov) => gov.prefecture === "栃木県").map((gov) => estatArea(gov.code));
-  await fetchEstatBundle(appId, TOCHIGI_ESTAT_DIR, tochigiAreas, force);
-  const tokyoAreas = CATALOG.filter((gov) => gov.prefecture === "東京都").map((gov) => estatArea(gov.code));
-  await fetchEstatBundle(appId, TOKYO_ESTAT_DIR, tokyoAreas, force);
-  const kanagawaAreas = CATALOG.filter((gov) => gov.prefecture === "神奈川県").map((gov) => estatArea(gov.code));
-  await fetchEstatBundle(appId, KANAGAWA_ESTAT_DIR, kanagawaAreas, force);
-  const okinawaAreas = CATALOG.filter((gov) => gov.prefecture === "沖縄県").map((gov) => estatArea(gov.code));
-  await fetchEstatBundle(appId, OKINAWA_ESTAT_DIR, okinawaAreas, force);
+  const estatJobs: { pref: string; dir: string }[] = [
+    { pref: "北海道", dir: HOKKAIDO_ESTAT_DIR },
+    { pref: "青森県", dir: AOMORI_ESTAT_DIR },
+    { pref: "岩手県", dir: IWATE_ESTAT_DIR },
+    { pref: "宮城県", dir: MIYAGI_ESTAT_DIR },
+    { pref: "秋田県", dir: AKITA_ESTAT_DIR },
+    { pref: "山形県", dir: YAMAGATA_ESTAT_DIR },
+    { pref: "福島県", dir: FUKUSHIMA_ESTAT_DIR },
+    { pref: "茨城県", dir: IBARAKI_ESTAT_DIR },
+    { pref: "栃木県", dir: TOCHIGI_ESTAT_DIR },
+    { pref: "群馬県", dir: GUNMA_ESTAT_DIR },
+    { pref: "埼玉県", dir: SAITAMA_ESTAT_DIR },
+    { pref: "千葉県", dir: CHIBA_ESTAT_DIR },
+    { pref: "東京都", dir: TOKYO_ESTAT_DIR },
+    { pref: "神奈川県", dir: KANAGAWA_ESTAT_DIR },
+    { pref: "沖縄県", dir: OKINAWA_ESTAT_DIR },
+  ];
+  for (const job of estatJobs) {
+    if (pref && job.pref !== pref) continue;
+    const areas = CATALOG.filter((gov) => gov.prefecture === job.pref).map((gov) => estatArea(gov.code));
+    await fetchEstatBundle(appId, job.dir, areas, force);
+  }
 }
 
 await main();

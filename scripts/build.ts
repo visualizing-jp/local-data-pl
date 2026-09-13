@@ -2,6 +2,7 @@
  * 財政状況資料集の「普通会計の状況」から歳入葉と目的別歳出を抜き、配信用 JSON にする。
  *
  *   npm run data
+ *   npm run data -- --pref=群馬県
  */
 
 import { mkdir, writeFile } from "node:fs/promises";
@@ -9,10 +10,11 @@ import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import ExcelJS from "exceljs";
 import { CATALOG, estatArea, type LocalGov } from "../src/lib/catalog.ts";
+import { cliPrefecture, requireCatalogPrefecture } from "./cli.ts";
 import { isPurposeLeaf, isRevenueLeaf, normalizeRevenueName, revenueGroup } from "../src/lib/taxonomy.ts";
 import type { CityFinance, FlowItem } from "../src/lib/types.ts";
 import { loadEstatFlows } from "./estat.ts";
-import { AKITA_BOOKLET_PAGES, AOMORI_BOOKLET_PAGES, FUKUSHIMA_BOOKLET_PAGES, FUKUSHIMA_SKIP_EXCEL, HOKKAIDO_BOOKLET_YEAR, IBARAKI_BOOKLET_PAGES, IWATE_BOOKLET_PAGES, KANAGAWA_BOOKLET_PAGES, MIYAGI_BOOKLET_YEARS, OKINAWA_BOOKLET_PAGES, SAPPORO_CODE, SAPPORO_MIC_EXCEL, SENDAI_CODE, SENDAI_MIC_EXCEL, TOCHIGI_BOOKLET_PAGES, TOKYO_BOOKLET_YEARS, YAMAGATA_BOOKLET_PAGES } from "./sources.ts";
+import { AKITA_BOOKLET_PAGES, AOMORI_BOOKLET_PAGES, CHIBA_BOOKLET_PAGES, CHIBA_CODE, CHIBA_MIC_EXCEL, FUKUSHIMA_BOOKLET_PAGES, FUKUSHIMA_SKIP_EXCEL, GUNMA_BOOKLET_PAGES, HOKKAIDO_BOOKLET_YEAR, IBARAKI_BOOKLET_PAGES, IWATE_BOOKLET_PAGES, KANAGAWA_BOOKLET_PAGES, MIYAGI_BOOKLET_YEARS, OKINAWA_BOOKLET_PAGES, SAPPORO_CODE, SAPPORO_MIC_EXCEL, SAITAMA_BOOKLET_PAGES, SAITAMA_CODE, SAITAMA_MIC_EXCEL, SENDAI_CODE, SENDAI_MIC_EXCEL, TOCHIGI_BOOKLET_PAGES, TOKYO_BOOKLET_YEARS, YAMAGATA_BOOKLET_PAGES } from "./sources.ts";
 
 const RAW_DIR = resolve(import.meta.dirname, "../data/raw");
 const OUT_DIR = resolve(import.meta.dirname, "../public/data");
@@ -27,6 +29,9 @@ const YAMAGATA_ESTAT_DIR = resolve(RAW_DIR, "estat-yamagata");
 const FUKUSHIMA_ESTAT_DIR = resolve(RAW_DIR, "estat-fukushima");
 const IBARAKI_ESTAT_DIR = resolve(RAW_DIR, "estat-ibaraki");
 const TOCHIGI_ESTAT_DIR = resolve(RAW_DIR, "estat-tochigi");
+const GUNMA_ESTAT_DIR = resolve(RAW_DIR, "estat-gunma");
+const SAITAMA_ESTAT_DIR = resolve(RAW_DIR, "estat-saitama");
+const CHIBA_ESTAT_DIR = resolve(RAW_DIR, "estat-chiba");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 const TOKYO_EXCEL_YEARS = [2019, ...TOKYO_BOOKLET_YEARS] as const;
 
@@ -207,6 +212,21 @@ function sourceDetail(gov: LocalGov): string {
   if (gov.prefecture === "栃木県") {
     return "2019–2024年度は栃木県「財政状況資料集」の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
   }
+  if (gov.prefecture === "群馬県") {
+    return "2019–2024年度は群馬県「財政状況資料集」の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  }
+  if (gov.code === SAITAMA_CODE) {
+    return "2019–2024年度は総務省「財政状況資料集」（政令指定都市）の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  }
+  if (gov.prefecture === "埼玉県") {
+    return "2019–2024年度は埼玉県「財政状況資料集」の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  }
+  if (gov.code === CHIBA_CODE) {
+    return "2019–2024年度は総務省「財政状況資料集」（政令指定都市）の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  }
+  if (gov.prefecture === "千葉県") {
+    return "2019–2024年度は千葉県「財政状況資料集」の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  }
   if (gov.code === SAPPORO_CODE) {
     return "2019–2024年度は総務省「財政状況資料集」（政令指定都市）の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
   }
@@ -234,6 +254,9 @@ function estatDir(gov: LocalGov): string {
   if (gov.prefecture === "福島県") return FUKUSHIMA_ESTAT_DIR;
   if (gov.prefecture === "茨城県") return IBARAKI_ESTAT_DIR;
   if (gov.prefecture === "栃木県") return TOCHIGI_ESTAT_DIR;
+  if (gov.prefecture === "群馬県") return GUNMA_ESTAT_DIR;
+  if (gov.prefecture === "埼玉県") return SAITAMA_ESTAT_DIR;
+  if (gov.prefecture === "千葉県") return CHIBA_ESTAT_DIR;
   if (gov.prefecture === "東京都") return TOKYO_ESTAT_DIR;
   throw new Error(`e-Stat の置き場がない: ${gov.prefecture}`);
 }
@@ -303,6 +326,36 @@ function excelJobs(gov: LocalGov): { year: number; path: string }[] {
   }
   if (gov.prefecture === "栃木県") {
     return Object.keys(TOCHIGI_BOOKLET_PAGES).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
+  }
+  if (gov.prefecture === "群馬県") {
+    return Object.keys(GUNMA_BOOKLET_PAGES).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
+  }
+  if (gov.code === SAITAMA_CODE) {
+    return Object.keys(SAITAMA_MIC_EXCEL).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
+  }
+  if (gov.prefecture === "埼玉県") {
+    return Object.keys(SAITAMA_BOOKLET_PAGES).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
+  }
+  if (gov.code === CHIBA_CODE) {
+    return Object.keys(CHIBA_MIC_EXCEL).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
+  }
+  if (gov.prefecture === "千葉県") {
+    return Object.keys(CHIBA_BOOKLET_PAGES).map((year) => ({
       year: Number(year),
       path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
     }));
@@ -389,7 +442,12 @@ async function buildGov(gov: LocalGov): Promise<CityFinance> {
 
 async function main() {
   await mkdir(OUT_DIR, { recursive: true });
-  for (const gov of CATALOG) {
+  const pref = requireCatalogPrefecture(
+    cliPrefecture(),
+    CATALOG.map((gov) => gov.prefecture),
+  );
+  const targets = pref ? CATALOG.filter((gov) => gov.prefecture === pref) : CATALOG;
+  for (const gov of targets) {
     const data = await buildGov(gov);
     const out = resolve(import.meta.dirname, `../public${gov.dataUrl}`);
     await writeFile(out, `${JSON.stringify(data, null, 2)}\n`, "utf8");

@@ -126,6 +126,61 @@ export const TOCHIGI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: "https://www.pref.tochigi.lg.jp/a02/pref/shichouson/zaisei/r06zaiseijoukyou.html",
 };
 
+/** 埼玉県「財政状況資料集」（県内市町村）。2019–2024。さいたま市は載らない。 */
+export const SAITAMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.saitama.lg.jp/a0107/zaiseitantou/zaiseijyoukyousiryousyu-r1nendo.html",
+  2020: "https://www.pref.saitama.lg.jp/a0107/zaiseitantou/zaiseijyoukyousiryousyu-r2nendo.html",
+  2021: "https://www.pref.saitama.lg.jp/a0107/zaiseitantou/zaiseijyoukyousiryousyu-r3nendo.html",
+  2022: "https://www.pref.saitama.lg.jp/a0107/zaiseitantou/zaiseijyoukyousiryousyu-r4nendo.html",
+  2023: "https://www.pref.saitama.lg.jp/a0107/zaiseitantou/zaiseijyoukyousiryousyu-r5nendo.html",
+  2024: "https://www.pref.saitama.lg.jp/a0107/zaiseitantou/zaiseijyoukyousiryousyu-r6nendo.html",
+};
+
+/** さいたま市は政令市のため県ページに無い。総務省の政令指定都市資料集。 */
+export const SAITAMA_MIC_EXCEL: Readonly<Record<number, string>> = {
+  2019: "https://www.soumu.go.jp/main_content/000740642.xlsx",
+  2020: "https://www.soumu.go.jp/main_content/000841929.xlsx",
+  2021: "https://www.soumu.go.jp/main_content/000873240.xlsx",
+  2022: "https://www.soumu.go.jp/main_content/000970305.xlsx",
+  2023: "https://www.soumu.go.jp/main_content/000999767.xlsx",
+  2024: "https://www.soumu.go.jp/main_content/001063425.xlsx",
+};
+
+export const SAITAMA_CODE = "111007";
+
+/** 千葉県「財政状況資料集」（県内市町村）。2019–2024。千葉市は載らない。 */
+export const CHIBA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.chiba.lg.jp/shichou/zaisei/zaiseijouhou/r1-zaiseijokyou.html",
+  /** 県サイトの一覧は 404。Excel 本体は残っているので Wayback の目次から辿る。 */
+  2020: "https://web.archive.org/web/20260130105019/https://www.pref.chiba.lg.jp/shichou/zaisei/zaiseijouhou/r2-zaiseijokyou.html",
+  2021: "https://www.pref.chiba.lg.jp/shichou/zaisei/zaiseijouhou/r3-zaiseijokyou.html",
+  2022: "https://www.pref.chiba.lg.jp/shichou/zaisei/zaiseijouhou/r4-zaiseijokyou.html",
+  2023: "https://www.pref.chiba.lg.jp/shichou/zaisei/zaiseijouhou/r5-zaiseijokyou.html",
+  2024: "https://www.pref.chiba.lg.jp/shichou/zaisei/zaiseijouhou/r6-zaiseijokyou.html",
+};
+
+/** 千葉市は政令市のため県ページに無い。総務省の政令指定都市資料集。 */
+export const CHIBA_MIC_EXCEL: Readonly<Record<number, string>> = {
+  2019: "https://www.soumu.go.jp/main_content/000740643.xlsx",
+  2020: "https://www.soumu.go.jp/main_content/000839176.xlsx",
+  2021: "https://www.soumu.go.jp/main_content/000873242.xlsx",
+  2022: "https://www.soumu.go.jp/main_content/000970306.xlsx",
+  2023: "https://www.soumu.go.jp/main_content/000999768.xlsx",
+  2024: "https://www.soumu.go.jp/main_content/001063426.xlsx",
+};
+
+export const CHIBA_CODE = "121002";
+
+/** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
+export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",
+  2020: "https://www.pref.gunma.jp/site/shichousonzai/14513.html",
+  2021: "https://www.pref.gunma.jp/site/shichousonzai/197482.html",
+  2022: "https://www.pref.gunma.jp/site/shichousonzai/636041.html",
+  2023: "https://www.pref.gunma.jp/site/shichousonzai/692573.html",
+  2024: "https://www.pref.gunma.jp/site/shichousonzai/749582.html",
+};
+
 /** 青森県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const AOMORI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.aomori.lg.jp/soshiki/zaimu/shichoson/2019_zaisei_shiryousyuu.html",
