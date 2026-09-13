@@ -803,6 +803,40 @@ const KANAGAWA: readonly LocalGov[] = [
   muni("kiyokawa", "144029", "清川村", "神奈川県"),
 ];
 
+/** 新潟県の現行市町村。slug はローマ字。新発田市・湯沢町は宮城の柴田町・秋田の湯沢市と衝突しない名前。 */
+const NIIGATA: readonly LocalGov[] = [
+  muni("niigata", "151009", "新潟市", "新潟県"),
+  muni("nagaoka", "152021", "長岡市", "新潟県"),
+  muni("sanjo", "152048", "三条市", "新潟県"),
+  muni("kashiwazaki", "152056", "柏崎市", "新潟県"),
+  muni("shibatashi", "152064", "新発田市", "新潟県"),
+  muni("ojiya", "152081", "小千谷市", "新潟県"),
+  muni("kamo", "152099", "加茂市", "新潟県"),
+  muni("tokamachi", "152102", "十日町市", "新潟県"),
+  muni("mitsuke", "152111", "見附市", "新潟県"),
+  muni("murakami", "152129", "村上市", "新潟県"),
+  muni("tsubame", "152137", "燕市", "新潟県"),
+  muni("itoigawa", "152161", "糸魚川市", "新潟県"),
+  muni("myoko", "152170", "妙高市", "新潟県"),
+  muni("gosen", "152188", "五泉市", "新潟県"),
+  muni("joetsu", "152226", "上越市", "新潟県"),
+  muni("agano", "152234", "阿賀野市", "新潟県"),
+  muni("sado", "152242", "佐渡市", "新潟県"),
+  muni("uonuma", "152251", "魚沼市", "新潟県"),
+  muni("minamiuonuma", "152269", "南魚沼市", "新潟県"),
+  muni("tainai", "152277", "胎内市", "新潟県"),
+  muni("seiro", "153079", "聖籠町", "新潟県"),
+  muni("yahiko", "153427", "弥彦村", "新潟県"),
+  muni("tagami", "153613", "田上町", "新潟県"),
+  muni("aga", "153851", "阿賀町", "新潟県"),
+  muni("izumozaki", "154059", "出雲崎町", "新潟県"),
+  muni("yuzawamachi", "154610", "湯沢町", "新潟県"),
+  muni("tsunan", "154822", "津南町", "新潟県"),
+  muni("kariwa", "155047", "刈羽村", "新潟県"),
+  muni("sekikawa", "155811", "関川村", "新潟県"),
+  muni("awashimaura", "155861", "粟島浦村", "新潟県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -863,6 +897,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...CHIBA,
   ...TOKYO,
   ...KANAGAWA,
+  ...NIIGATA,
   ...OKINAWA,
 ];
 

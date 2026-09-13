@@ -4,10 +4,9 @@ import { area, curveBasis } from "d3-shape";
 import "d3-transition";
 import { useSize } from "../hooks/useSize.ts";
 import { formatShare, formatYen } from "./buildGraph.ts";
-import type { SeriesKind } from "./buildSeriesGraph.ts";
+import type { CityFinance, SeriesKind } from "../../lib/types.ts";
 import { buildStream, type StreamLayer } from "./buildStreamgraph.ts";
 import { streamFill } from "./colors.ts";
-import type { CityFinance } from "../../lib/types.ts";
 
 interface StreamgraphChartProps {
   data: CityFinance;
@@ -100,7 +99,7 @@ export function StreamgraphChart({ data, kind }: StreamgraphChartProps) {
 
     const layerMerge = layerEnter.merge(layerSel);
     layerMerge
-      .attr("fill", (d, i) => streamFill(kind, d.item, i, graph.layers.length))
+      .attr("fill", (d) => streamFill(kind, d.item))
       .transition()
       .duration(duration)
       .ease(EASE_OUT)

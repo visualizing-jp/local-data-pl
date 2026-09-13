@@ -10,7 +10,6 @@ import type { CityFinance } from "../lib/types.ts";
 import { GovSelect } from "./GovSelect.tsx";
 import { ViewNav } from "./ViewNav.tsx";
 import { buildYearGraph, formatYen } from "./sankey/buildGraph.ts";
-import { SeriesView } from "./views/SeriesView.tsx";
 import { StreamgraphView } from "./views/StreamgraphView.tsx";
 import { YearView } from "./views/YearView.tsx";
 
@@ -28,10 +27,8 @@ function govFromSearch(): { gov: LocalGov | null; unknownId: string | null } {
 }
 
 function pageTitle(gov: LocalGov, year: number, view: ViewId): string {
-  if (view === "revenue") return `${gov.prefecture} ${gov.city} 歳入の時系列`;
-  if (view === "revenue-stream") return `${gov.prefecture} ${gov.city} 歳入の時系列（streamgraph）`;
-  if (view === "expenditure") return `${gov.prefecture} ${gov.city} 歳出の時系列`;
-  if (view === "expenditure-stream") return `${gov.prefecture} ${gov.city} 歳出の時系列（streamgraph）`;
+  if (view === "revenue") return `${gov.prefecture} ${gov.city} 歳入の時系列（streamgraph）`;
+  if (view === "expenditure") return `${gov.prefecture} ${gov.city} 歳出の時系列（streamgraph）`;
   return `${gov.prefecture} ${gov.city} ${year}年度の財政収支`;
 }
 
@@ -41,22 +38,16 @@ function ledeText(
   year: number | null,
 ): string {
   if (view === "revenue") {
-    return "歳入の科目が、収録の全市度でどう厚みを変えたか。";
-  }
-  if (view === "revenue-stream") {
-    return "歳入の科目が、収録の全市度でどう厚みを変えたか。streamgraph。";
+    return "歳入の科目が、どう変化したか。";
   }
   if (view === "expenditure") {
-    return "目的別歳出が、収録の全市度でどう厚みを変えたか。";
-  }
-  if (view === "expenditure-stream") {
-    return "目的別歳出が、収録の全市度でどう厚みを変えたか。streamgraph。";
+    return "歳出の科目が、どう変化したか。";
   }
   if (data != null && year != null) {
     const graph = buildYearGraph(data, year);
-    return `歳入 ${formatYen(graph.total)} が、目的別歳出と形式収支へどう分かれたか。タイムラインでひとつの年度を選ぶ。`;
+    return `歳入 ${formatYen(graph.total)} が、目的別歳出と形式収支へどう分かれたか。`;
   }
-  return "歳入が、目的別歳出と形式収支へどう分かれたか。タイムラインでひとつの年度を選ぶ。";
+  return "歳入が、目的別歳出と形式収支へどう分かれたか。";
 }
 
 export function App() {
@@ -148,14 +139,8 @@ export function App() {
         <>
           {view === "year" ? (
             <YearView key="year" data={data} year={year} onYear={setYear} />
-          ) : view === "revenue-stream" || view === "expenditure-stream" ? (
-            <StreamgraphView
-              key={view}
-              data={data}
-              kind={view === "revenue-stream" ? "revenue" : "expenditure"}
-            />
           ) : (
-            <SeriesView key={view} data={data} kind={view} />
+            <StreamgraphView key={view} data={data} kind={view} />
           )}
           <footer className="source">
             出典: {data.source}。{data.sourceDetail} 千円を百万円に四捨五入し、億・万で表記。形式収支は歳入合計−歳出合計。

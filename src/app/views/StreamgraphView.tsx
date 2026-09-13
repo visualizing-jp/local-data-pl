@@ -1,8 +1,7 @@
 import { formatYen } from "../sankey/buildGraph.ts";
 import { buildStream } from "../sankey/buildStreamgraph.ts";
-import type { SeriesKind } from "../sankey/buildSeriesGraph.ts";
 import { StreamgraphChart } from "../sankey/StreamgraphChart.tsx";
-import type { CityFinance } from "../../lib/types.ts";
+import type { CityFinance, SeriesKind } from "../../lib/types.ts";
 
 interface StreamgraphViewProps {
   data: CityFinance;

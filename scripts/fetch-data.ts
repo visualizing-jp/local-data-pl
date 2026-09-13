@@ -40,6 +40,7 @@ import {
   CHIBA_BOOKLET_PAGES,
   CHIBA_CODE,
   CHIBA_MIC_EXCEL,
+  NIIGATA_BOOKLET_PAGES,
   YAMAGATA_BOOKLET_PAGES,
   HOKKAIDO_BOOKLET_PAGE,
   HOKKAIDO_BOOKLET_YEAR,
@@ -58,6 +59,9 @@ import {
 } from "./sources.ts";
 
 const execFileAsync = promisify(execFile);
+const PYTHON = existsSync(resolve(import.meta.dirname, "../.venv/bin/python3"))
+  ? resolve(import.meta.dirname, "../.venv/bin/python3")
+  : "python3";
 
 const RAW_DIR = resolve(import.meta.dirname, "../data/raw");
 const TOKYO_ESTAT_DIR = resolve(RAW_DIR, "estat-tokyo");
@@ -74,6 +78,7 @@ const TOCHIGI_ESTAT_DIR = resolve(RAW_DIR, "estat-tochigi");
 const GUNMA_ESTAT_DIR = resolve(RAW_DIR, "estat-gunma");
 const SAITAMA_ESTAT_DIR = resolve(RAW_DIR, "estat-saitama");
 const CHIBA_ESTAT_DIR = resolve(RAW_DIR, "estat-chiba");
+const NIIGATA_ESTAT_DIR = resolve(RAW_DIR, "estat-niigata");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 const ESTAT_ENDPOINT = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData";
 const HACHIOJI_2019 = `${DOWNLOAD_BASE}/${HACHIOJI_2019_FILE}`;
@@ -294,7 +299,11 @@ async function fetchExcelPrefecture(
       if (url == null) continue;
       const dest = resolve(RAW_DIR, gov.code, `${year}.xlsx`);
       const existed = existsSync(dest);
-      if (url.toLowerCase().endsWith(".xlsb") || url.toLowerCase().endsWith(".zip")) {
+      if (
+        url.toLowerCase().endsWith(".xlsb") ||
+        url.toLowerCase().endsWith(".xls") ||
+        url.toLowerCase().endsWith(".zip")
+      ) {
         await saveBookletExcel(url, dest, force || Boolean(override), `${year} ${gov.city}`);
       } else {
         await saveIfNeeded(dest, force || Boolean(override), () => download(url), `${year} ${gov.city}`);
@@ -362,6 +371,10 @@ async function fetchExcelChiba(force: boolean) {
   }
 }
 
+async function fetchExcelNiigata(force: boolean) {
+  await fetchExcelPrefecture("新潟県", NIIGATA_BOOKLET_PAGES, force);
+}
+
 async function fetchExcelIwate(force: boolean) {
   const expected = CATALOG.filter((gov) => gov.prefecture === "岩手県");
   for (const [yearRaw, pageUrl] of Object.entries(IWATE_BOOKLET_PAGES)) {
@@ -388,7 +401,7 @@ async function fetchExcelIwate(force: boolean) {
       const existed = existsSync(dest);
       await saveIfNeeded(dest, force, () => download(url), `${year} ZIP ${file}`);
       if (force || !existed) await sleep(80);
-      await execFileAsync("python3", [resolve(import.meta.dirname, "extract-booklet-zip.py"), dest, extractDir]);
+      await execFileAsync(PYTHON, [resolve(import.meta.dirname, "extract-booklet-zip.py"), dest, extractDir]);
     }
 
     const names = await readdir(extractDir);
@@ -416,7 +429,7 @@ async function saveBookletExcel(url: string, dest: string, force: boolean, label
   if (url.toLowerCase().endsWith(".zip")) {
     const zipDest = dest.replace(/\.xlsx$/i, ".zip");
     await saveIfNeeded(zipDest, force, () => download(url), `${label} ZIP`);
-    await execFileAsync("python3", [resolve(import.meta.dirname, "extract-booklet-zip.py"), zipDest, dest]);
+    await execFileAsync(PYTHON, [resolve(import.meta.dirname, "extract-booklet-zip.py"), zipDest, dest]);
     await sleep(80);
     return;
   }
@@ -424,7 +437,16 @@ async function saveBookletExcel(url: string, dest: string, force: boolean, label
     const xlsbDest = dest.replace(/\.xlsx$/i, ".xlsb");
     await saveIfNeeded(xlsbDest, force, () => download(url), `${label} XLSB`);
     if (force || !existsSync(dest)) {
-      await execFileAsync("python3", [resolve(import.meta.dirname, "convert-xlsb.py"), xlsbDest, dest]);
+      await execFileAsync(PYTHON, [resolve(import.meta.dirname, "convert-xlsb.py"), xlsbDest, dest]);
+    }
+    await sleep(80);
+    return;
+  }
+  if (url.toLowerCase().endsWith(".xls")) {
+    const xlsDest = dest.replace(/\.xlsx$/i, ".xls");
+    await saveIfNeeded(xlsDest, force, () => download(url), `${label} XLS`);
+    if (force || !existsSync(dest)) {
+      await execFileAsync(PYTHON, [resolve(import.meta.dirname, "convert-xls.py"), xlsDest, dest]);
     }
     await sleep(80);
     return;
@@ -568,6 +590,7 @@ async function main() {
     { pref: "群馬県", run: fetchExcelGunma },
     { pref: "埼玉県", run: fetchExcelSaitama },
     { pref: "千葉県", run: fetchExcelChiba },
+    { pref: "新潟県", run: fetchExcelNiigata },
     { pref: "沖縄県", run: fetchExcelOkinawa },
   ];
   for (const job of excelJobs) {
@@ -591,6 +614,7 @@ async function main() {
     { pref: "千葉県", dir: CHIBA_ESTAT_DIR },
     { pref: "東京都", dir: TOKYO_ESTAT_DIR },
     { pref: "神奈川県", dir: KANAGAWA_ESTAT_DIR },
+    { pref: "新潟県", dir: NIIGATA_ESTAT_DIR },
     { pref: "沖縄県", dir: OKINAWA_ESTAT_DIR },
   ];
   for (const job of estatJobs) {

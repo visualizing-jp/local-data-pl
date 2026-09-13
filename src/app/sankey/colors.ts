@@ -1,8 +1,13 @@
 import { hcl } from "d3-color";
 import { schemePiYG } from "d3-scale-chromatic";
-import { revenueGroup } from "../../lib/taxonomy.ts";
+import {
+  PURPOSE_EXPENDITURE,
+  STREAM_REVENUE_ITEMS,
+  normalizeRevenueName,
+  revenueGroup,
+} from "../../lib/taxonomy.ts";
+import type { SeriesKind } from "../../lib/types.ts";
 import type { GraphNode } from "./buildGraph.ts";
-import type { SeriesKind } from "./buildSeriesGraph.ts";
 
 const piyg = schemePiYG[7]!;
 
@@ -37,15 +42,17 @@ export function linkStroke(source: GraphNode, target: GraphNode): string {
   return nodeFill(source);
 }
 
-export function seriesFill(kind: SeriesKind): string {
-  return kind === "revenue" ? COLOR_REVENUE : COLOR_EXPENDITURE;
-}
-
-/** streamgraph の層。歳入は自主／依存で色相を分け、歳出は緑の濃淡。 */
-export function streamFill(kind: SeriesKind, item: string, index: number, count: number): string {
+/** streamgraph の層。細目名で全市共通。歳入は自主／依存で色相を分け、歳出は緑の濃淡。 */
+export function streamFill(kind: SeriesKind, item: string): string {
+  const name = kind === "revenue" ? normalizeRevenueName(item) : item.trim();
   const base = hcl(kind === "revenue" ? COLOR_REVENUE : COLOR_EXPENDITURE);
-  const t = count <= 1 ? 0.45 : index / (count - 1);
+  const scale: readonly string[] =
+    kind === "revenue"
+      ? STREAM_REVENUE_ITEMS.filter((entry) => revenueGroup(entry) === revenueGroup(name))
+      : PURPOSE_EXPENDITURE;
+  const index = scale.indexOf(name);
+  const t = scale.length <= 1 ? 0.45 : (index < 0 ? 1 : index) / (scale.length - 1);
   const hue =
-    kind === "revenue" ? (revenueGroup(item) === "自主財源" ? base.h : base.h + 26) : base.h;
+    kind === "revenue" ? (revenueGroup(name) === "自主財源" ? base.h : base.h + 26) : base.h;
   return hcl(hue, Math.max(18, base.c * (0.62 + 0.38 * t)), 40 + t * 30).formatHex();
 }
