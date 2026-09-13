@@ -2,6 +2,7 @@
  * 財政状況資料集の「普通会計の状況」から歳入葉と目的別歳出を抜き、配信用 JSON にする。
  *
  *   npm run data
+ *   npm run data -- --pref=群馬県
  */
 
 import { mkdir, writeFile } from "node:fs/promises";
@@ -9,6 +10,7 @@ import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import ExcelJS from "exceljs";
 import { CATALOG, estatArea, type LocalGov } from "../src/lib/catalog.ts";
+import { cliPrefecture, requireCatalogPrefecture } from "./cli.ts";
 import { isPurposeLeaf, isRevenueLeaf, normalizeRevenueName, revenueGroup } from "../src/lib/taxonomy.ts";
 import type { CityFinance, FlowItem } from "../src/lib/types.ts";
 import { loadEstatFlows } from "./estat.ts";
@@ -400,7 +402,12 @@ async function buildGov(gov: LocalGov): Promise<CityFinance> {
 
 async function main() {
   await mkdir(OUT_DIR, { recursive: true });
-  for (const gov of CATALOG) {
+  const pref = requireCatalogPrefecture(
+    cliPrefecture(),
+    CATALOG.map((gov) => gov.prefecture),
+  );
+  const targets = pref ? CATALOG.filter((gov) => gov.prefecture === pref) : CATALOG;
+  for (const gov of targets) {
     const data = await buildGov(gov);
     const out = resolve(import.meta.dirname, `../public${gov.dataUrl}`);
     await writeFile(out, `${JSON.stringify(data, null, 2)}\n`, "utf8");

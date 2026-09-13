@@ -15,10 +15,18 @@ npm run fetch && npm run data && npm run verify
 npm run dev
 ```
 
+県を足すときは、既存の `data/raw/` を取り直さない。
+
+```bash
+npm run fetch -- --pref=群馬県
+npm run data -- --pref=群馬県
+npm run verify
+```
+
 | スクリプト | 内容 |
 | --- | --- |
-| `npm run fetch` | 財政状況資料集 Excel（2019–2024）と e-Stat（現行団体コードで取れる年度）を `data/raw/` へ取得 |
-| `npm run data` | `public/data/` に団体ごとの JSON を構築 |
+| `npm run fetch` | 財政状況資料集 Excel（2019–2024）と e-Stat（現行団体コードで取れる年度）を `data/raw/` へ取得。`--pref=県名` でその県だけ。キャッシュ済みの Excel は再取得しない |
+| `npm run data` | `public/data/` に団体ごとの JSON を構築。`--pref=県名` でその県だけ上書き |
 | `npm run verify` | 収支バランスと、八王子市 2022 年の参照図検算 |
 | `npm run dev` | Vite 開発サーバ |
 | `npm run build` | 本番ビルド |
