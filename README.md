@@ -53,6 +53,7 @@ npm run verify
 /?id=121002&year=2024
 /?id=151009&year=2024
 /?id=132012&year=2024&view=expenditure
+/?id=131016&year=2024&view=revenue&scale=relative
 ```
 
 | パラメータ | 内容 |
@@ -60,6 +61,7 @@ npm run verify
 | `id` | [全国地方公共団体コード](https://www.soumu.go.jp/denshijiti/code.html)（6桁）。札幌市は `011002`、青森市は `022012`、盛岡市は `032018`、仙台市は `041009`、秋田市は `052019`、山形市は `062014`、福島市は `072010`、水戸市は `082015`、宇都宮市は `092011`、前橋市は `102016`、さいたま市は `111007`、千葉市は `121002`、千代田区は `131016`、横浜市は `141003`、新潟市は `151009`、那覇市は `472018` |
 | `year` | 西暦の決算年度。データに無い年はいちばん近い年度へ寄せる。時系列ビューでも残し、年度ビューに戻ったときに使う |
 | `view` | `year`（既定・1年の歳入→歳出）、`revenue`（歳入の streamgraph）、`expenditure`（歳出の streamgraph）。`revenue-stream` / `expenditure-stream` も同じ。既定のときは URL から省く |
+| `scale` | streamgraph の縦。`absolute`（既定・金額）、`relative`（高さを固定した年ごとの構成比）。既定のときは URL から省く |
 
 `id` も `year` も無いときは千代田区の最新年度を開き、URL をそれに揃える。
 

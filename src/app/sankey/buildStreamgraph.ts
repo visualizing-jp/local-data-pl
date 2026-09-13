@@ -1,5 +1,12 @@
-import { stack, stackOffsetWiggle, stackOrderInsideOut } from "d3-shape";
+import {
+  stack,
+  stackOffsetExpand,
+  stackOffsetWiggle,
+  stackOrderInsideOut,
+  stackOrderNone,
+} from "d3-shape";
 import type { CityFinance } from "../../lib/types.ts";
+import type { StreamScale } from "../../lib/permalink.ts";
 import { PURPOSE_EXPENDITURE, PURPOSE_INDEX, STREAM_REVENUE_ITEMS } from "../../lib/taxonomy.ts";
 import type { SeriesKind } from "../../lib/types.ts";
 
@@ -35,7 +42,11 @@ function itemOrder(kind: SeriesKind, item: string): number {
   return REVENUE_INDEX.get(item) ?? 99;
 }
 
-export function buildStream(data: CityFinance, kind: SeriesKind): StreamGraph {
+export function buildStream(
+  data: CityFinance,
+  kind: SeriesKind,
+  scale: StreamScale = "absolute",
+): StreamGraph {
   const years = data.years;
   const source = kind === "revenue" ? data.revenue : data.expenditure;
   const byYearItem = new Map<string, number>();
@@ -55,8 +66,8 @@ export function buildStream(data: CityFinance, kind: SeriesKind): StreamGraph {
   const series = stack<StreamRow, string>()
     .keys(items)
     .value((d, key) => d[key] ?? 0)
-    .order(stackOrderInsideOut)
-    .offset(stackOffsetWiggle)(rows);
+    .order(scale === "relative" ? stackOrderNone : stackOrderInsideOut)
+    .offset(scale === "relative" ? stackOffsetExpand : stackOffsetWiggle)(rows);
 
   const layers: StreamLayer[] = series.map((layer) => ({
     item: String(layer.key),
@@ -72,17 +83,21 @@ export function buildStream(data: CityFinance, kind: SeriesKind): StreamGraph {
     }),
   }));
 
-  let yMin = Number.POSITIVE_INFINITY;
-  let yMax = Number.NEGATIVE_INFINITY;
-  for (const layer of layers) {
-    for (const point of layer.points) {
-      yMin = Math.min(yMin, point.y0, point.y1);
-      yMax = Math.max(yMax, point.y0, point.y1);
+  let yMin = 0;
+  let yMax = 1;
+  if (scale !== "relative") {
+    yMin = Number.POSITIVE_INFINITY;
+    yMax = Number.NEGATIVE_INFINITY;
+    for (const layer of layers) {
+      for (const point of layer.points) {
+        yMin = Math.min(yMin, point.y0, point.y1);
+        yMax = Math.max(yMax, point.y0, point.y1);
+      }
     }
-  }
-  if (!Number.isFinite(yMin) || !Number.isFinite(yMax) || yMin === yMax) {
-    yMin = 0;
-    yMax = 1;
+    if (!Number.isFinite(yMin) || !Number.isFinite(yMax) || yMin === yMax) {
+      yMin = 0;
+      yMax = 1;
+    }
   }
 
   const firstYear = years[0];

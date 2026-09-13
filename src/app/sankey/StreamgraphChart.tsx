@@ -4,6 +4,7 @@ import { area, curveBasis } from "d3-shape";
 import "d3-transition";
 import { useSize } from "../hooks/useSize.ts";
 import { formatShare, formatYen } from "./buildGraph.ts";
+import type { StreamScale } from "../../lib/permalink.ts";
 import type { CityFinance, SeriesKind } from "../../lib/types.ts";
 import { buildStream, type StreamLayer } from "./buildStreamgraph.ts";
 import { streamFill } from "./colors.ts";
@@ -11,6 +12,7 @@ import { streamFill } from "./colors.ts";
 interface StreamgraphChartProps {
   data: CityFinance;
   kind: SeriesKind;
+  scale: StreamScale;
 }
 
 const EASE_OUT = (t: number) => 1 - (1 - t) ** 4;
@@ -45,15 +47,16 @@ function nearestYear(years: number[], x: number, xOf: (year: number) => number):
   );
 }
 
-export function StreamgraphChart({ data, kind }: StreamgraphChartProps) {
+export function StreamgraphChart({ data, kind, scale }: StreamgraphChartProps) {
   const [wrapRef, size] = useSize<HTMLDivElement>();
   const svgRef = useRef<SVGSVGElement>(null);
   const firstDraw = useRef(true);
   const codeRef = useRef(data.code);
+  const scaleRef = useRef(scale);
   const [hover, setHover] = useState<{ title: string; body: string; x: number; y: number } | null>(
     null,
   );
-  const graph = useMemo(() => buildStream(data, kind), [data, kind]);
+  const graph = useMemo(() => buildStream(data, kind, scale), [data, kind, scale]);
   const noun = kind === "revenue" ? "歳入" : "歳出";
 
   useEffect(() => {
@@ -61,10 +64,12 @@ export function StreamgraphChart({ data, kind }: StreamgraphChartProps) {
     if (!svg || size.width < 40 || size.height < 40 || graph.layers.length === 0) return;
 
     const govChanged = codeRef.current !== data.code;
+    const scaleChanged = scaleRef.current !== scale;
     const duration =
-      !firstDraw.current && govChanged && !prefersReducedMotion() ? 600 : 0;
+      !firstDraw.current && (govChanged || scaleChanged) && !prefersReducedMotion() ? 600 : 0;
     firstDraw.current = false;
     codeRef.current = data.code;
+    scaleRef.current = scale;
     setHover(null);
 
     const margin = { top: 28, right: 16, bottom: 16, left: 16 };
@@ -164,9 +169,11 @@ export function StreamgraphChart({ data, kind }: StreamgraphChartProps) {
       const year = nearestYear(graph.years, event.clientX - box.left, xOf);
       const point = layer.points.find((p) => p.year === year);
       const yearTotal = graph.totals.get(year) ?? 0;
+      const yen = formatYen(point?.value ?? 0);
+      const share = formatShare(point?.value ?? 0, yearTotal);
       setHover({
         title: `${year}　${layer.item}`,
-        body: `${formatYen(point?.value ?? 0)}（${formatShare(point?.value ?? 0, yearTotal)}）`,
+        body: scale === "relative" ? `${share}（${yen}）` : `${yen}（${share}）`,
         x: event.clientX - box.left,
         y: event.clientY - box.top,
       });
@@ -182,7 +189,7 @@ export function StreamgraphChart({ data, kind }: StreamgraphChartProps) {
         highlight(null);
         setHover(null);
       });
-  }, [data.code, graph, kind, size.height, size.width]);
+  }, [data.code, graph, kind, scale, size.height, size.width]);
 
   return (
     <div className="sankey-wrap sankey-wrap--series" ref={wrapRef}>

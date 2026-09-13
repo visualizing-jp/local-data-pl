@@ -4,6 +4,7 @@ import {
   formatPermalink,
   parsePermalink,
   snapYear,
+  type StreamScale,
   type ViewId,
 } from "../lib/permalink.ts";
 import type { CityFinance } from "../lib/types.ts";
@@ -13,10 +14,10 @@ import { buildYearGraph, formatYen } from "./sankey/buildGraph.ts";
 import { StreamgraphView } from "./views/StreamgraphView.tsx";
 import { YearView } from "./views/YearView.tsx";
 
-function applyPermalink(id: string, year: number, view: ViewId): void {
-  const next = formatPermalink(id, year, view);
+function applyPermalink(id: string, year: number, view: ViewId, scale: StreamScale): void {
+  const next = formatPermalink(id, year, view, scale);
   if (window.location.search === next) return;
-  window.history.replaceState({ id, year, view }, "", `${window.location.pathname}${next}`);
+  window.history.replaceState({ id, year, view, scale }, "", `${window.location.pathname}${next}`);
 }
 
 function govFromSearch(): { gov: LocalGov | null; unknownId: string | null } {
@@ -57,8 +58,10 @@ export function App() {
   const [data, setData] = useState<CityFinance | null>(null);
   const [error, setError] = useState<string | null>(unknownId ? `団体コード「${unknownId}」はまだありません。` : null);
   const [year, setYear] = useState<number | null>(null);
-  const [view, setView] = useState<ViewId>(parsePermalink(window.location.search).view);
-  const yearRef = useRef<number | null>(parsePermalink(window.location.search).year);
+  const bootQuery = parsePermalink(window.location.search);
+  const [view, setView] = useState<ViewId>(bootQuery.view);
+  const [scale, setScale] = useState<StreamScale>(bootQuery.scale);
+  const yearRef = useRef<number | null>(bootQuery.year);
 
   useEffect(() => {
     if (year != null) yearRef.current = year;
@@ -88,9 +91,9 @@ export function App() {
 
   useEffect(() => {
     if (gov == null || year == null) return;
-    applyPermalink(gov.code, year, view);
+    applyPermalink(gov.code, year, view, scale);
     document.title = pageTitle(gov, year, view);
-  }, [gov, year, view]);
+  }, [gov, year, view, scale]);
 
   const chooseGov = (code: string) => {
     const next = lookupGov(code);
@@ -140,7 +143,7 @@ export function App() {
           {view === "year" ? (
             <YearView key="year" data={data} year={year} onYear={setYear} />
           ) : (
-            <StreamgraphView key={view} data={data} kind={view} />
+            <StreamgraphView key={view} data={data} kind={view} scale={scale} onScale={setScale} />
           )}
           <footer className="source">
             出典: {data.source}。{data.sourceDetail} 千円を百万円に四捨五入し、億・万で表記。形式収支は歳入合計−歳出合計。

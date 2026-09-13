@@ -198,6 +198,16 @@ h1 .sep {
   font-size: 14px;
 }
 
+.stream-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin: 12px 0 0;
+}
+
+.stream-scale .place-select {
+  font-size: 13px;
+}
+
 .year-slider {
   display: grid;
   grid-template-columns: auto 1fr auto;
