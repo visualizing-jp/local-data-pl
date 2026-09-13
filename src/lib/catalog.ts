@@ -507,6 +507,35 @@ const IBARAKI: readonly LocalGov[] = [
   muni("tone", "085642", "利根町", "茨城県"),
 ];
 
+/** 栃木県の現行市町。slug は県の令和6年度資料集ファイル名。 */
+const TOCHIGI: readonly LocalGov[] = [
+  muni("utsunomiya", "092011", "宇都宮市", "栃木県"),
+  muni("ashikaga", "092029", "足利市", "栃木県"),
+  muni("tochigi", "092037", "栃木市", "栃木県"),
+  muni("sano", "092045", "佐野市", "栃木県"),
+  muni("kanuma", "092053", "鹿沼市", "栃木県"),
+  muni("nikko", "092061", "日光市", "栃木県"),
+  muni("oyama", "092088", "小山市", "栃木県"),
+  muni("moka", "092096", "真岡市", "栃木県"),
+  muni("otawara", "092100", "大田原市", "栃木県"),
+  muni("yaita", "092118", "矢板市", "栃木県"),
+  muni("nasushiobara", "092134", "那須塩原市", "栃木県"),
+  muni("sakura", "092142", "さくら市", "栃木県"),
+  muni("nasukarasuyama", "092151", "那須烏山市", "栃木県"),
+  muni("shimotsuke", "092169", "下野市", "栃木県"),
+  muni("kaminokawa", "093017", "上三川町", "栃木県"),
+  muni("mashiko", "093424", "益子町", "栃木県"),
+  muni("motegi", "093432", "茂木町", "栃木県"),
+  muni("ichikai", "093441", "市貝町", "栃木県"),
+  muni("haga", "093459", "芳賀町", "栃木県"),
+  muni("mibu", "093611", "壬生町", "栃木県"),
+  muni("nogi", "093645", "野木町", "栃木県"),
+  muni("shioya", "093840", "塩谷町", "栃木県"),
+  muni("takanezawa", "093866", "高根沢町", "栃木県"),
+  muni("nasu", "094072", "那須町", "栃木県"),
+  muni("nakagawa", "094111", "那珂川町", "栃木県"),
+];
+
 /** 東京都の現行区市町村。slug は都「団体別資料集」のパス。 */
 const TOKYO: readonly LocalGov[] = [
   muni("chiyoda", "131016", "千代田区", "東京都"),
@@ -664,6 +693,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...YAMAGATA,
   ...FUKUSHIMA,
   ...IBARAKI,
+  ...TOCHIGI,
   ...TOKYO,
   ...KANAGAWA,
   ...OKINAWA,

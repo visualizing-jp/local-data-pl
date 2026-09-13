@@ -116,6 +116,16 @@ export const IBARAKI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: "https://www.pref.ibaraki.jp/somu/shichoson/zaisei/zaisei_jokyo_shiryoshu/r6.html",
 };
 
+/** 栃木県「財政状況資料集」（県内市町）。2019–2024。 */
+export const TOCHIGI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.tochigi.lg.jp/a02/pref/shichouson/zaisei/r01zaiseisiryousyu.html",
+  2020: "https://www.pref.tochigi.lg.jp/a02/pref/shichouson/zaisei/r02zaiseijoukyou.html",
+  2021: "https://www.pref.tochigi.lg.jp/a02/pref/shichouson/zaisei/r03zaiseijoukyou.html",
+  2022: "https://www.pref.tochigi.lg.jp/a02/pref/shichouson/zaisei/r04zaiseijoukyou.html",
+  2023: "https://www.pref.tochigi.lg.jp/a02/pref/shichouson/zaisei/r05zaiseijoukyou.html",
+  2024: "https://www.pref.tochigi.lg.jp/a02/pref/shichouson/zaisei/r06zaiseijoukyou.html",
+};
+
 /** 青森県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const AOMORI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.aomori.lg.jp/soshiki/zaimu/shichoson/2019_zaisei_shiryousyuu.html",
