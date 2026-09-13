@@ -9,3 +9,5 @@ data/raw/
 .vscode/
 .idea/
 .tmp-screenshots/
+.tmp-niigata/
+.venv/
