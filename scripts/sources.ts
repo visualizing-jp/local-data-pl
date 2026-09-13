@@ -126,6 +126,28 @@ export const TOCHIGI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: "https://www.pref.tochigi.lg.jp/a02/pref/shichouson/zaisei/r06zaiseijoukyou.html",
 };
 
+/** 埼玉県「財政状況資料集」（県内市町村）。2019–2024。さいたま市は載らない。 */
+export const SAITAMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.saitama.lg.jp/a0107/zaiseitantou/zaiseijyoukyousiryousyu-r1nendo.html",
+  2020: "https://www.pref.saitama.lg.jp/a0107/zaiseitantou/zaiseijyoukyousiryousyu-r2nendo.html",
+  2021: "https://www.pref.saitama.lg.jp/a0107/zaiseitantou/zaiseijyoukyousiryousyu-r3nendo.html",
+  2022: "https://www.pref.saitama.lg.jp/a0107/zaiseitantou/zaiseijyoukyousiryousyu-r4nendo.html",
+  2023: "https://www.pref.saitama.lg.jp/a0107/zaiseitantou/zaiseijyoukyousiryousyu-r5nendo.html",
+  2024: "https://www.pref.saitama.lg.jp/a0107/zaiseitantou/zaiseijyoukyousiryousyu-r6nendo.html",
+};
+
+/** さいたま市は政令市のため県ページに無い。総務省の政令指定都市資料集。 */
+export const SAITAMA_MIC_EXCEL: Readonly<Record<number, string>> = {
+  2019: "https://www.soumu.go.jp/main_content/000740642.xlsx",
+  2020: "https://www.soumu.go.jp/main_content/000841929.xlsx",
+  2021: "https://www.soumu.go.jp/main_content/000873240.xlsx",
+  2022: "https://www.soumu.go.jp/main_content/000970305.xlsx",
+  2023: "https://www.soumu.go.jp/main_content/000999767.xlsx",
+  2024: "https://www.soumu.go.jp/main_content/001063425.xlsx",
+};
+
+export const SAITAMA_CODE = "111007";
+
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",

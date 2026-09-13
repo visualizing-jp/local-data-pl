@@ -34,6 +34,9 @@ import {
   IBARAKI_BOOKLET_PAGES,
   TOCHIGI_BOOKLET_PAGES,
   GUNMA_BOOKLET_PAGES,
+  SAITAMA_BOOKLET_PAGES,
+  SAITAMA_CODE,
+  SAITAMA_MIC_EXCEL,
   YAMAGATA_BOOKLET_PAGES,
   HOKKAIDO_BOOKLET_PAGE,
   HOKKAIDO_BOOKLET_YEAR,
@@ -66,6 +69,7 @@ const FUKUSHIMA_ESTAT_DIR = resolve(RAW_DIR, "estat-fukushima");
 const IBARAKI_ESTAT_DIR = resolve(RAW_DIR, "estat-ibaraki");
 const TOCHIGI_ESTAT_DIR = resolve(RAW_DIR, "estat-tochigi");
 const GUNMA_ESTAT_DIR = resolve(RAW_DIR, "estat-gunma");
+const SAITAMA_ESTAT_DIR = resolve(RAW_DIR, "estat-saitama");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 const ESTAT_ENDPOINT = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData";
 const HACHIOJI_2019 = `${DOWNLOAD_BASE}/${HACHIOJI_2019_FILE}`;
@@ -262,8 +266,10 @@ async function fetchExcelPrefecture(
   pages: Readonly<Record<number, string>>,
   force: boolean,
   parse = parseCityBooklet,
+  exclude: readonly string[] = [],
 ) {
-  const expected = CATALOG.filter((gov) => gov.prefecture === prefecture);
+  const excluded = new Set(exclude);
+  const expected = CATALOG.filter((gov) => gov.prefecture === prefecture && !excluded.has(gov.code));
   for (const [yearRaw, pageUrl] of Object.entries(pages)) {
     const year = Number(yearRaw);
     const allPresent = expected.every((gov) => existsSync(resolve(RAW_DIR, gov.code, `${year}.xlsx`)));
@@ -284,8 +290,12 @@ async function fetchExcelPrefecture(
       if (url == null) continue;
       const dest = resolve(RAW_DIR, gov.code, `${year}.xlsx`);
       const existed = existsSync(dest);
-      await saveIfNeeded(dest, force || Boolean(override), () => download(url), `${year} ${gov.city}`);
-      if (force || !existed) await sleep(80);
+      if (url.toLowerCase().endsWith(".xlsb") || url.toLowerCase().endsWith(".zip")) {
+        await saveBookletExcel(url, dest, force || Boolean(override), `${year} ${gov.city}`);
+      } else {
+        await saveIfNeeded(dest, force || Boolean(override), () => download(url), `${year} ${gov.city}`);
+        if (force || !existed) await sleep(80);
+      }
     }
   }
 }
@@ -324,6 +334,17 @@ async function fetchExcelTochigi(force: boolean) {
 
 async function fetchExcelGunma(force: boolean) {
   await fetchExcelPrefecture("群馬県", GUNMA_BOOKLET_PAGES, force);
+}
+
+async function fetchExcelSaitama(force: boolean) {
+  await fetchExcelPrefecture("埼玉県", SAITAMA_BOOKLET_PAGES, force, parseCityBooklet, [SAITAMA_CODE]);
+  for (const [yearRaw, url] of Object.entries(SAITAMA_MIC_EXCEL)) {
+    const y = Number(yearRaw);
+    const dest = resolve(RAW_DIR, SAITAMA_CODE, `${y}.xlsx`);
+    const existed = existsSync(dest);
+    await saveIfNeeded(dest, force, () => download(url), `${y} さいたま市（総務省）`);
+    if (force || !existed) await sleep(80);
+  }
 }
 
 async function fetchExcelIwate(force: boolean) {
@@ -381,6 +402,15 @@ async function saveBookletExcel(url: string, dest: string, force: boolean, label
     const zipDest = dest.replace(/\.xlsx$/i, ".zip");
     await saveIfNeeded(zipDest, force, () => download(url), `${label} ZIP`);
     await execFileAsync("python3", [resolve(import.meta.dirname, "extract-booklet-zip.py"), zipDest, dest]);
+    await sleep(80);
+    return;
+  }
+  if (url.toLowerCase().endsWith(".xlsb")) {
+    const xlsbDest = dest.replace(/\.xlsx$/i, ".xlsb");
+    await saveIfNeeded(xlsbDest, force, () => download(url), `${label} XLSB`);
+    if (force || !existsSync(dest)) {
+      await execFileAsync("python3", [resolve(import.meta.dirname, "convert-xlsb.py"), xlsbDest, dest]);
+    }
     await sleep(80);
     return;
   }
@@ -521,6 +551,7 @@ async function main() {
     { pref: "茨城県", run: fetchExcelIbaraki },
     { pref: "栃木県", run: fetchExcelTochigi },
     { pref: "群馬県", run: fetchExcelGunma },
+    { pref: "埼玉県", run: fetchExcelSaitama },
     { pref: "沖縄県", run: fetchExcelOkinawa },
   ];
   for (const job of excelJobs) {
@@ -540,6 +571,7 @@ async function main() {
     { pref: "茨城県", dir: IBARAKI_ESTAT_DIR },
     { pref: "栃木県", dir: TOCHIGI_ESTAT_DIR },
     { pref: "群馬県", dir: GUNMA_ESTAT_DIR },
+    { pref: "埼玉県", dir: SAITAMA_ESTAT_DIR },
     { pref: "東京都", dir: TOKYO_ESTAT_DIR },
     { pref: "神奈川県", dir: KANAGAWA_ESTAT_DIR },
     { pref: "沖縄県", dir: OKINAWA_ESTAT_DIR },

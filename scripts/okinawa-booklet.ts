@@ -1,6 +1,6 @@
 import type { LocalGov } from "../src/lib/catalog.ts";
 
-const FILE_HREF = /<a\s[^>]*href="([^"]+\.(?:xlsx|zip))"[^>]*>([\s\S]*?)<\/a>/gi;
+const FILE_HREF = /<a\s[^>]*href="([^"]+\.(?:xlsx|xlsb|zip))"[^>]*>([\s\S]*?)<\/a>/gi;
 
 function decodeEntities(raw: string): string {
   return raw
