@@ -1,12 +1,14 @@
-export const VIEW_IDS = [
-  "year",
-  "revenue",
-  "revenue-stream",
-  "expenditure",
-  "expenditure-stream",
-] as const;
+export const VIEW_IDS = ["year", "revenue", "expenditure"] as const;
 export type ViewId = (typeof VIEW_IDS)[number];
 export const DEFAULT_VIEW: ViewId = "year";
+
+const VIEW_QUERY: Record<string, ViewId> = {
+  year: "year",
+  revenue: "revenue",
+  expenditure: "expenditure",
+  "revenue-stream": "revenue",
+  "expenditure-stream": "expenditure",
+};
 
 export interface PermalinkQuery {
   id: string | null;
@@ -15,8 +17,7 @@ export interface PermalinkQuery {
 }
 
 export function parseView(raw: string | null): ViewId {
-  if (raw != null && (VIEW_IDS as readonly string[]).includes(raw)) return raw as ViewId;
-  return DEFAULT_VIEW;
+  return (raw != null ? VIEW_QUERY[raw] : undefined) ?? DEFAULT_VIEW;
 }
 
 export function parsePermalink(search: string): PermalinkQuery {

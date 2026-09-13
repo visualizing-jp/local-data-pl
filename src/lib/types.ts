@@ -1,4 +1,5 @@
 export type RevenueGroup = "自主財源" | "依存財源";
+export type SeriesKind = "revenue" | "expenditure";
 
 export interface FlowItem {
   year: number;

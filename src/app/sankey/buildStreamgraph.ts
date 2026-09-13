@@ -1,9 +1,9 @@
 import { stack, stackOffsetWiggle, stackOrderInsideOut } from "d3-shape";
 import type { CityFinance } from "../../lib/types.ts";
-import { PURPOSE_INDEX, REVENUE_ITEMS } from "../../lib/taxonomy.ts";
-import type { SeriesKind } from "./buildSeriesGraph.ts";
+import { PURPOSE_EXPENDITURE, PURPOSE_INDEX, STREAM_REVENUE_ITEMS } from "../../lib/taxonomy.ts";
+import type { SeriesKind } from "../../lib/types.ts";
 
-const REVENUE_INDEX = new Map<string, number>(REVENUE_ITEMS.map((name, i) => [name, i]));
+const REVENUE_INDEX = new Map<string, number>(STREAM_REVENUE_ITEMS.map((name, i) => [name, i]));
 
 export interface StreamPoint {
   year: number;
@@ -39,15 +39,13 @@ export function buildStream(data: CityFinance, kind: SeriesKind): StreamGraph {
   const years = data.years;
   const source = kind === "revenue" ? data.revenue : data.expenditure;
   const byYearItem = new Map<string, number>();
-  const present = new Set<string>();
   const totals = new Map<number, number>();
   for (const row of source) {
     if (row.value <= 0) continue;
-    present.add(row.item);
     byYearItem.set(`${row.year}:${row.item}`, row.value);
     totals.set(row.year, (totals.get(row.year) ?? 0) + row.value);
   }
-  const items = [...present].sort((a, b) => itemOrder(kind, a) - itemOrder(kind, b));
+  const items = kind === "revenue" ? [...STREAM_REVENUE_ITEMS] : [...PURPOSE_EXPENDITURE];
   const rows: StreamRow[] = years.map((year) => {
     const row: StreamRow = { year };
     for (const item of items) row[item] = byYearItem.get(`${year}:${item}`) ?? 0;

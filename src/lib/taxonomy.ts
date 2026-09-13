@@ -83,6 +83,11 @@ export function normalizeRevenueName(label: string): string {
   return name;
 }
 
+/** streamgraph の層と色の正本。資料集の歳入葉から正規化前の別名を除く。 */
+export const STREAM_REVENUE_ITEMS = REVENUE_ITEMS.filter(
+  (name) => name === normalizeRevenueName(name),
+);
+
 export function isPurposeLeaf(label: string): boolean {
   return PURPOSE_INDEX.has(label.trim());
 }
