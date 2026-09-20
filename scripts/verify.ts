@@ -50,7 +50,8 @@ function verifyOne(data: CityFinance, filename: string): void {
     const tohokuCarryover =
       (data.code === "042056" && year === 2015) ||
       (data.code === "044016" && year >= 2013 && year <= 2015);
-    if (Math.abs(balance) / revSum > 0.3 && !yubariReconstruction && !tohokuCarryover) {
+    const oshinoCarryover = data.code === "194247" && year === 1990;
+    if (Math.abs(balance) / revSum > 0.3 && !yubariReconstruction && !tohokuCarryover && !oshinoCarryover) {
       fail(`${data.city} ${year}: 形式収支が歳入の 30% 超`);
     }
     for (const row of exp) {

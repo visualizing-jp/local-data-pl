@@ -21,7 +21,7 @@ function cityLabel(html: string): string {
     .replace(/\s*\[(?:Excelファイル|Excel|エクセル)[^\]]*\]\s*$/iu, "")
     .replace(/\s*\[[0-9,.]+\s*KB\]\s*$/iu, "")
     .replace(/【[^】]*】/gu, "")
-    .replace(/^\d+[_\s]+/u, "")
+    .replace(/^\d+[_\s]*/u, "")
     .replace(/[、,]+$/u, "")
     .trim();
 }
