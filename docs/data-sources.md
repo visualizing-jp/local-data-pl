@@ -575,7 +575,7 @@ https://www.pref.osaka.lg.jp/o040050/shichoson/zaiseijoukyo/shiryosyu.html
 
 https://web.pref.hyogo.lg.jp/kk25/zaiseizyoukyou.html
 
-リンク文言は「リンク（エクセル）」形式で、団体名は直前のセル。令和4・5年度は隣列に公会計／ストックの Excel があるので、最初の xlsx だけ取る。令和元年度のページは `01zaiseijoukyou1.html`。神戸市は政令市だが県ページに載る。
+リンク文言は「リンク（エクセル）」形式で、団体名は直前のセル。令和4・5年度は隣列に公会計／ストックの Excel があるので、最初の xlsx だけ取る。令和元年度のページは `01zaiseijoukyou1.html`。神戸市は政令市だが県ページに載る。洲本市 2022 の県掲載は公会計ファイルだけなので市サイトの完全版を使う。朝来市 2021 は県掲載も市サイトも普通会計 Excel が無く、その年は載せない。
 
 廃置分合後の現行コードにデータがある年度だけを載せる。
 

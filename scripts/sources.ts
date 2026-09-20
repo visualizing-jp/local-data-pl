@@ -24,7 +24,11 @@ export const EXCEL_OVERRIDES: Readonly<Record<string, string>> = {
     "https://www.city.nago.okinawa.jp/articles/2018071000056/file_contents/R5_47293_2023.xlsx",
   "473600:2021": "https://www.vill.izena.okinawa.jp/userfiles/files/R3_zaiseisiryou.xlsx",
   "252140:2019": "https://www.city.maibara.lg.jp/material/files/group/8/R1zaiseizyoukyousiryou_01.xlsx",
+  "282057:2022": "https://www.city.sumoto.lg.jp/uploaded/attachment/17401.xlsx",
 };
+
+/** 県掲載が公会計シートのみで、市サイトも PDF しか無い。 */
+export const HYOGO_SKIP_EXCEL: ReadonlySet<string> = new Set(["282251:2021"]);
 
 /** 北海道内市町村の財政状況資料集。道サイトは最新年の ZIP だけを残す。札幌市は載らない。 */
 export const HOKKAIDO_BOOKLET_PAGE =
