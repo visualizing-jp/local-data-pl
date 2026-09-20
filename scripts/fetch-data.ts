@@ -47,6 +47,11 @@ import {
   YAMANASHI_BOOKLET_PAGES,
   NAGANO_BOOKLET_PAGES,
   GIFU_BOOKLET_PAGES,
+  HAMAMATSU_CODE,
+  HAMAMATSU_MIC_EXCEL,
+  SHIZUOKA_BOOKLET_PAGES,
+  SHIZUOKA_CODE,
+  SHIZUOKA_MIC_EXCEL,
   YAMAGATA_BOOKLET_PAGES,
   HOKKAIDO_BOOKLET_PAGE,
   HOKKAIDO_BOOKLET_YEAR,
@@ -91,6 +96,7 @@ const FUKUI_ESTAT_DIR = resolve(RAW_DIR, "estat-fukui");
 const YAMANASHI_ESTAT_DIR = resolve(RAW_DIR, "estat-yamanashi");
 const NAGANO_ESTAT_DIR = resolve(RAW_DIR, "estat-nagano");
 const GIFU_ESTAT_DIR = resolve(RAW_DIR, "estat-gifu");
+const SHIZUOKA_ESTAT_DIR = resolve(RAW_DIR, "estat-shizuoka");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 const ESTAT_ENDPOINT = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData";
 const HACHIOJI_2019 = `${DOWNLOAD_BASE}/${HACHIOJI_2019_FILE}`;
@@ -401,6 +407,27 @@ async function fetchExcelGifu(force: boolean) {
   await fetchExcelPrefecture("岐阜県", GIFU_BOOKLET_PAGES, force);
 }
 
+async function fetchExcelShizuoka(force: boolean) {
+  await fetchExcelPrefecture("静岡県", SHIZUOKA_BOOKLET_PAGES, force, parseCityBooklet, [
+    SHIZUOKA_CODE,
+    HAMAMATSU_CODE,
+  ]);
+  for (const [yearRaw, url] of Object.entries(SHIZUOKA_MIC_EXCEL)) {
+    const y = Number(yearRaw);
+    const dest = resolve(RAW_DIR, SHIZUOKA_CODE, `${y}.xlsx`);
+    const existed = existsSync(dest);
+    await saveIfNeeded(dest, force, () => download(url), `${y} 静岡市（総務省）`);
+    if (force || !existed) await sleep(80);
+  }
+  for (const [yearRaw, url] of Object.entries(HAMAMATSU_MIC_EXCEL)) {
+    const y = Number(yearRaw);
+    const dest = resolve(RAW_DIR, HAMAMATSU_CODE, `${y}.xlsx`);
+    const existed = existsSync(dest);
+    await saveIfNeeded(dest, force, () => download(url), `${y} 浜松市（総務省）`);
+    if (force || !existed) await sleep(80);
+  }
+}
+
 async function fetchExcelIwate(force: boolean) {
   const expected = CATALOG.filter((gov) => gov.prefecture === "岩手県");
   for (const [yearRaw, pageUrl] of Object.entries(IWATE_BOOKLET_PAGES)) {
@@ -623,6 +650,7 @@ async function main() {
     { pref: "山梨県", run: fetchExcelYamanashi },
     { pref: "長野県", run: fetchExcelNagano },
     { pref: "岐阜県", run: fetchExcelGifu },
+    { pref: "静岡県", run: fetchExcelShizuoka },
     { pref: "沖縄県", run: fetchExcelOkinawa },
   ];
   for (const job of excelJobs) {
@@ -657,6 +685,7 @@ async function main() {
     { pref: "山梨県", dir: YAMANASHI_ESTAT_DIR },
     { pref: "長野県", dir: NAGANO_ESTAT_DIR },
     { pref: "岐阜県", dir: GIFU_ESTAT_DIR },
+    { pref: "静岡県", dir: SHIZUOKA_ESTAT_DIR },
     { pref: "沖縄県", dir: OKINAWA_ESTAT_DIR },
   ];
   for (const job of estatJobs) {

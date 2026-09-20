@@ -1058,6 +1058,45 @@ const GIFU: readonly LocalGov[] = [
   muni("shirakawamura", "216046", "白川村", "岐阜県"),
 ];
 
+/** 静岡県の現行市町村。slug はローマ字。静岡市・浜松市は政令市。三島市・富士市・清水町・小山町・吉田町・森町は他県と同名団体と衝突しない名前。 */
+const SHIZUOKA: readonly LocalGov[] = [
+  muni("shizuoka", "221007", "静岡市", "静岡県"),
+  muni("hamamatsu", "221309", "浜松市", "静岡県"),
+  muni("numazu", "222038", "沼津市", "静岡県"),
+  muni("atami", "222054", "熱海市", "静岡県"),
+  muni("mishimashi", "222062", "三島市", "静岡県"),
+  muni("fujinomiya", "222071", "富士宮市", "静岡県"),
+  muni("ito", "222089", "伊東市", "静岡県"),
+  muni("shimada", "222097", "島田市", "静岡県"),
+  muni("fujishi", "222101", "富士市", "静岡県"),
+  muni("iwata", "222119", "磐田市", "静岡県"),
+  muni("yaizu", "222127", "焼津市", "静岡県"),
+  muni("kakegawa", "222135", "掛川市", "静岡県"),
+  muni("fujieda", "222143", "藤枝市", "静岡県"),
+  muni("gotemba", "222151", "御殿場市", "静岡県"),
+  muni("fukuroi", "222160", "袋井市", "静岡県"),
+  muni("shimoda", "222194", "下田市", "静岡県"),
+  muni("susono", "222208", "裾野市", "静岡県"),
+  muni("kosai", "222216", "湖西市", "静岡県"),
+  muni("izushi", "222224", "伊豆市", "静岡県"),
+  muni("omaezaki", "222232", "御前崎市", "静岡県"),
+  muni("kikugawa", "222241", "菊川市", "静岡県"),
+  muni("izunokuni", "222259", "伊豆の国市", "静岡県"),
+  muni("makinohara", "222267", "牧之原市", "静岡県"),
+  muni("higashiizu", "223018", "東伊豆町", "静岡県"),
+  muni("kawazu", "223026", "河津町", "静岡県"),
+  muni("minamiizu", "223042", "南伊豆町", "静岡県"),
+  muni("matsuzaki", "223051", "松崎町", "静岡県"),
+  muni("nishiizu", "223069", "西伊豆町", "静岡県"),
+  muni("kannami", "223255", "函南町", "静岡県"),
+  muni("shimizucho", "223417", "清水町", "静岡県"),
+  muni("nagaizumi", "223425", "長泉町", "静岡県"),
+  muni("oyamacho", "223441", "小山町", "静岡県"),
+  muni("yoshidacho", "224243", "吉田町", "静岡県"),
+  muni("kawanehon", "224294", "川根本町", "静岡県"),
+  muni("morimachi", "224618", "森町", "静岡県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -1125,6 +1164,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...YAMANASHI,
   ...NAGANO,
   ...GIFU,
+  ...SHIZUOKA,
   ...OKINAWA,
 ];
 

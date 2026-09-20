@@ -246,6 +246,40 @@ export const GIFU_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: "https://www.pref.gifu.lg.jp/page/488987.html",
 };
 
+/** 静岡県「財政状況資料集」（県内市町）。2019–2024。静岡市・浜松市は載らない。 */
+export const SHIZUOKA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.shizuoka.jp/kensei/zaiseisuito/zaisei/1044537/1046000/1012199.html",
+  2020: "https://www.pref.shizuoka.jp/kensei/zaiseisuito/zaisei/1044537/1046000/1012119.html",
+  2021: "https://www.pref.shizuoka.jp/kensei/zaiseisuito/zaisei/1044537/1046000/1052939.html",
+  2022: "https://www.pref.shizuoka.jp/kensei/zaiseisuito/zaisei/1044537/1046000/1062353.html",
+  2023: "https://www.pref.shizuoka.jp/kensei/zaiseisuito/zaisei/1044537/1046000/1071186.html",
+  2024: "https://www.pref.shizuoka.jp/kensei/zaiseisuito/zaisei/1044537/1046000/1081111.html",
+};
+
+/** 静岡市は政令市のため県ページに無い。総務省の政令指定都市資料集。 */
+export const SHIZUOKA_MIC_EXCEL: Readonly<Record<number, string>> = {
+  2019: "https://www.soumu.go.jp/main_content/000740648.xlsx",
+  2020: "https://www.soumu.go.jp/main_content/000843289.xlsx",
+  2021: "https://www.soumu.go.jp/main_content/000873249.xlsx",
+  2022: "https://www.soumu.go.jp/main_content/000970310.xlsx",
+  2023: "https://www.soumu.go.jp/main_content/000999773.xlsx",
+  2024: "https://www.soumu.go.jp/main_content/001063431.xlsx",
+};
+
+export const SHIZUOKA_CODE = "221007";
+
+/** 浜松市は政令市のため県ページに無い。総務省の政令指定都市資料集。 */
+export const HAMAMATSU_MIC_EXCEL: Readonly<Record<number, string>> = {
+  2019: "https://www.soumu.go.jp/main_content/000740649.xlsx",
+  2020: "https://www.soumu.go.jp/main_content/000839180.xlsx",
+  2021: "https://www.soumu.go.jp/main_content/000873250.xlsx",
+  2022: "https://www.soumu.go.jp/main_content/000970311.xlsx",
+  2023: "https://www.soumu.go.jp/main_content/000999774.xlsx",
+  2024: "https://www.soumu.go.jp/main_content/001063432.xlsx",
+};
+
+export const HAMAMATSU_CODE = "221309";
+
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",
