@@ -14,7 +14,7 @@ import { cliPrefecture, requireCatalogPrefecture } from "./cli.ts";
 import { isPurposeLeaf, isRevenueLeaf, normalizeRevenueName, revenueGroup } from "../src/lib/taxonomy.ts";
 import type { CityFinance, FlowItem } from "../src/lib/types.ts";
 import { loadEstatFlows } from "./estat.ts";
-import { AKITA_BOOKLET_PAGES, AOMORI_BOOKLET_PAGES, CHIBA_BOOKLET_PAGES, CHIBA_CODE, CHIBA_MIC_EXCEL, FUKUSHIMA_BOOKLET_PAGES, FUKUSHIMA_SKIP_EXCEL, GUNMA_BOOKLET_PAGES, HOKKAIDO_BOOKLET_YEAR, IBARAKI_BOOKLET_PAGES, IWATE_BOOKLET_PAGES, KANAGAWA_BOOKLET_PAGES, MIYAGI_BOOKLET_YEARS, NIIGATA_BOOKLET_PAGES, OKINAWA_BOOKLET_PAGES, SAPPORO_CODE, SAPPORO_MIC_EXCEL, SAITAMA_BOOKLET_PAGES, SAITAMA_CODE, SAITAMA_MIC_EXCEL, SENDAI_CODE, SENDAI_MIC_EXCEL, TOCHIGI_BOOKLET_PAGES, TOKYO_BOOKLET_YEARS, TOYAMA_BOOKLET_PAGES, YAMAGATA_BOOKLET_PAGES } from "./sources.ts";
+import { AICHI_BOOKLET_PAGES, AKITA_BOOKLET_PAGES, AOMORI_BOOKLET_PAGES, CHIBA_BOOKLET_PAGES, CHIBA_CODE, CHIBA_MIC_EXCEL, ESTAT_MIN_YEAR, FUKUI_BOOKLET_PAGES, FUKUSHIMA_BOOKLET_PAGES, FUKUSHIMA_SKIP_EXCEL, GIFU_BOOKLET_PAGES, GUNMA_BOOKLET_PAGES, HAMAMATSU_CODE, HAMAMATSU_MIC_EXCEL, HOKKAIDO_BOOKLET_YEAR, HYOGO_BOOKLET_PAGES, HYOGO_SKIP_EXCEL, IBARAKI_BOOKLET_PAGES, ISHIKAWA_BOOKLET_PAGES, IWATE_BOOKLET_PAGES, KANAGAWA_BOOKLET_PAGES, KYOTO_BOOKLET_PAGES, KYOTO_CODE, KYOTO_MIC_EXCEL, MIE_BOOKLET_PAGES, MIYAGI_BOOKLET_YEARS, NAGANO_BOOKLET_PAGES, NAGOYA_CODE, NAGOYA_MIC_EXCEL, NIIGATA_BOOKLET_PAGES, OKINAWA_BOOKLET_PAGES, OSAKA_BOOKLET_PAGES, OSAKA_CODE, OSAKA_MIC_EXCEL, SAKAI_CODE, SAKAI_MIC_EXCEL, SAPPORO_CODE, SAPPORO_MIC_EXCEL, SAITAMA_BOOKLET_PAGES, SAITAMA_CODE, SAITAMA_MIC_EXCEL, SENDAI_CODE, SENDAI_MIC_EXCEL, SHIGA_BOOKLET_PAGES, SHIZUOKA_BOOKLET_PAGES, SHIZUOKA_CODE, SHIZUOKA_MIC_EXCEL, TOCHIGI_BOOKLET_PAGES, TOKYO_BOOKLET_YEARS, TOYAMA_BOOKLET_PAGES, YAMAGATA_BOOKLET_PAGES, YAMANASHI_BOOKLET_PAGES } from "./sources.ts";
 
 const RAW_DIR = resolve(import.meta.dirname, "../data/raw");
 const OUT_DIR = resolve(import.meta.dirname, "../public/data");
@@ -34,6 +34,18 @@ const SAITAMA_ESTAT_DIR = resolve(RAW_DIR, "estat-saitama");
 const CHIBA_ESTAT_DIR = resolve(RAW_DIR, "estat-chiba");
 const NIIGATA_ESTAT_DIR = resolve(RAW_DIR, "estat-niigata");
 const TOYAMA_ESTAT_DIR = resolve(RAW_DIR, "estat-toyama");
+const ISHIKAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-ishikawa");
+const FUKUI_ESTAT_DIR = resolve(RAW_DIR, "estat-fukui");
+const YAMANASHI_ESTAT_DIR = resolve(RAW_DIR, "estat-yamanashi");
+const NAGANO_ESTAT_DIR = resolve(RAW_DIR, "estat-nagano");
+const GIFU_ESTAT_DIR = resolve(RAW_DIR, "estat-gifu");
+const SHIZUOKA_ESTAT_DIR = resolve(RAW_DIR, "estat-shizuoka");
+const AICHI_ESTAT_DIR = resolve(RAW_DIR, "estat-aichi");
+const MIE_ESTAT_DIR = resolve(RAW_DIR, "estat-mie");
+const SHIGA_ESTAT_DIR = resolve(RAW_DIR, "estat-shiga");
+const KYOTO_ESTAT_DIR = resolve(RAW_DIR, "estat-kyoto");
+const OSAKA_ESTAT_DIR = resolve(RAW_DIR, "estat-osaka");
+const HYOGO_ESTAT_DIR = resolve(RAW_DIR, "estat-hyogo");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 const TOKYO_EXCEL_YEARS = [2019, ...TOKYO_BOOKLET_YEARS] as const;
 
@@ -235,6 +247,54 @@ function sourceDetail(gov: LocalGov): string {
   if (gov.prefecture === "富山県") {
     return "2019–2024年度は富山県「財政状況資料集」の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
   }
+  if (gov.prefecture === "石川県") {
+    return "2019–2024年度は石川県「市町財政状況資料集」の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  }
+  if (gov.prefecture === "福井県") {
+    return "2019–2024年度は福井県「財政状況資料集」の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  }
+  if (gov.prefecture === "山梨県") {
+    return "2019–2024年度は山梨県「財政状況資料集」の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  }
+  if (gov.prefecture === "長野県") {
+    return "2019–2024年度は長野県「市町村財政状況資料集」の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  }
+  if (gov.prefecture === "岐阜県") {
+    return "2019–2024年度は岐阜県「財政状況資料集」の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  }
+  if (gov.code === SHIZUOKA_CODE || gov.code === HAMAMATSU_CODE) {
+    return "2019–2024年度は総務省「財政状況資料集」（政令指定都市）の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  }
+  if (gov.prefecture === "静岡県") {
+    return "2019–2024年度は静岡県「財政状況資料集」の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  }
+  if (gov.code === NAGOYA_CODE) {
+    return "2019–2024年度は総務省「財政状況資料集」（政令指定都市）の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  }
+  if (gov.prefecture === "愛知県") {
+    return "2019–2024年度は愛知県「財政状況資料集」の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  }
+  if (gov.prefecture === "三重県") {
+    return "2019–2024年度は三重県「財政状況資料集」の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  }
+  if (gov.prefecture === "滋賀県") {
+    return "2019–2024年度は滋賀県「財政状況資料集」の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  }
+  if (gov.code === KYOTO_CODE) {
+    return "2019–2024年度は総務省「財政状況資料集」（政令指定都市）の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  }
+  if (gov.prefecture === "京都府") {
+    return "2019–2024年度は京都府「財政状況資料集」の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  }
+  if (gov.code === OSAKA_CODE || gov.code === SAKAI_CODE) {
+    return "2019–2024年度は総務省「財政状況資料集」（政令指定都市）の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  }
+  if (gov.prefecture === "大阪府") {
+    return "2019–2024年度は大阪府「財政状況資料集」の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  }
+  if (gov.prefecture === "兵庫県") {
+    return "2019–2024年度は兵庫県「財政状況資料集」の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  }
   if (gov.code === SAPPORO_CODE) {
     return "2019–2024年度は総務省「財政状況資料集」（政令指定都市）の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
   }
@@ -267,6 +327,18 @@ function estatDir(gov: LocalGov): string {
   if (gov.prefecture === "千葉県") return CHIBA_ESTAT_DIR;
   if (gov.prefecture === "新潟県") return NIIGATA_ESTAT_DIR;
   if (gov.prefecture === "富山県") return TOYAMA_ESTAT_DIR;
+  if (gov.prefecture === "石川県") return ISHIKAWA_ESTAT_DIR;
+  if (gov.prefecture === "福井県") return FUKUI_ESTAT_DIR;
+  if (gov.prefecture === "山梨県") return YAMANASHI_ESTAT_DIR;
+  if (gov.prefecture === "長野県") return NAGANO_ESTAT_DIR;
+  if (gov.prefecture === "岐阜県") return GIFU_ESTAT_DIR;
+  if (gov.prefecture === "静岡県") return SHIZUOKA_ESTAT_DIR;
+  if (gov.prefecture === "愛知県") return AICHI_ESTAT_DIR;
+  if (gov.prefecture === "三重県") return MIE_ESTAT_DIR;
+  if (gov.prefecture === "滋賀県") return SHIGA_ESTAT_DIR;
+  if (gov.prefecture === "京都府") return KYOTO_ESTAT_DIR;
+  if (gov.prefecture === "大阪府") return OSAKA_ESTAT_DIR;
+  if (gov.prefecture === "兵庫県") return HYOGO_ESTAT_DIR;
   if (gov.prefecture === "東京都") return TOKYO_ESTAT_DIR;
   throw new Error(`e-Stat の置き場がない: ${gov.prefecture}`);
 }
@@ -382,6 +454,116 @@ function excelJobs(gov: LocalGov): { year: number; path: string }[] {
       path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
     }));
   }
+  if (gov.prefecture === "石川県") {
+    return Object.keys(ISHIKAWA_BOOKLET_PAGES).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
+  }
+  if (gov.prefecture === "福井県") {
+    return Object.keys(FUKUI_BOOKLET_PAGES).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
+  }
+  if (gov.prefecture === "山梨県") {
+    return Object.keys(YAMANASHI_BOOKLET_PAGES).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
+  }
+  if (gov.prefecture === "長野県") {
+    return Object.keys(NAGANO_BOOKLET_PAGES).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
+  }
+  if (gov.prefecture === "岐阜県") {
+    return Object.keys(GIFU_BOOKLET_PAGES).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
+  }
+  if (gov.code === SHIZUOKA_CODE) {
+    return Object.keys(SHIZUOKA_MIC_EXCEL).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
+  }
+  if (gov.code === HAMAMATSU_CODE) {
+    return Object.keys(HAMAMATSU_MIC_EXCEL).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
+  }
+  if (gov.prefecture === "静岡県") {
+    return Object.keys(SHIZUOKA_BOOKLET_PAGES).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
+  }
+  if (gov.code === NAGOYA_CODE) {
+    return Object.keys(NAGOYA_MIC_EXCEL).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
+  }
+  if (gov.prefecture === "愛知県") {
+    return Object.keys(AICHI_BOOKLET_PAGES).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
+  }
+  if (gov.prefecture === "三重県") {
+    return Object.keys(MIE_BOOKLET_PAGES).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
+  }
+  if (gov.prefecture === "滋賀県") {
+    return Object.keys(SHIGA_BOOKLET_PAGES).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
+  }
+  if (gov.code === KYOTO_CODE) {
+    return Object.keys(KYOTO_MIC_EXCEL).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
+  }
+  if (gov.prefecture === "京都府") {
+    return Object.keys(KYOTO_BOOKLET_PAGES).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
+  }
+  if (gov.code === OSAKA_CODE) {
+    return Object.keys(OSAKA_MIC_EXCEL).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
+  }
+  if (gov.code === SAKAI_CODE) {
+    return Object.keys(SAKAI_MIC_EXCEL).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
+  }
+  if (gov.prefecture === "大阪府") {
+    return Object.keys(OSAKA_BOOKLET_PAGES).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
+  }
+  if (gov.prefecture === "兵庫県") {
+    return Object.keys(HYOGO_BOOKLET_PAGES)
+      .map((year) => ({
+        year: Number(year),
+        path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+      }))
+      .filter((job) => !HYOGO_SKIP_EXCEL.has(`${gov.code}:${job.year}`));
+  }
   if (gov.code === SAPPORO_CODE) {
     return Object.keys(SAPPORO_MIC_EXCEL).map((year) => ({
       year: Number(year),
@@ -438,9 +620,11 @@ async function buildGov(gov: LocalGov): Promise<CityFinance> {
     expenditureByYear.set(year, parsed.expenditure);
   }
 
+  const minYear = ESTAT_MIN_YEAR[gov.code];
   const years = [...new Set([...revenueByYear.keys(), ...expenditureByYear.keys()])]
     .sort((a, b) => a - b)
-    .filter((year) => (revenueByYear.get(year)?.length ?? 0) > 0 && (expenditureByYear.get(year)?.length ?? 0) > 0);
+    .filter((year) => (revenueByYear.get(year)?.length ?? 0) > 0 && (expenditureByYear.get(year)?.length ?? 0) > 0)
+    .filter((year) => minYear == null || year >= minYear);
 
   const revenue: FlowItem[] = [];
   const expenditure: FlowItem[] = [];

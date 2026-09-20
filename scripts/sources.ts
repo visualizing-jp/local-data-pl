@@ -23,7 +23,13 @@ export const EXCEL_OVERRIDES: Readonly<Record<string, string>> = {
   "472093:2023":
     "https://www.city.nago.okinawa.jp/articles/2018071000056/file_contents/R5_47293_2023.xlsx",
   "473600:2021": "https://www.vill.izena.okinawa.jp/userfiles/files/R3_zaiseisiryou.xlsx",
+  "252140:2019": "https://www.city.maibara.lg.jp/material/files/group/8/R1zaiseizyoukyousiryou_01.xlsx",
+  "282057:2022": "https://www.city.sumoto.lg.jp/uploaded/attachment/17401.xlsx",
+  "282197:2021": "https://www.city.sanda.lg.jp/material/files/group/10/2021_zaiseijokyoshiryosyu.xlsx",
 };
+
+/** 県掲載が公会計シートのみで、市サイトも PDF しか無い。 */
+export const HYOGO_SKIP_EXCEL: ReadonlySet<string> = new Set(["282251:2021"]);
 
 /** 北海道内市町村の財政状況資料集。道サイトは最新年の ZIP だけを残す。札幌市は載らない。 */
 export const HOKKAIDO_BOOKLET_PAGE =
@@ -105,6 +111,11 @@ export const FUKUSHIMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
 
 /** 県の2019掲載が公会計シートのみで「普通会計の状況」が無い。 */
 export const FUKUSHIMA_SKIP_EXCEL: ReadonlySet<string> = new Set(["073628:2019", "073644:2019", "074071:2019"]);
+
+/** 現行団体としては載せない e-Stat の下限。揖斐川町は合併前の揖斐町コードを引き継ぐが、2004–2018 が無く途切れる。 */
+export const ESTAT_MIN_YEAR: Readonly<Record<string, number>> = {
+  "214021": 2019,
+};
 
 /** 茨城県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const IBARAKI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
@@ -189,6 +200,198 @@ export const TOYAMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2022: "https://www.pref.toyama.jp/140403/r4zaiseijyoukyou.html",
   2023: "https://www.pref.toyama.jp/140403/r5zaiseijoukyou.html",
   2024: "https://www.pref.toyama.jp/140403/r6zaiseijoukyou.html",
+};
+
+/** 石川県「市町財政状況資料集」（県内市町）。2019–2024。政令市は無い。 */
+export const ISHIKAWA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.ishikawa.lg.jp/sichousien/hikakubunseki/r1.html",
+  2020: "https://www.pref.ishikawa.lg.jp/sichousien/hikakubunseki/r2.html",
+  2021: "https://www.pref.ishikawa.lg.jp/sichousien/hikakubunseki/r3.html",
+  2022: "https://www.pref.ishikawa.lg.jp/sichousien/hikakubunseki/r4.html",
+  2023: "https://www.pref.ishikawa.lg.jp/sichousien/hikakubunseki/r5.html",
+  2024: "https://www.pref.ishikawa.lg.jp/sichousien/hikakubunseki/r6.html",
+};
+
+/** 福井県「財政状況資料集」（県内市町）。2019–2024。政令市は無い。令和元・2年度のパスだけ syuu。 */
+export const FUKUI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.fukui.lg.jp/doc/sityousinkou/r01zaiseisiryousyuu.html",
+  2020: "https://www.pref.fukui.lg.jp/doc/sityousinkou/r02zaiseisiryousyuu.html",
+  2021: "https://www.pref.fukui.lg.jp/doc/sityousinkou/r03zaiseisiryoushuu.html",
+  2022: "https://www.pref.fukui.lg.jp/doc/sityousinkou/r04zaiseisiryoushuu.html",
+  2023: "https://www.pref.fukui.lg.jp/doc/sityousinkou/r05zaiseisiryoushuu.html",
+  2024: "https://www.pref.fukui.lg.jp/doc/sityousinkou/r06zaiseisiryoushuu.html",
+};
+
+/** 山梨県「財政状況資料集」（県内市町村）。2019–2024。政令市は無い。 */
+export const YAMANASHI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.yamanashi.jp/zaisei-k/r1zaiseijyoukyoushiryousyu.html",
+  2020: "https://www.pref.yamanashi.jp/zaisei-k/r2zaiseijyoukyoushiryousyu.html",
+  2021: "https://www.pref.yamanashi.jp/zaisei-k/r3zaiseijyoukyoushiryousyu.html",
+  2022: "https://www.pref.yamanashi.jp/zaisei-k/r4zaiseijyoukyoushiryousyu.html",
+  2023: "https://www.pref.yamanashi.jp/zaisei-k/r5zaiseijyoukyoushiryousyu.html",
+  2024: "https://www.pref.yamanashi.jp/zaisei-k/r6zaiseijyoukyoushiryousyu.html",
+};
+
+/** 長野県「市町村財政状況資料集」（県内市町村）。2019–2024。政令市は無い。令和元年度のパスだけ siryosyu。 */
+export const NAGANO_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.nagano.lg.jp/shichoson/kensei/shichoson/zaise/shiryo/r1zaiseisiryosyu.html",
+  2020: "https://www.pref.nagano.lg.jp/shichoson/kensei/shichoson/zaise/shiryo/r2zaiseishiryoshu.html",
+  2021: "https://www.pref.nagano.lg.jp/shichoson/kensei/shichoson/zaise/shiryo/r3zaiseishiryoshu.html",
+  2022: "https://www.pref.nagano.lg.jp/shichoson/kensei/shichoson/zaise/shiryo/r4zaiseishiryoshu.html",
+  2023: "https://www.pref.nagano.lg.jp/shichoson/kensei/shichoson/zaise/shiryo/r5zaiseishiryoshu.html",
+  2024: "https://www.pref.nagano.lg.jp/shichoson/kensei/shichoson/zaise/shiryo/r6zaiseishiryoshu.html",
+};
+
+/** 岐阜県「財政状況資料集」（県内市町村）。2019–2024。政令市は無い。 */
+export const GIFU_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.gifu.lg.jp/page/138476.html",
+  2020: "https://www.pref.gifu.lg.jp/page/205378.html",
+  2021: "https://www.pref.gifu.lg.jp/page/278047.html",
+  2022: "https://www.pref.gifu.lg.jp/page/349680.html",
+  2023: "https://www.pref.gifu.lg.jp/page/422551.html",
+  2024: "https://www.pref.gifu.lg.jp/page/488987.html",
+};
+
+/** 静岡県「財政状況資料集」（県内市町）。2019–2024。静岡市・浜松市は載らない。 */
+export const SHIZUOKA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.shizuoka.jp/kensei/zaiseisuito/zaisei/1044537/1046000/1012199.html",
+  2020: "https://www.pref.shizuoka.jp/kensei/zaiseisuito/zaisei/1044537/1046000/1012119.html",
+  2021: "https://www.pref.shizuoka.jp/kensei/zaiseisuito/zaisei/1044537/1046000/1052939.html",
+  2022: "https://www.pref.shizuoka.jp/kensei/zaiseisuito/zaisei/1044537/1046000/1062353.html",
+  2023: "https://www.pref.shizuoka.jp/kensei/zaiseisuito/zaisei/1044537/1046000/1071186.html",
+  2024: "https://www.pref.shizuoka.jp/kensei/zaiseisuito/zaisei/1044537/1046000/1081111.html",
+};
+
+/** 静岡市は政令市のため県ページに無い。総務省の政令指定都市資料集。 */
+export const SHIZUOKA_MIC_EXCEL: Readonly<Record<number, string>> = {
+  2019: "https://www.soumu.go.jp/main_content/000740648.xlsx",
+  2020: "https://www.soumu.go.jp/main_content/000843289.xlsx",
+  2021: "https://www.soumu.go.jp/main_content/000873249.xlsx",
+  2022: "https://www.soumu.go.jp/main_content/000970310.xlsx",
+  2023: "https://www.soumu.go.jp/main_content/000999773.xlsx",
+  2024: "https://www.soumu.go.jp/main_content/001063431.xlsx",
+};
+
+export const SHIZUOKA_CODE = "221007";
+
+/** 浜松市は政令市のため県ページに無い。総務省の政令指定都市資料集。 */
+export const HAMAMATSU_MIC_EXCEL: Readonly<Record<number, string>> = {
+  2019: "https://www.soumu.go.jp/main_content/000740649.xlsx",
+  2020: "https://www.soumu.go.jp/main_content/000839180.xlsx",
+  2021: "https://www.soumu.go.jp/main_content/000873250.xlsx",
+  2022: "https://www.soumu.go.jp/main_content/000970311.xlsx",
+  2023: "https://www.soumu.go.jp/main_content/000999774.xlsx",
+  2024: "https://www.soumu.go.jp/main_content/001063432.xlsx",
+};
+
+export const HAMAMATSU_CODE = "221309";
+
+/** 愛知県「財政状況資料集」（県内市町村）。2019–2024。名古屋市は載らない。令和5–元は1ページ。 */
+export const AICHI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.aichi.jp/soshiki/shichoson/0000054848.html",
+  2020: "https://www.pref.aichi.jp/soshiki/shichoson/0000054848.html",
+  2021: "https://www.pref.aichi.jp/soshiki/shichoson/0000054848.html",
+  2022: "https://www.pref.aichi.jp/soshiki/shichoson/0000054848.html",
+  2023: "https://www.pref.aichi.jp/soshiki/shichoson/0000054848.html",
+  2024: "https://www.pref.aichi.jp/soshiki/shichoson/0000061122.html",
+};
+
+/** 名古屋市は政令市のため県ページに無い。総務省の政令指定都市資料集。 */
+export const NAGOYA_MIC_EXCEL: Readonly<Record<number, string>> = {
+  2019: "https://www.soumu.go.jp/main_content/000740650.xlsx",
+  2020: "https://www.soumu.go.jp/main_content/000839181.xlsx",
+  2021: "https://www.soumu.go.jp/main_content/000873252.xlsx",
+  2022: "https://www.soumu.go.jp/main_content/000970312.xlsx",
+  2023: "https://www.soumu.go.jp/main_content/000999775.xlsx",
+  2024: "https://www.soumu.go.jp/main_content/001063433.xlsx",
+};
+
+export const NAGOYA_CODE = "231002";
+
+/** 三重県「財政状況資料集」（県内市町）。2019–2024。政令市は無い。令和3年度だけ番号が飛ぶ。 */
+export const MIE_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.mie.lg.jp/SHICHOS/HP/89248000001_00008.htm",
+  2020: "https://www.pref.mie.lg.jp/SHICHOS/HP/89248000001_00009.htm",
+  2021: "https://www.pref.mie.lg.jp/SHICHOS/HP/89248000001_00010.htm",
+  2022: "https://www.pref.mie.lg.jp/SHICHOS/HP/89248000001_00012.htm",
+  2023: "https://www.pref.mie.lg.jp/SHICHOS/HP/89248000001_00013.htm",
+  2024: "https://www.pref.mie.lg.jp/SHICHOS/HP/89248000001_00014.htm",
+};
+
+/** 滋賀県「財政状況資料集」（県内市町）。2019–2024。政令市は無い。 */
+export const SHIGA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.shiga.lg.jp/bh00/9201.html",
+  2020: "https://www.pref.shiga.lg.jp/bh00/9200.html",
+  2021: "https://www.pref.shiga.lg.jp/bh00/9199.html",
+  2022: "https://www.pref.shiga.lg.jp/bh00/9198.html",
+  2023: "https://www.pref.shiga.lg.jp/bh00/9197.html",
+  2024: "https://www.pref.shiga.lg.jp/bh00/23158.html",
+};
+
+/** 京都府「財政状況資料集」（府内市町村）。2019–2024。京都市は載らない。令和3だけパスが違う。 */
+export const KYOTO_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.kyoto.jp/tiho/01zaiseijoukyou.html",
+  2020: "https://www.pref.kyoto.jp/tiho/02zaiseijoukyou.html",
+  2021: "https://www.pref.kyoto.jp/tiho/3nenndo/03zaiseizyoukyousiryousyuu.html",
+  2022: "https://www.pref.kyoto.jp/tiho/04zaiseijoukyou.html",
+  2023: "https://www.pref.kyoto.jp/tiho/05zaiseijoukyou.html",
+  2024: "https://www.pref.kyoto.jp/tiho/06zaiseijoukyou.html",
+};
+
+/** 京都市は政令市のため府ページに無い。総務省の政令指定都市資料集。 */
+export const KYOTO_MIC_EXCEL: Readonly<Record<number, string>> = {
+  2019: "https://www.soumu.go.jp/main_content/000740651.xlsx",
+  2020: "https://www.soumu.go.jp/main_content/000841930.xlsx",
+  2021: "https://www.soumu.go.jp/main_content/000873253.xlsx",
+  2022: "https://www.soumu.go.jp/main_content/000970897.xlsx",
+  2023: "https://www.soumu.go.jp/main_content/000999776.xlsx",
+  2024: "https://www.soumu.go.jp/main_content/001063434.xlsx",
+};
+
+export const KYOTO_CODE = "261009";
+
+/** 大阪府「財政状況資料集」（府内市町村）。2019–2024。大阪市・堺市は載らない。年によってファイル名の表記が揺れる。 */
+export const OSAKA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.osaka.lg.jp/o040050/shichoson/zaiseijoukyo/01zaiseijyoukyou.html",
+  2020: "https://www.pref.osaka.lg.jp/o040050/shichoson/zaiseijoukyo/02zaiseijyoukyou.html",
+  2021: "https://www.pref.osaka.lg.jp/o040050/shichoson/zaiseijoukyo/03zaiseijyoukyou.html",
+  2022: "https://www.pref.osaka.lg.jp/o040050/shichoson/zaiseijoukyo/04zaiseijyoukyo.html",
+  2023: "https://www.pref.osaka.lg.jp/o040050/shichoson/zaiseijoukyo/05zaiseijyoukyo.html",
+  2024: "https://www.pref.osaka.lg.jp/o040050/shichoson/zaiseijoukyo/06zaiseijoukyo.html",
+};
+
+/** 大阪市は政令市のため府ページに無い。総務省の政令指定都市資料集。 */
+export const OSAKA_MIC_EXCEL: Readonly<Record<number, string>> = {
+  2019: "https://www.soumu.go.jp/main_content/000740652.xlsx",
+  2020: "https://www.soumu.go.jp/main_content/000839182.xlsx",
+  2021: "https://www.soumu.go.jp/main_content/000873254.xlsx",
+  2022: "https://www.soumu.go.jp/main_content/001001817.xlsx",
+  2023: "https://www.soumu.go.jp/main_content/000999777.xlsx",
+  2024: "https://www.soumu.go.jp/main_content/001063435.xlsx",
+};
+
+export const OSAKA_CODE = "271004";
+
+/** 堺市は政令市のため府ページに無い。総務省の政令指定都市資料集。 */
+export const SAKAI_MIC_EXCEL: Readonly<Record<number, string>> = {
+  2019: "https://www.soumu.go.jp/main_content/000740653.xlsx",
+  2020: "https://www.soumu.go.jp/main_content/000839183.xlsx",
+  2021: "https://www.soumu.go.jp/main_content/000873255.xlsx",
+  2022: "https://www.soumu.go.jp/main_content/000970899.xlsx",
+  2023: "https://www.soumu.go.jp/main_content/000999778.xlsx",
+  2024: "https://www.soumu.go.jp/main_content/001063436.xlsx",
+};
+
+export const SAKAI_CODE = "271403";
+
+/** 兵庫県「財政状況資料集」（県内市町）。2019–2024。神戸市も県ページに載る。令和元年度だけパスが違う。 */
+export const HYOGO_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://web.pref.hyogo.lg.jp/kk25/01zaiseijoukyou1.html",
+  2020: "https://web.pref.hyogo.lg.jp/kk25/zaiseijoukyoushiryou02.html",
+  2021: "https://web.pref.hyogo.lg.jp/kk25/zaiseijoukyoushiryou03.html",
+  2022: "https://web.pref.hyogo.lg.jp/kk25/zaiseijoukyoushiryou04.html",
+  2023: "https://web.pref.hyogo.lg.jp/kk25/zaiseijoukyoushiryou05.html",
+  2024: "https://web.pref.hyogo.lg.jp/kk25/zaiseijoukyoushiryou06.html",
 };
 
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
