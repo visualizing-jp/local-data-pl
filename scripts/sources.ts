@@ -25,6 +25,7 @@ export const EXCEL_OVERRIDES: Readonly<Record<string, string>> = {
   "473600:2021": "https://www.vill.izena.okinawa.jp/userfiles/files/R3_zaiseisiryou.xlsx",
   "252140:2019": "https://www.city.maibara.lg.jp/material/files/group/8/R1zaiseizyoukyousiryou_01.xlsx",
   "282057:2022": "https://www.city.sumoto.lg.jp/uploaded/attachment/17401.xlsx",
+  "282197:2021": "https://www.city.sanda.lg.jp/material/files/group/10/2021_zaiseijokyoshiryosyu.xlsx",
 };
 
 /** 県掲載が公会計シートのみで、市サイトも PDF しか無い。 */
