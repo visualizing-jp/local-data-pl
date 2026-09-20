@@ -221,6 +221,16 @@ export const YAMANASHI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: "https://www.pref.yamanashi.jp/zaisei-k/r6zaiseijyoukyoushiryousyu.html",
 };
 
+/** 長野県「市町村財政状況資料集」（県内市町村）。2019–2024。政令市は無い。令和元年度のパスだけ siryosyu。 */
+export const NAGANO_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.nagano.lg.jp/shichoson/kensei/shichoson/zaise/shiryo/r1zaiseisiryosyu.html",
+  2020: "https://www.pref.nagano.lg.jp/shichoson/kensei/shichoson/zaise/shiryo/r2zaiseishiryoshu.html",
+  2021: "https://www.pref.nagano.lg.jp/shichoson/kensei/shichoson/zaise/shiryo/r3zaiseishiryoshu.html",
+  2022: "https://www.pref.nagano.lg.jp/shichoson/kensei/shichoson/zaise/shiryo/r4zaiseishiryoshu.html",
+  2023: "https://www.pref.nagano.lg.jp/shichoson/kensei/shichoson/zaise/shiryo/r5zaiseishiryoshu.html",
+  2024: "https://www.pref.nagano.lg.jp/shichoson/kensei/shichoson/zaise/shiryo/r6zaiseishiryoshu.html",
+};
+
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",

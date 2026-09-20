@@ -45,6 +45,7 @@ import {
   ISHIKAWA_BOOKLET_PAGES,
   FUKUI_BOOKLET_PAGES,
   YAMANASHI_BOOKLET_PAGES,
+  NAGANO_BOOKLET_PAGES,
   YAMAGATA_BOOKLET_PAGES,
   HOKKAIDO_BOOKLET_PAGE,
   HOKKAIDO_BOOKLET_YEAR,
@@ -87,6 +88,7 @@ const TOYAMA_ESTAT_DIR = resolve(RAW_DIR, "estat-toyama");
 const ISHIKAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-ishikawa");
 const FUKUI_ESTAT_DIR = resolve(RAW_DIR, "estat-fukui");
 const YAMANASHI_ESTAT_DIR = resolve(RAW_DIR, "estat-yamanashi");
+const NAGANO_ESTAT_DIR = resolve(RAW_DIR, "estat-nagano");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 const ESTAT_ENDPOINT = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData";
 const HACHIOJI_2019 = `${DOWNLOAD_BASE}/${HACHIOJI_2019_FILE}`;
@@ -389,6 +391,10 @@ async function fetchExcelYamanashi(force: boolean) {
   await fetchExcelPrefecture("山梨県", YAMANASHI_BOOKLET_PAGES, force);
 }
 
+async function fetchExcelNagano(force: boolean) {
+  await fetchExcelPrefecture("長野県", NAGANO_BOOKLET_PAGES, force);
+}
+
 async function fetchExcelIwate(force: boolean) {
   const expected = CATALOG.filter((gov) => gov.prefecture === "岩手県");
   for (const [yearRaw, pageUrl] of Object.entries(IWATE_BOOKLET_PAGES)) {
@@ -609,6 +615,7 @@ async function main() {
     { pref: "石川県", run: fetchExcelIshikawa },
     { pref: "福井県", run: fetchExcelFukui },
     { pref: "山梨県", run: fetchExcelYamanashi },
+    { pref: "長野県", run: fetchExcelNagano },
     { pref: "沖縄県", run: fetchExcelOkinawa },
   ];
   for (const job of excelJobs) {
@@ -641,6 +648,7 @@ async function main() {
     { pref: "石川県", dir: ISHIKAWA_ESTAT_DIR },
     { pref: "福井県", dir: FUKUI_ESTAT_DIR },
     { pref: "山梨県", dir: YAMANASHI_ESTAT_DIR },
+    { pref: "長野県", dir: NAGANO_ESTAT_DIR },
     { pref: "沖縄県", dir: OKINAWA_ESTAT_DIR },
   ];
   for (const job of estatJobs) {
