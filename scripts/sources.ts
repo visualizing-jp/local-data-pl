@@ -191,6 +191,16 @@ export const TOYAMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: "https://www.pref.toyama.jp/140403/r6zaiseijoukyou.html",
 };
 
+/** 石川県「市町財政状況資料集」（県内市町）。2019–2024。政令市は無い。 */
+export const ISHIKAWA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.ishikawa.lg.jp/sichousien/hikakubunseki/r1.html",
+  2020: "https://www.pref.ishikawa.lg.jp/sichousien/hikakubunseki/r2.html",
+  2021: "https://www.pref.ishikawa.lg.jp/sichousien/hikakubunseki/r3.html",
+  2022: "https://www.pref.ishikawa.lg.jp/sichousien/hikakubunseki/r4.html",
+  2023: "https://www.pref.ishikawa.lg.jp/sichousien/hikakubunseki/r5.html",
+  2024: "https://www.pref.ishikawa.lg.jp/sichousien/hikakubunseki/r6.html",
+};
+
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",

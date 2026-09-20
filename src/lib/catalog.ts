@@ -856,6 +856,29 @@ const TOYAMA: readonly LocalGov[] = [
   muni("asahimachi", "163431", "朝日町", "富山県"),
 ];
 
+/** 石川県の現行市町。slug はローマ字。かほく市は山形の河北町と衝突しない名前。 */
+const ISHIKAWA: readonly LocalGov[] = [
+  muni("kanazawa", "172014", "金沢市", "石川県"),
+  muni("nanao", "172022", "七尾市", "石川県"),
+  muni("komatsu", "172031", "小松市", "石川県"),
+  muni("wajima", "172049", "輪島市", "石川県"),
+  muni("suzu", "172057", "珠洲市", "石川県"),
+  muni("kaga", "172065", "加賀市", "石川県"),
+  muni("hakui", "172073", "羽咋市", "石川県"),
+  muni("kahokushi", "172090", "かほく市", "石川県"),
+  muni("hakusan", "172103", "白山市", "石川県"),
+  muni("nomi", "172111", "能美市", "石川県"),
+  muni("nonoichi", "172120", "野々市市", "石川県"),
+  muni("kawakita", "173240", "川北町", "石川県"),
+  muni("tsubata", "173614", "津幡町", "石川県"),
+  muni("uchinada", "173657", "内灘町", "石川県"),
+  muni("shika", "173843", "志賀町", "石川県"),
+  muni("hodatsushimizu", "173860", "宝達志水町", "石川県"),
+  muni("nakanoto", "174076", "中能登町", "石川県"),
+  muni("anamizu", "174611", "穴水町", "石川県"),
+  muni("noto", "174637", "能登町", "石川県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -918,6 +941,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...KANAGAWA,
   ...NIIGATA,
   ...TOYAMA,
+  ...ISHIKAWA,
   ...OKINAWA,
 ];
 
