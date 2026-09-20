@@ -1188,6 +1188,29 @@ const MIE: readonly LocalGov[] = [
   muni("kiho", "245623", "紀宝町", "三重県"),
 ];
 
+/** 滋賀県の現行市町。slug はローマ字。草津市・湖南市・日野町は他県と同名団体と衝突しない名前。 */
+const SHIGA: readonly LocalGov[] = [
+  muni("otsu", "252018", "大津市", "滋賀県"),
+  muni("hikone", "252026", "彦根市", "滋賀県"),
+  muni("nagahama", "252034", "長浜市", "滋賀県"),
+  muni("omihachiman", "252042", "近江八幡市", "滋賀県"),
+  muni("kusatsushi", "252069", "草津市", "滋賀県"),
+  muni("moriyama", "252077", "守山市", "滋賀県"),
+  muni("ritto", "252085", "栗東市", "滋賀県"),
+  muni("koka", "252093", "甲賀市", "滋賀県"),
+  muni("yasu", "252107", "野洲市", "滋賀県"),
+  muni("konanshi", "252115", "湖南市", "滋賀県"),
+  muni("takashima", "252123", "高島市", "滋賀県"),
+  muni("higashiomi", "252131", "東近江市", "滋賀県"),
+  muni("maibara", "252140", "米原市", "滋賀県"),
+  muni("hinocho", "253839", "日野町", "滋賀県"),
+  muni("ryuo", "253847", "竜王町", "滋賀県"),
+  muni("aisho", "254258", "愛荘町", "滋賀県"),
+  muni("toyosato", "254410", "豊郷町", "滋賀県"),
+  muni("kora", "254428", "甲良町", "滋賀県"),
+  muni("taga", "254436", "多賀町", "滋賀県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -1258,6 +1281,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...SHIZUOKA,
   ...AICHI,
   ...MIE,
+  ...SHIGA,
   ...OKINAWA,
 ];
 

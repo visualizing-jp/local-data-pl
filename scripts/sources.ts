@@ -312,6 +312,16 @@ export const MIE_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: "https://www.pref.mie.lg.jp/SHICHOS/HP/89248000001_00014.htm",
 };
 
+/** 滋賀県「財政状況資料集」（県内市町）。2019–2024。政令市は無い。 */
+export const SHIGA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.shiga.lg.jp/bh00/9201.html",
+  2020: "https://www.pref.shiga.lg.jp/bh00/9200.html",
+  2021: "https://www.pref.shiga.lg.jp/bh00/9199.html",
+  2022: "https://www.pref.shiga.lg.jp/bh00/9198.html",
+  2023: "https://www.pref.shiga.lg.jp/bh00/9197.html",
+  2024: "https://www.pref.shiga.lg.jp/bh00/23158.html",
+};
+
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",

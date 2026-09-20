@@ -50,6 +50,7 @@ import {
   GIFU_BOOKLET_PAGES,
   AICHI_BOOKLET_PAGES,
   MIE_BOOKLET_PAGES,
+  SHIGA_BOOKLET_PAGES,
   HAMAMATSU_CODE,
   HAMAMATSU_MIC_EXCEL,
   NAGOYA_CODE,
@@ -104,6 +105,7 @@ const GIFU_ESTAT_DIR = resolve(RAW_DIR, "estat-gifu");
 const SHIZUOKA_ESTAT_DIR = resolve(RAW_DIR, "estat-shizuoka");
 const AICHI_ESTAT_DIR = resolve(RAW_DIR, "estat-aichi");
 const MIE_ESTAT_DIR = resolve(RAW_DIR, "estat-mie");
+const SHIGA_ESTAT_DIR = resolve(RAW_DIR, "estat-shiga");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 const ESTAT_ENDPOINT = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData";
 const HACHIOJI_2019 = `${DOWNLOAD_BASE}/${HACHIOJI_2019_FILE}`;
@@ -418,6 +420,10 @@ async function fetchExcelMie(force: boolean) {
   await fetchExcelPrefecture("三重県", MIE_BOOKLET_PAGES, force);
 }
 
+async function fetchExcelShiga(force: boolean) {
+  await fetchExcelPrefecture("滋賀県", SHIGA_BOOKLET_PAGES, force);
+}
+
 async function fetchExcelShizuoka(force: boolean) {
   await fetchExcelPrefecture("静岡県", SHIZUOKA_BOOKLET_PAGES, force, parseCityBooklet, [
     SHIZUOKA_CODE,
@@ -705,6 +711,7 @@ async function main() {
     { pref: "静岡県", run: fetchExcelShizuoka },
     { pref: "愛知県", run: fetchExcelAichi },
     { pref: "三重県", run: fetchExcelMie },
+    { pref: "滋賀県", run: fetchExcelShiga },
     { pref: "沖縄県", run: fetchExcelOkinawa },
   ];
   for (const job of excelJobs) {
@@ -742,6 +749,7 @@ async function main() {
     { pref: "静岡県", dir: SHIZUOKA_ESTAT_DIR },
     { pref: "愛知県", dir: AICHI_ESTAT_DIR },
     { pref: "三重県", dir: MIE_ESTAT_DIR },
+    { pref: "滋賀県", dir: SHIGA_ESTAT_DIR },
     { pref: "沖縄県", dir: OKINAWA_ESTAT_DIR },
   ];
   for (const job of estatJobs) {
