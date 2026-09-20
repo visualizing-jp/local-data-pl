@@ -181,6 +181,16 @@ export const NIIGATA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: "https://www.pref.niigata.lg.jp/sec/shichouson/zaiseijyoukyou-shiryousyuu-r6.html",
 };
 
+/** 富山県「財政状況資料集」（県内市町村）。2019–2024。政令市は無い。 */
+export const TOYAMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.toyama.jp/140403/r1zaiseijoukyou.html",
+  2020: "https://www.pref.toyama.jp/140403/r2zaiseijoukyou.html",
+  2021: "https://www.pref.toyama.jp/140403/r3zaiseijoukyou.html",
+  2022: "https://www.pref.toyama.jp/140403/r4zaiseijyoukyou.html",
+  2023: "https://www.pref.toyama.jp/140403/r5zaiseijoukyou.html",
+  2024: "https://www.pref.toyama.jp/140403/r6zaiseijoukyou.html",
+};
+
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",

@@ -41,6 +41,7 @@ import {
   CHIBA_CODE,
   CHIBA_MIC_EXCEL,
   NIIGATA_BOOKLET_PAGES,
+  TOYAMA_BOOKLET_PAGES,
   YAMAGATA_BOOKLET_PAGES,
   HOKKAIDO_BOOKLET_PAGE,
   HOKKAIDO_BOOKLET_YEAR,
@@ -79,6 +80,7 @@ const GUNMA_ESTAT_DIR = resolve(RAW_DIR, "estat-gunma");
 const SAITAMA_ESTAT_DIR = resolve(RAW_DIR, "estat-saitama");
 const CHIBA_ESTAT_DIR = resolve(RAW_DIR, "estat-chiba");
 const NIIGATA_ESTAT_DIR = resolve(RAW_DIR, "estat-niigata");
+const TOYAMA_ESTAT_DIR = resolve(RAW_DIR, "estat-toyama");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 const ESTAT_ENDPOINT = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData";
 const HACHIOJI_2019 = `${DOWNLOAD_BASE}/${HACHIOJI_2019_FILE}`;
@@ -89,16 +91,6 @@ async function download(url: string, extraHeaders: Record<string, string> = {}):
   const res = await fetch(url, { headers: { "User-Agent": FETCH_UA, ...extraHeaders } });
   if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText} for ${url}`);
   return Buffer.from(await res.arrayBuffer());
-}
-
-function requireAppId(): string {
-  const appId = process.env["ESTAT_APP_ID"]?.trim();
-  if (!appId) {
-    throw new Error(
-      "ESTAT_APP_ID が未設定です。.env.example をコピーして .env を作り、e-Stat のアプリケーションIDを入れてください。",
-    );
-  }
-  return appId;
 }
 
 interface EstatPage {
@@ -375,6 +367,10 @@ async function fetchExcelNiigata(force: boolean) {
   await fetchExcelPrefecture("新潟県", NIIGATA_BOOKLET_PAGES, force);
 }
 
+async function fetchExcelToyama(force: boolean) {
+  await fetchExcelPrefecture("富山県", TOYAMA_BOOKLET_PAGES, force);
+}
+
 async function fetchExcelIwate(force: boolean) {
   const expected = CATALOG.filter((gov) => gov.prefecture === "岩手県");
   for (const [yearRaw, pageUrl] of Object.entries(IWATE_BOOKLET_PAGES)) {
@@ -591,6 +587,7 @@ async function main() {
     { pref: "埼玉県", run: fetchExcelSaitama },
     { pref: "千葉県", run: fetchExcelChiba },
     { pref: "新潟県", run: fetchExcelNiigata },
+    { pref: "富山県", run: fetchExcelToyama },
     { pref: "沖縄県", run: fetchExcelOkinawa },
   ];
   for (const job of excelJobs) {
@@ -598,7 +595,11 @@ async function main() {
     await job.run(force);
   }
 
-  const appId = requireAppId();
+  const appId = process.env["ESTAT_APP_ID"]?.trim();
+  if (!appId) {
+    console.log("ESTAT_APP_ID がないので e-Stat（2018以前）はスキップ");
+    return;
+  }
   const estatJobs: { pref: string; dir: string }[] = [
     { pref: "北海道", dir: HOKKAIDO_ESTAT_DIR },
     { pref: "青森県", dir: AOMORI_ESTAT_DIR },
@@ -615,6 +616,7 @@ async function main() {
     { pref: "東京都", dir: TOKYO_ESTAT_DIR },
     { pref: "神奈川県", dir: KANAGAWA_ESTAT_DIR },
     { pref: "新潟県", dir: NIIGATA_ESTAT_DIR },
+    { pref: "富山県", dir: TOYAMA_ESTAT_DIR },
     { pref: "沖縄県", dir: OKINAWA_ESTAT_DIR },
   ];
   for (const job of estatJobs) {
