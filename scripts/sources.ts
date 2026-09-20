@@ -431,6 +431,16 @@ export const TOTTORI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: "https://www.pref.tottori.lg.jp/327906.htm",
 };
 
+/** 島根県「財政状況資料集」（県内市町村）。2019–2024。 */
+export const SHIMANE_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.shimane.lg.jp/admin/sichoson/sichoson_info/zaisei/shiryousyuu/R1.html",
+  2020: "https://www.pref.shimane.lg.jp/admin/sichoson/sichoson_info/zaisei/shiryousyuu/R2.html",
+  2021: "https://www.pref.shimane.lg.jp/admin/sichoson/sichoson_info/zaisei/shiryousyuu/R3.html",
+  2022: "https://www.pref.shimane.lg.jp/admin/sichoson/sichoson_info/zaisei/shiryousyuu/R4.html",
+  2023: "https://www.pref.shimane.lg.jp/admin/sichoson/sichoson_info/zaisei/shiryousyuu/R5.html",
+  2024: "https://www.pref.shimane.lg.jp/admin/sichoson/sichoson_info/zaisei/shiryousyuu/R6.html",
+};
+
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",

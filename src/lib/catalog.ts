@@ -1433,6 +1433,29 @@ const TOTTORI: readonly LocalGov[] = [
   muni("kofucho", "314030", "江府町", "鳥取県"),
 ];
 
+/** 島根県の現行市町村。slug はローマ字。大田市・美郷町・海士町は他県と同名団体と衝突しない名前。 */
+const SHIMANE: readonly LocalGov[] = [
+  muni("matsue", "322016", "松江市", "島根県"),
+  muni("hamada", "322024", "浜田市", "島根県"),
+  muni("izumo", "322032", "出雲市", "島根県"),
+  muni("masuda", "322041", "益田市", "島根県"),
+  muni("ohda", "322059", "大田市", "島根県"),
+  muni("yasugi", "322067", "安来市", "島根県"),
+  muni("gotsu", "322075", "江津市", "島根県"),
+  muni("unnan", "322091", "雲南市", "島根県"),
+  muni("okuizumo", "323438", "奥出雲町", "島根県"),
+  muni("iinan", "323861", "飯南町", "島根県"),
+  muni("kawamoto", "324418", "川本町", "島根県"),
+  muni("misatochosimane", "324485", "美郷町", "島根県"),
+  muni("onan", "324493", "邑南町", "島根県"),
+  muni("tsuwano", "325015", "津和野町", "島根県"),
+  muni("yoshika", "325058", "吉賀町", "島根県"),
+  muni("amacho", "325252", "海士町", "島根県"),
+  muni("nishinoshima", "325261", "西ノ島町", "島根県"),
+  muni("chibu", "325279", "知夫村", "島根県"),
+  muni("okinoshima", "325287", "隠岐の島町", "島根県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -1510,6 +1533,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...NARA,
   ...WAKAYAMA,
   ...TOTTORI,
+  ...SHIMANE,
   ...OKINAWA,
 ];
 
