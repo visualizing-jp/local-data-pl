@@ -55,7 +55,15 @@ function verifyOne(data: CityFinance, filename: string): void {
       (data.code === "042056" && year === 2015) ||
       (data.code === "044016" && year >= 2013 && year <= 2015);
     const oshinoCarryover = data.code === "194247" && year === 1990;
-    if (Math.abs(balance) / revSum > 0.3 && !yubariReconstruction && !tohokuCarryover && !oshinoCarryover) {
+    const naraCarryover =
+      (data.code === "293610" && year === 1995) || (data.code === "294535" && year === 2016);
+    if (
+      Math.abs(balance) / revSum > 0.3 &&
+      !yubariReconstruction &&
+      !tohokuCarryover &&
+      !oshinoCarryover &&
+      !naraCarryover
+    ) {
       fail(`${data.city} ${year}: 形式収支が歳入の 30% 超`);
     }
     for (const row of exp) {
