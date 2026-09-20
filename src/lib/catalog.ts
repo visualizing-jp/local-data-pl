@@ -1456,6 +1456,37 @@ const SHIMANE: readonly LocalGov[] = [
   muni("okinoshima", "325287", "隠岐の島町", "島根県"),
 ];
 
+/** 岡山県の現行市町村。slug はローマ字。新庄村・美咲町は他県と同名団体と衝突しない名前。 */
+const OKAYAMA: readonly LocalGov[] = [
+  muni("okayama", "331007", "岡山市", "岡山県"),
+  muni("kurashiki", "332020", "倉敷市", "岡山県"),
+  muni("tsuyama", "332038", "津山市", "岡山県"),
+  muni("tamano", "332046", "玉野市", "岡山県"),
+  muni("kasaoka", "332054", "笠岡市", "岡山県"),
+  muni("ibara", "332071", "井原市", "岡山県"),
+  muni("soja", "332089", "総社市", "岡山県"),
+  muni("takahashi", "332097", "高梁市", "岡山県"),
+  muni("niimi", "332101", "新見市", "岡山県"),
+  muni("bizen", "332119", "備前市", "岡山県"),
+  muni("setouchi", "332127", "瀬戸内市", "岡山県"),
+  muni("akaiwa", "332135", "赤磐市", "岡山県"),
+  muni("maniwa", "332143", "真庭市", "岡山県"),
+  muni("mimasaka", "332151", "美作市", "岡山県"),
+  muni("asakuchi", "332160", "浅口市", "岡山県"),
+  muni("wake", "333468", "和気町", "岡山県"),
+  muni("hayashima", "334235", "早島町", "岡山県"),
+  muni("satosho", "334456", "里庄町", "岡山県"),
+  muni("yakage", "334618", "矢掛町", "岡山県"),
+  muni("shinjoson", "335860", "新庄村", "岡山県"),
+  muni("kagamino", "336068", "鏡野町", "岡山県"),
+  muni("shoo", "336220", "勝央町", "岡山県"),
+  muni("nagi", "336238", "奈義町", "岡山県"),
+  muni("nishiawakura", "336432", "西粟倉村", "岡山県"),
+  muni("kumenan", "336637", "久米南町", "岡山県"),
+  muni("misakicho", "336661", "美咲町", "岡山県"),
+  muni("kibichuo", "336815", "吉備中央町", "岡山県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -1534,6 +1565,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...WAKAYAMA,
   ...TOTTORI,
   ...SHIMANE,
+  ...OKAYAMA,
   ...OKINAWA,
 ];
 
