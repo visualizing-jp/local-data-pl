@@ -36,8 +36,8 @@ function verifyOne(data: CityFinance, filename: string): void {
     const fukushimaGap2019 =
       FUKUSHIMA_SKIP_EXCEL.has(`${gov.code}:2019`) && prev === 2018 && curr === 2020;
     const hyogoGap2021 = HYOGO_SKIP_EXCEL.has(`${gov.code}:2021`) && prev === 2020 && curr === 2022;
-    const naraGap2023 = NARA_SKIP_EXCEL.has(`${gov.code}:2023`) && prev === 2022 && curr === 2024;
-    if (!tokyoGap2019 && !hokkaidoGapBooklet && !fukushimaGap2019 && !hyogoGap2021 && !naraGap2023) {
+    const naraSkipGap = NARA_SKIP_EXCEL.has(`${gov.code}:${prev + 1}`) && curr === prev + 2;
+    if (!tokyoGap2019 && !hokkaidoGapBooklet && !fukushimaGap2019 && !hyogoGap2021 && !naraSkipGap) {
       fail(`${filename}: 年度が連続していない: ${prev} → ${curr}`);
     }
   }
