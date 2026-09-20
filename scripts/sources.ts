@@ -24,7 +24,12 @@ export const EXCEL_OVERRIDES: Readonly<Record<string, string>> = {
     "https://www.city.nago.okinawa.jp/articles/2018071000056/file_contents/R5_47293_2023.xlsx",
   "473600:2021": "https://www.vill.izena.okinawa.jp/userfiles/files/R3_zaiseisiryou.xlsx",
   "252140:2019": "https://www.city.maibara.lg.jp/material/files/group/8/R1zaiseizyoukyousiryou_01.xlsx",
+  "282057:2022": "https://www.city.sumoto.lg.jp/uploaded/attachment/17401.xlsx",
+  "282197:2021": "https://www.city.sanda.lg.jp/material/files/group/10/2021_zaiseijokyoshiryosyu.xlsx",
 };
+
+/** 県掲載が公会計シートのみで、市サイトも PDF しか無い。 */
+export const HYOGO_SKIP_EXCEL: ReadonlySet<string> = new Set(["282251:2021"]);
 
 /** 北海道内市町村の財政状況資料集。道サイトは最新年の ZIP だけを残す。札幌市は載らない。 */
 export const HOKKAIDO_BOOKLET_PAGE =
@@ -378,6 +383,16 @@ export const SAKAI_MIC_EXCEL: Readonly<Record<number, string>> = {
 };
 
 export const SAKAI_CODE = "271403";
+
+/** 兵庫県「財政状況資料集」（県内市町）。2019–2024。神戸市も県ページに載る。令和元年度だけパスが違う。 */
+export const HYOGO_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://web.pref.hyogo.lg.jp/kk25/01zaiseijoukyou1.html",
+  2020: "https://web.pref.hyogo.lg.jp/kk25/zaiseijoukyoushiryou02.html",
+  2021: "https://web.pref.hyogo.lg.jp/kk25/zaiseijoukyoushiryou03.html",
+  2022: "https://web.pref.hyogo.lg.jp/kk25/zaiseijoukyoushiryou04.html",
+  2023: "https://web.pref.hyogo.lg.jp/kk25/zaiseijoukyoushiryou05.html",
+  2024: "https://web.pref.hyogo.lg.jp/kk25/zaiseijoukyoushiryou06.html",
+};
 
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
