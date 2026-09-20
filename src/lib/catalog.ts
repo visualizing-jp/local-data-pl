@@ -1012,6 +1012,52 @@ const NAGANO: readonly LocalGov[] = [
   muni("sakaemura", "206024", "栄村", "長野県"),
 ];
 
+/** 岐阜県の現行市町村。slug はローマ字。高山市・山県市・瑞穂市・大野町・池田町・白川町は他県と同名団体と衝突しない名前。 */
+const GIFU: readonly LocalGov[] = [
+  muni("gifu", "212016", "岐阜市", "岐阜県"),
+  muni("ogaki", "212024", "大垣市", "岐阜県"),
+  muni("takayamashi", "212032", "高山市", "岐阜県"),
+  muni("tajimi", "212041", "多治見市", "岐阜県"),
+  muni("seki", "212059", "関市", "岐阜県"),
+  muni("nakatsugawa", "212067", "中津川市", "岐阜県"),
+  muni("mino", "212075", "美濃市", "岐阜県"),
+  muni("mizunami", "212083", "瑞浪市", "岐阜県"),
+  muni("hashima", "212091", "羽島市", "岐阜県"),
+  muni("ena", "212105", "恵那市", "岐阜県"),
+  muni("minokamo", "212113", "美濃加茂市", "岐阜県"),
+  muni("toki", "212121", "土岐市", "岐阜県"),
+  muni("kakamigahara", "212130", "各務原市", "岐阜県"),
+  muni("kani", "212148", "可児市", "岐阜県"),
+  muni("yamagateshi", "212156", "山県市", "岐阜県"),
+  muni("mizuhoshi", "212164", "瑞穂市", "岐阜県"),
+  muni("hidashi", "212172", "飛騨市", "岐阜県"),
+  muni("motosu", "212181", "本巣市", "岐阜県"),
+  muni("gujo", "212199", "郡上市", "岐阜県"),
+  muni("gero", "212202", "下呂市", "岐阜県"),
+  muni("kaizu", "212211", "海津市", "岐阜県"),
+  muni("ginan", "213021", "岐南町", "岐阜県"),
+  muni("kasamatsu", "213039", "笠松町", "岐阜県"),
+  muni("yoro", "213411", "養老町", "岐阜県"),
+  muni("tarui", "213616", "垂井町", "岐阜県"),
+  muni("sekigahara", "213624", "関ケ原町", "岐阜県"),
+  muni("godo", "213811", "神戸町", "岐阜県"),
+  muni("wanouchi", "213829", "輪之内町", "岐阜県"),
+  muni("anpachi", "213837", "安八町", "岐阜県"),
+  muni("ibigawa", "214021", "揖斐川町", "岐阜県"),
+  muni("onomachi", "214039", "大野町", "岐阜県"),
+  muni("ikedachogifu", "214047", "池田町", "岐阜県"),
+  muni("kitagata", "214211", "北方町", "岐阜県"),
+  muni("sakahogi", "215015", "坂祝町", "岐阜県"),
+  muni("tomika", "215023", "富加町", "岐阜県"),
+  muni("kawabemachi", "215031", "川辺町", "岐阜県"),
+  muni("hichiso", "215040", "七宗町", "岐阜県"),
+  muni("yaotsu", "215058", "八百津町", "岐阜県"),
+  muni("shirakawacho", "215066", "白川町", "岐阜県"),
+  muni("higashishirakawa", "215075", "東白川村", "岐阜県"),
+  muni("mitake", "215210", "御嵩町", "岐阜県"),
+  muni("shirakawamura", "216046", "白川村", "岐阜県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -1078,6 +1124,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...FUKUI,
   ...YAMANASHI,
   ...NAGANO,
+  ...GIFU,
   ...OKINAWA,
 ];
 
