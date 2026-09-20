@@ -679,6 +679,6 @@ https://www.pref.hiroshima.lg.jp/soshiki/36/zaiseijokyosiryosyu.html
 
 リンク文言は「広島市  (Excelファイル)(548KB)」形式。団体名で Excel に対応づける。年度ページは `r01zaiseijoukyou.html`–`r06zaiseijoukyou.html`。
 
-廃置分合後の現行コードにデータがある年度だけを載せる。
+廃置分合後の現行コードにデータがある年度だけを載せる。安芸高田市・大崎上島町は 2003–。江田島市・安芸太田町・北広島町・神石高原町は 2004–。
 
 パーマリンクは `?id=`（6桁）。広島市は `/?id=341002`。
