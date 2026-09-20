@@ -302,6 +302,16 @@ export const NAGOYA_MIC_EXCEL: Readonly<Record<number, string>> = {
 
 export const NAGOYA_CODE = "231002";
 
+/** 三重県「財政状況資料集」（県内市町）。2019–2024。政令市は無い。令和3年度だけ番号が飛ぶ。 */
+export const MIE_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.mie.lg.jp/SHICHOS/HP/89248000001_00008.htm",
+  2020: "https://www.pref.mie.lg.jp/SHICHOS/HP/89248000001_00009.htm",
+  2021: "https://www.pref.mie.lg.jp/SHICHOS/HP/89248000001_00010.htm",
+  2022: "https://www.pref.mie.lg.jp/SHICHOS/HP/89248000001_00012.htm",
+  2023: "https://www.pref.mie.lg.jp/SHICHOS/HP/89248000001_00013.htm",
+  2024: "https://www.pref.mie.lg.jp/SHICHOS/HP/89248000001_00014.htm",
+};
+
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",

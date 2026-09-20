@@ -1155,6 +1155,39 @@ const AICHI: readonly LocalGov[] = [
   muni("toyone", "235636", "豊根村", "愛知県"),
 ];
 
+/** 三重県の現行市町。slug はローマ字。朝日町・川越町・明和町・御浜町は他県と同名団体と衝突しない名前。 */
+const MIE: readonly LocalGov[] = [
+  muni("tsu", "242012", "津市", "三重県"),
+  muni("yokkaichi", "242021", "四日市市", "三重県"),
+  muni("ise", "242039", "伊勢市", "三重県"),
+  muni("matsusaka", "242047", "松阪市", "三重県"),
+  muni("kuwana", "242055", "桑名市", "三重県"),
+  muni("suzuka", "242071", "鈴鹿市", "三重県"),
+  muni("nabari", "242080", "名張市", "三重県"),
+  muni("owase", "242098", "尾鷲市", "三重県"),
+  muni("kameyama", "242101", "亀山市", "三重県"),
+  muni("toba", "242110", "鳥羽市", "三重県"),
+  muni("kumano", "242128", "熊野市", "三重県"),
+  muni("inabe", "242144", "いなべ市", "三重県"),
+  muni("shima", "242152", "志摩市", "三重県"),
+  muni("iga", "242161", "伊賀市", "三重県"),
+  muni("kisosaki", "243035", "木曽岬町", "三重県"),
+  muni("toin", "243248", "東員町", "三重県"),
+  muni("komono", "243418", "菰野町", "三重県"),
+  muni("asahicho", "243434", "朝日町", "三重県"),
+  muni("kawagoecho", "243442", "川越町", "三重県"),
+  muni("taki", "244414", "多気町", "三重県"),
+  muni("meiwacho", "244422", "明和町", "三重県"),
+  muni("odai", "244431", "大台町", "三重県"),
+  muni("tamaki", "244619", "玉城町", "三重県"),
+  muni("watarai", "244708", "度会町", "三重県"),
+  muni("taiki", "244716", "大紀町", "三重県"),
+  muni("minamiise", "244724", "南伊勢町", "三重県"),
+  muni("kihoku", "245437", "紀北町", "三重県"),
+  muni("mihamachomie", "245615", "御浜町", "三重県"),
+  muni("kiho", "245623", "紀宝町", "三重県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -1224,6 +1257,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...GIFU,
   ...SHIZUOKA,
   ...AICHI,
+  ...MIE,
   ...OKINAWA,
 ];
 
