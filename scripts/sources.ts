@@ -26,10 +26,17 @@ export const EXCEL_OVERRIDES: Readonly<Record<string, string>> = {
   "252140:2019": "https://www.city.maibara.lg.jp/material/files/group/8/R1zaiseizyoukyousiryou_01.xlsx",
   "282057:2022": "https://www.city.sumoto.lg.jp/uploaded/attachment/17401.xlsx",
   "282197:2021": "https://www.city.sanda.lg.jp/material/files/group/10/2021_zaiseijokyoshiryosyu.xlsx",
+  "292117:2019": "https://www.city.katsuragi.nara.jp/material/files/group/5/zai01-11katsuragi.xlsx",
+  "294276:2022": "https://www.town.kawai.nara.jp/material/files/group/14/zai04-28kawai.xlsx",
+  "294535:2023":
+    "https://vill.higashiyoshino.nara.jp/life/wp-content/uploads/sites/2/2023/04/zai05-39higashiyoshino.xlsx",
 };
 
 /** 県掲載が公会計シートのみで、市サイトも PDF しか無い。 */
 export const HYOGO_SKIP_EXCEL: ReadonlySet<string> = new Set(["282251:2021"]);
+
+/** 県掲載が誤年度または公会計のみで、団体サイトにも当該年の普通会計 Excel が無い。 */
+export const NARA_SKIP_EXCEL: ReadonlySet<string> = new Set(["293229:2022", "293628:2023"]);
 
 /** 北海道内市町村の財政状況資料集。道サイトは最新年の ZIP だけを残す。札幌市は載らない。 */
 export const HOKKAIDO_BOOKLET_PAGE =
@@ -392,6 +399,26 @@ export const HYOGO_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2022: "https://web.pref.hyogo.lg.jp/kk25/zaiseijoukyoushiryou04.html",
   2023: "https://web.pref.hyogo.lg.jp/kk25/zaiseijoukyoushiryou05.html",
   2024: "https://web.pref.hyogo.lg.jp/kk25/zaiseijoukyoushiryou06.html",
+};
+
+/** 奈良県「財政状況資料集」（県内市町村）。2019–2024。令和5年度だけ古いパス。 */
+export const NARA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.nara.lg.jp/n006/p152010.html",
+  2020: "https://www.pref.nara.lg.jp/n006/p152009.html",
+  2021: "https://www.pref.nara.lg.jp/n006/p152008.html",
+  2022: "https://www.pref.nara.lg.jp/n006/p152007.html",
+  2023: "https://www.pref.nara.lg.jp/n006/68615.html",
+  2024: "https://www.pref.nara.lg.jp/n006/p152004.html",
+};
+
+/** 和歌山県「市町村財政状況資料集」（県内市町村）。2019–2024。 */
+export const WAKAYAMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.wakayama.lg.jp/prefg/010600/03_zaisei/d00206858.html",
+  2020: "https://www.pref.wakayama.lg.jp/prefg/010600/03_zaisei/d00209963.html",
+  2021: "https://www.pref.wakayama.lg.jp/prefg/010600/03_zaisei/d00212973.html",
+  2022: "https://www.pref.wakayama.lg.jp/prefg/010600/03_zaisei/d00216765.html",
+  2023: "https://www.pref.wakayama.lg.jp/prefg/010600/03_zaisei/d00219768.html",
+  2024: "https://www.pref.wakayama.lg.jp/prefg/010600/03_zaisei/d00221930.html",
 };
 
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
