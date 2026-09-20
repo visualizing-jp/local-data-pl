@@ -1241,6 +1241,53 @@ const KYOTO: readonly LocalGov[] = [
   muni("yosano", "264652", "与謝野町", "京都府"),
 ];
 
+/** 大阪府の現行市町村。slug はローマ字。大阪市・堺市は政令市。堺市・茨木市・箕面市は他県と同名団体と衝突しない名前。 */
+const OSAKA: readonly LocalGov[] = [
+  muni("osaka", "271004", "大阪市", "大阪府"),
+  muni("osakasakai", "271403", "堺市", "大阪府"),
+  muni("kishiwada", "272027", "岸和田市", "大阪府"),
+  muni("toyonaka", "272035", "豊中市", "大阪府"),
+  muni("ikeda", "272043", "池田市", "大阪府"),
+  muni("suita", "272051", "吹田市", "大阪府"),
+  muni("izumiotsu", "272060", "泉大津市", "大阪府"),
+  muni("takatsuki", "272078", "高槻市", "大阪府"),
+  muni("kaizuka", "272086", "貝塚市", "大阪府"),
+  muni("moriguchi", "272094", "守口市", "大阪府"),
+  muni("hirakata", "272108", "枚方市", "大阪府"),
+  muni("ibarakishi", "272116", "茨木市", "大阪府"),
+  muni("yao", "272124", "八尾市", "大阪府"),
+  muni("izumisano", "272132", "泉佐野市", "大阪府"),
+  muni("tondabayashi", "272141", "富田林市", "大阪府"),
+  muni("neyagawa", "272159", "寝屋川市", "大阪府"),
+  muni("kawachinagano", "272167", "河内長野市", "大阪府"),
+  muni("matsubara", "272175", "松原市", "大阪府"),
+  muni("daito", "272183", "大東市", "大阪府"),
+  muni("izumi", "272191", "和泉市", "大阪府"),
+  muni("minoh", "272205", "箕面市", "大阪府"),
+  muni("kashiwara", "272213", "柏原市", "大阪府"),
+  muni("habikino", "272221", "羽曳野市", "大阪府"),
+  muni("kadoma", "272230", "門真市", "大阪府"),
+  muni("settsu", "272248", "摂津市", "大阪府"),
+  muni("takaishi", "272256", "高石市", "大阪府"),
+  muni("fujiidera", "272264", "藤井寺市", "大阪府"),
+  muni("higashiosaka", "272272", "東大阪市", "大阪府"),
+  muni("sennan", "272281", "泉南市", "大阪府"),
+  muni("shijonawate", "272299", "四條畷市", "大阪府"),
+  muni("katano", "272302", "交野市", "大阪府"),
+  muni("osakasayama", "272311", "大阪狭山市", "大阪府"),
+  muni("hannan", "272329", "阪南市", "大阪府"),
+  muni("shimamoto", "273015", "島本町", "大阪府"),
+  muni("toyono", "273210", "豊能町", "大阪府"),
+  muni("nose", "273228", "能勢町", "大阪府"),
+  muni("tadaoka", "273414", "忠岡町", "大阪府"),
+  muni("kumatori", "273619", "熊取町", "大阪府"),
+  muni("tajiri", "273627", "田尻町", "大阪府"),
+  muni("misaki", "273660", "岬町", "大阪府"),
+  muni("taishi", "273813", "太子町", "大阪府"),
+  muni("kanan", "273821", "河南町", "大阪府"),
+  muni("chihayaakasaka", "273830", "千早赤阪村", "大阪府"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -1313,6 +1360,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...MIE,
   ...SHIGA,
   ...KYOTO,
+  ...OSAKA,
   ...OKINAWA,
 ];
 

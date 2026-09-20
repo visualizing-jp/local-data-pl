@@ -345,6 +345,40 @@ export const KYOTO_MIC_EXCEL: Readonly<Record<number, string>> = {
 
 export const KYOTO_CODE = "261009";
 
+/** 大阪府「財政状況資料集」（府内市町村）。2019–2024。大阪市・堺市は載らない。年によってファイル名の表記が揺れる。 */
+export const OSAKA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.osaka.lg.jp/o040050/shichoson/zaiseijoukyo/01zaiseijyoukyou.html",
+  2020: "https://www.pref.osaka.lg.jp/o040050/shichoson/zaiseijoukyo/02zaiseijyoukyou.html",
+  2021: "https://www.pref.osaka.lg.jp/o040050/shichoson/zaiseijoukyo/03zaiseijyoukyou.html",
+  2022: "https://www.pref.osaka.lg.jp/o040050/shichoson/zaiseijoukyo/04zaiseijyoukyo.html",
+  2023: "https://www.pref.osaka.lg.jp/o040050/shichoson/zaiseijoukyo/05zaiseijyoukyo.html",
+  2024: "https://www.pref.osaka.lg.jp/o040050/shichoson/zaiseijoukyo/06zaiseijoukyo.html",
+};
+
+/** 大阪市は政令市のため府ページに無い。総務省の政令指定都市資料集。 */
+export const OSAKA_MIC_EXCEL: Readonly<Record<number, string>> = {
+  2019: "https://www.soumu.go.jp/main_content/000740652.xlsx",
+  2020: "https://www.soumu.go.jp/main_content/000839182.xlsx",
+  2021: "https://www.soumu.go.jp/main_content/000873254.xlsx",
+  2022: "https://www.soumu.go.jp/main_content/001001817.xlsx",
+  2023: "https://www.soumu.go.jp/main_content/000999777.xlsx",
+  2024: "https://www.soumu.go.jp/main_content/001063435.xlsx",
+};
+
+export const OSAKA_CODE = "271004";
+
+/** 堺市は政令市のため府ページに無い。総務省の政令指定都市資料集。 */
+export const SAKAI_MIC_EXCEL: Readonly<Record<number, string>> = {
+  2019: "https://www.soumu.go.jp/main_content/000740653.xlsx",
+  2020: "https://www.soumu.go.jp/main_content/000839183.xlsx",
+  2021: "https://www.soumu.go.jp/main_content/000873255.xlsx",
+  2022: "https://www.soumu.go.jp/main_content/000970899.xlsx",
+  2023: "https://www.soumu.go.jp/main_content/000999778.xlsx",
+  2024: "https://www.soumu.go.jp/main_content/001063436.xlsx",
+};
+
+export const SAKAI_CODE = "271403";
+
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",
