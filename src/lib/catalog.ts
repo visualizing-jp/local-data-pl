@@ -1376,6 +1376,40 @@ const NARA: readonly LocalGov[] = [
   muni("higashiyoshino", "294535", "東吉野村", "奈良県"),
 ];
 
+/** 和歌山県の現行市町村。slug はローマ字。かつらぎ町・美浜町・日高町・印南町・北山村は他県と同名団体と衝突しない名前。 */
+const WAKAYAMA: readonly LocalGov[] = [
+  muni("wakayama", "302015", "和歌山市", "和歌山県"),
+  muni("kainan", "302023", "海南市", "和歌山県"),
+  muni("hashimoto", "302031", "橋本市", "和歌山県"),
+  muni("arida", "302040", "有田市", "和歌山県"),
+  muni("gobo", "302058", "御坊市", "和歌山県"),
+  muni("tanabe", "302066", "田辺市", "和歌山県"),
+  muni("shingu", "302074", "新宮市", "和歌山県"),
+  muni("kinokawa", "302082", "紀の川市", "和歌山県"),
+  muni("iwade", "302091", "岩出市", "和歌山県"),
+  muni("kimino", "303046", "紀美野町", "和歌山県"),
+  muni("katsuragicho", "303411", "かつらぎ町", "和歌山県"),
+  muni("kudoyama", "303437", "九度山町", "和歌山県"),
+  muni("koya", "303445", "高野町", "和歌山県"),
+  muni("yuasa", "303615", "湯浅町", "和歌山県"),
+  muni("hirogawa", "303623", "広川町", "和歌山県"),
+  muni("aridagawa", "303666", "有田川町", "和歌山県"),
+  muni("mihamachowakayama", "303810", "美浜町", "和歌山県"),
+  muni("hidakacho", "303828", "日高町", "和歌山県"),
+  muni("yura", "303836", "由良町", "和歌山県"),
+  muni("inamicho", "303909", "印南町", "和歌山県"),
+  muni("minabe", "303917", "みなべ町", "和歌山県"),
+  muni("hidakagawa", "303925", "日高川町", "和歌山県"),
+  muni("shirahama", "304018", "白浜町", "和歌山県"),
+  muni("kamitonda", "304042", "上富田町", "和歌山県"),
+  muni("susami", "304069", "すさみ町", "和歌山県"),
+  muni("nachikatsuura", "304212", "那智勝浦町", "和歌山県"),
+  muni("taiji", "304221", "太地町", "和歌山県"),
+  muni("kozagawa", "304247", "古座川町", "和歌山県"),
+  muni("kitayamamura", "304271", "北山村", "和歌山県"),
+  muni("kushimoto", "304280", "串本町", "和歌山県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -1451,6 +1485,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...OSAKA,
   ...HYOGO,
   ...NARA,
+  ...WAKAYAMA,
   ...OKINAWA,
 ];
 
