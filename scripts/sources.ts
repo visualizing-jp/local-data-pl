@@ -26,10 +26,16 @@ export const EXCEL_OVERRIDES: Readonly<Record<string, string>> = {
   "252140:2019": "https://www.city.maibara.lg.jp/material/files/group/8/R1zaiseizyoukyousiryou_01.xlsx",
   "282057:2022": "https://www.city.sumoto.lg.jp/uploaded/attachment/17401.xlsx",
   "282197:2021": "https://www.city.sanda.lg.jp/material/files/group/10/2021_zaiseijokyoshiryosyu.xlsx",
+  "292117:2019": "https://www.city.katsuragi.nara.jp/material/files/group/5/zai01-11katsuragi.xlsx",
+  "294535:2023":
+    "https://vill.higashiyoshino.nara.jp/life/wp-content/uploads/sites/2/2023/04/zai05-39higashiyoshino.xlsx",
 };
 
 /** 県掲載が公会計シートのみで、市サイトも PDF しか無い。 */
 export const HYOGO_SKIP_EXCEL: ReadonlySet<string> = new Set(["282251:2021"]);
+
+/** 県掲載が公会計シートのみで、町サイトも令和5年度の普通会計 Excel が無い。 */
+export const NARA_SKIP_EXCEL: ReadonlySet<string> = new Set(["293628:2023"]);
 
 /** 北海道内市町村の財政状況資料集。道サイトは最新年の ZIP だけを残す。札幌市は載らない。 */
 export const HOKKAIDO_BOOKLET_PAGE =
