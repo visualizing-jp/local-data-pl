@@ -900,6 +900,37 @@ const FUKUI: readonly LocalGov[] = [
   muni("wakasa", "185019", "若狭町", "福井県"),
 ];
 
+/** 山梨県の現行市町村。slug はローマ字。北杜市・中央市・南部町・昭和町は他県と同名団体と衝突しない名前。 */
+const YAMANASHI: readonly LocalGov[] = [
+  muni("kofu", "192015", "甲府市", "山梨県"),
+  muni("fujiyoshida", "192023", "富士吉田市", "山梨県"),
+  muni("tsuru", "192040", "都留市", "山梨県"),
+  muni("yamanashi", "192058", "山梨市", "山梨県"),
+  muni("otsuki", "192066", "大月市", "山梨県"),
+  muni("nirasaki", "192074", "韮崎市", "山梨県"),
+  muni("minamialps", "192082", "南アルプス市", "山梨県"),
+  muni("hokutoshi", "192091", "北杜市", "山梨県"),
+  muni("kai", "192104", "甲斐市", "山梨県"),
+  muni("fuefuki", "192112", "笛吹市", "山梨県"),
+  muni("uenohara", "192121", "上野原市", "山梨県"),
+  muni("koshu", "192139", "甲州市", "山梨県"),
+  muni("chuoshi", "192147", "中央市", "山梨県"),
+  muni("ichikawamisato", "193461", "市川三郷町", "山梨県"),
+  muni("hayakawa", "193640", "早川町", "山梨県"),
+  muni("minobu", "193658", "身延町", "山梨県"),
+  muni("nanbumachi", "193666", "南部町", "山梨県"),
+  muni("fujikawa", "193682", "富士川町", "山梨県"),
+  muni("showacho", "193844", "昭和町", "山梨県"),
+  muni("doshi", "194221", "道志村", "山梨県"),
+  muni("nishikatsura", "194239", "西桂町", "山梨県"),
+  muni("oshino", "194247", "忍野村", "山梨県"),
+  muni("yamanakako", "194255", "山中湖村", "山梨県"),
+  muni("narusawa", "194298", "鳴沢村", "山梨県"),
+  muni("fujikawaguchiko", "194301", "富士河口湖町", "山梨県"),
+  muni("kosuge", "194425", "小菅村", "山梨県"),
+  muni("tabayama", "194433", "丹波山村", "山梨県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -964,6 +995,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...TOYAMA,
   ...ISHIKAWA,
   ...FUKUI,
+  ...YAMANASHI,
   ...OKINAWA,
 ];
 

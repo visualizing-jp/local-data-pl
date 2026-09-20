@@ -211,6 +211,16 @@ export const FUKUI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: "https://www.pref.fukui.lg.jp/doc/sityousinkou/r06zaiseisiryoushuu.html",
 };
 
+/** 山梨県「財政状況資料集」（県内市町村）。2019–2024。政令市は無い。 */
+export const YAMANASHI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.yamanashi.jp/zaisei-k/r1zaiseijyoukyoushiryousyu.html",
+  2020: "https://www.pref.yamanashi.jp/zaisei-k/r2zaiseijyoukyoushiryousyu.html",
+  2021: "https://www.pref.yamanashi.jp/zaisei-k/r3zaiseijyoukyoushiryousyu.html",
+  2022: "https://www.pref.yamanashi.jp/zaisei-k/r4zaiseijyoukyoushiryousyu.html",
+  2023: "https://www.pref.yamanashi.jp/zaisei-k/r5zaiseijyoukyoushiryousyu.html",
+  2024: "https://www.pref.yamanashi.jp/zaisei-k/r6zaiseijyoukyoushiryousyu.html",
+};
+
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",
