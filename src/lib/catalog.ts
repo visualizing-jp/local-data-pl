@@ -1288,6 +1288,51 @@ const OSAKA: readonly LocalGov[] = [
   muni("chihayaakasaka", "273830", "千早赤阪村", "大阪府"),
 ];
 
+/** 兵庫県の現行市町。slug はローマ字。豊岡市・川西市・小野市・たつの市・市川町・神河町・太子町・香美町は他県と同名団体と衝突しない名前。 */
+const HYOGO: readonly LocalGov[] = [
+  muni("kobe", "281000", "神戸市", "兵庫県"),
+  muni("himeji", "282014", "姫路市", "兵庫県"),
+  muni("amagasaki", "282022", "尼崎市", "兵庫県"),
+  muni("akashi", "282031", "明石市", "兵庫県"),
+  muni("nishinomiya", "282049", "西宮市", "兵庫県"),
+  muni("sumoto", "282057", "洲本市", "兵庫県"),
+  muni("ashiya", "282065", "芦屋市", "兵庫県"),
+  muni("itami", "282073", "伊丹市", "兵庫県"),
+  muni("aioi", "282081", "相生市", "兵庫県"),
+  muni("toyookashi", "282090", "豊岡市", "兵庫県"),
+  muni("kakogawa", "282103", "加古川市", "兵庫県"),
+  muni("ako", "282120", "赤穂市", "兵庫県"),
+  muni("nishiwaki", "282138", "西脇市", "兵庫県"),
+  muni("takarazuka", "282146", "宝塚市", "兵庫県"),
+  muni("miki", "282154", "三木市", "兵庫県"),
+  muni("takasago", "282162", "高砂市", "兵庫県"),
+  muni("kawanishishi", "282171", "川西市", "兵庫県"),
+  muni("onoshyogo", "282189", "小野市", "兵庫県"),
+  muni("sanda", "282197", "三田市", "兵庫県"),
+  muni("kasai", "282201", "加西市", "兵庫県"),
+  muni("tambasasayama", "282219", "丹波篠山市", "兵庫県"),
+  muni("yabu", "282227", "養父市", "兵庫県"),
+  muni("tamba", "282235", "丹波市", "兵庫県"),
+  muni("minamiawaji", "282243", "南あわじ市", "兵庫県"),
+  muni("asago", "282251", "朝来市", "兵庫県"),
+  muni("awaji", "282260", "淡路市", "兵庫県"),
+  muni("shiso", "282278", "宍粟市", "兵庫県"),
+  muni("kato", "282286", "加東市", "兵庫県"),
+  muni("tatsunoshi", "282294", "たつの市", "兵庫県"),
+  muni("inagawa", "283011", "猪名川町", "兵庫県"),
+  muni("taka", "283657", "多可町", "兵庫県"),
+  muni("inami", "283819", "稲美町", "兵庫県"),
+  muni("harima", "283827", "播磨町", "兵庫県"),
+  muni("ichikawacho", "284424", "市川町", "兵庫県"),
+  muni("fukusaki", "284432", "福崎町", "兵庫県"),
+  muni("kamikawacho", "284467", "神河町", "兵庫県"),
+  muni("taishicho", "284645", "太子町", "兵庫県"),
+  muni("kamigori", "284815", "上郡町", "兵庫県"),
+  muni("sayo", "285013", "佐用町", "兵庫県"),
+  muni("kamicho", "285854", "香美町", "兵庫県"),
+  muni("shinonsen", "285862", "新温泉町", "兵庫県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -1361,6 +1406,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...SHIGA,
   ...KYOTO,
   ...OSAKA,
+  ...HYOGO,
   ...OKINAWA,
 ];
 
