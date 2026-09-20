@@ -65,6 +65,7 @@ import {
   SHIMANE_BOOKLET_PAGES,
   OKAYAMA_BOOKLET_PAGES,
   HIROSHIMA_BOOKLET_PAGES,
+  YAMAGUCHI_BOOKLET_PAGES,
   SAKAI_CODE,
   SAKAI_MIC_EXCEL,
   HAMAMATSU_CODE,
@@ -131,6 +132,7 @@ const TOTTORI_ESTAT_DIR = resolve(RAW_DIR, "estat-tottori");
 const SHIMANE_ESTAT_DIR = resolve(RAW_DIR, "estat-shimane");
 const OKAYAMA_ESTAT_DIR = resolve(RAW_DIR, "estat-okayama");
 const HIROSHIMA_ESTAT_DIR = resolve(RAW_DIR, "estat-hiroshima");
+const YAMAGUCHI_ESTAT_DIR = resolve(RAW_DIR, "estat-yamaguchi");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 const ESTAT_ENDPOINT = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData";
 const HACHIOJI_2019 = `${DOWNLOAD_BASE}/${HACHIOJI_2019_FILE}`;
@@ -489,6 +491,10 @@ async function fetchExcelHiroshima(force: boolean) {
   await fetchExcelPrefecture("広島県", HIROSHIMA_BOOKLET_PAGES, force);
 }
 
+async function fetchExcelYamaguchi(force: boolean) {
+  await fetchExcelPrefecture("山口県", YAMAGUCHI_BOOKLET_PAGES, force);
+}
+
 async function fetchExcelOsaka(force: boolean) {
   await fetchExcelPrefecture("大阪府", OSAKA_BOOKLET_PAGES, force, parseCityBooklet, [OSAKA_CODE, SAKAI_CODE]);
   for (const [yearRaw, url] of Object.entries(OSAKA_MIC_EXCEL)) {
@@ -804,6 +810,7 @@ async function main() {
     { pref: "島根県", run: fetchExcelShimane },
     { pref: "岡山県", run: fetchExcelOkayama },
     { pref: "広島県", run: fetchExcelHiroshima },
+    { pref: "山口県", run: fetchExcelYamaguchi },
     { pref: "沖縄県", run: fetchExcelOkinawa },
   ];
   for (const job of excelJobs) {
@@ -851,6 +858,7 @@ async function main() {
     { pref: "島根県", dir: SHIMANE_ESTAT_DIR },
     { pref: "岡山県", dir: OKAYAMA_ESTAT_DIR },
     { pref: "広島県", dir: HIROSHIMA_ESTAT_DIR },
+    { pref: "山口県", dir: YAMAGUCHI_ESTAT_DIR },
     { pref: "沖縄県", dir: OKINAWA_ESTAT_DIR },
   ];
   for (const job of estatJobs) {

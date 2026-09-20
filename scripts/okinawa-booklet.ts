@@ -22,7 +22,10 @@ function cityLabel(html: string): string {
     .replace(/\s*\[[0-9,.]+\s*KB\]\s*$/iu, "")
     .replace(/【[^】]*】/gu, "")
     .replace(/[（(][^）)]*[）)]\s*$/u, "")
+    .replace(/^_+/u, "")
+    .replace(/^\d{6}[_\s]+/u, "")
     .replace(/^\d+[_\s]*/u, "")
+    .replace(/[_\s]+\d{4}\s*$/u, "")
     .replace(/[、,]+$/u, "")
     .trim();
 }
@@ -53,7 +56,8 @@ export function parseCityBooklet(html: string, pageUrl: string, govs: readonly L
     if (href == null || label == null) continue;
     const url = absUrl(pageUrl, href);
     const file = url.split("/").pop() ?? "";
-    const coded = file.match(/^(\d{6})[-_]/)?.[1];
+    const decoded = decodeEntities(label);
+    const coded = file.match(/^(\d{6})[-_]/)?.[1] ?? decoded.match(/(\d{6})/)?.[1];
     const byFile = coded != null && allowed.has(coded) ? coded : undefined;
     const name = foldCity(cityLabel(label));
     const byCity =

@@ -461,6 +461,16 @@ export const HIROSHIMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: "https://www.pref.hiroshima.lg.jp/soshiki/36/r06zaiseijoukyou.html",
 };
 
+/** 山口県「市町財政状況資料集」。2019–2024。 */
+export const YAMAGUCHI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.yamaguchi.lg.jp/soshiki/31/15072.html",
+  2020: "https://www.pref.yamaguchi.lg.jp/soshiki/31/134627.html",
+  2021: "https://www.pref.yamaguchi.lg.jp/soshiki/31/200961.html",
+  2022: "https://www.pref.yamaguchi.lg.jp/soshiki/31/275599.html",
+  2023: "https://www.pref.yamaguchi.lg.jp/soshiki/31/295347.html",
+  2024: "https://www.pref.yamaguchi.lg.jp/soshiki/31/340223.html",
+};
+
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",

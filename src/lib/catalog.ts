@@ -1514,6 +1514,29 @@ const HIROSHIMA: readonly LocalGov[] = [
   muni("jinsekikogen", "345458", "神石高原町", "広島県"),
 ];
 
+/** 山口県の現行市町。slug はローマ字。 */
+const YAMAGUCHI: readonly LocalGov[] = [
+  muni("shimonoseki", "352012", "下関市", "山口県"),
+  muni("ube", "352021", "宇部市", "山口県"),
+  muni("yamaguchi", "352039", "山口市", "山口県"),
+  muni("hagi", "352047", "萩市", "山口県"),
+  muni("hofu", "352063", "防府市", "山口県"),
+  muni("kudamatsu", "352071", "下松市", "山口県"),
+  muni("iwakuni", "352080", "岩国市", "山口県"),
+  muni("hikari", "352101", "光市", "山口県"),
+  muni("nagato", "352110", "長門市", "山口県"),
+  muni("yanai", "352128", "柳井市", "山口県"),
+  muni("mine", "352136", "美祢市", "山口県"),
+  muni("shunan", "352152", "周南市", "山口県"),
+  muni("sanyoonoda", "352161", "山陽小野田市", "山口県"),
+  muni("suooshima", "353051", "周防大島町", "山口県"),
+  muni("waki", "353213", "和木町", "山口県"),
+  muni("kaminoseki", "353418", "上関町", "山口県"),
+  muni("tabuse", "353434", "田布施町", "山口県"),
+  muni("hirao", "353442", "平生町", "山口県"),
+  muni("abu", "355020", "阿武町", "山口県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -1594,6 +1617,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...SHIMANE,
   ...OKAYAMA,
   ...HIROSHIMA,
+  ...YAMAGUCHI,
   ...OKINAWA,
 ];
 
