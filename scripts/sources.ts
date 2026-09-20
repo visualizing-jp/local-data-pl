@@ -280,6 +280,28 @@ export const HAMAMATSU_MIC_EXCEL: Readonly<Record<number, string>> = {
 
 export const HAMAMATSU_CODE = "221309";
 
+/** 愛知県「財政状況資料集」（県内市町村）。2019–2024。名古屋市は載らない。令和5–元は1ページ。 */
+export const AICHI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.aichi.jp/soshiki/shichoson/0000054848.html",
+  2020: "https://www.pref.aichi.jp/soshiki/shichoson/0000054848.html",
+  2021: "https://www.pref.aichi.jp/soshiki/shichoson/0000054848.html",
+  2022: "https://www.pref.aichi.jp/soshiki/shichoson/0000054848.html",
+  2023: "https://www.pref.aichi.jp/soshiki/shichoson/0000054848.html",
+  2024: "https://www.pref.aichi.jp/soshiki/shichoson/0000061122.html",
+};
+
+/** 名古屋市は政令市のため県ページに無い。総務省の政令指定都市資料集。 */
+export const NAGOYA_MIC_EXCEL: Readonly<Record<number, string>> = {
+  2019: "https://www.soumu.go.jp/main_content/000740650.xlsx",
+  2020: "https://www.soumu.go.jp/main_content/000839181.xlsx",
+  2021: "https://www.soumu.go.jp/main_content/000873252.xlsx",
+  2022: "https://www.soumu.go.jp/main_content/000970312.xlsx",
+  2023: "https://www.soumu.go.jp/main_content/000999775.xlsx",
+  2024: "https://www.soumu.go.jp/main_content/001063433.xlsx",
+};
+
+export const NAGOYA_CODE = "231002";
+
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",

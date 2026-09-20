@@ -14,7 +14,7 @@ import { cliPrefecture, requireCatalogPrefecture } from "./cli.ts";
 import { isPurposeLeaf, isRevenueLeaf, normalizeRevenueName, revenueGroup } from "../src/lib/taxonomy.ts";
 import type { CityFinance, FlowItem } from "../src/lib/types.ts";
 import { loadEstatFlows } from "./estat.ts";
-import { AKITA_BOOKLET_PAGES, AOMORI_BOOKLET_PAGES, CHIBA_BOOKLET_PAGES, CHIBA_CODE, CHIBA_MIC_EXCEL, ESTAT_MIN_YEAR, FUKUI_BOOKLET_PAGES, FUKUSHIMA_BOOKLET_PAGES, FUKUSHIMA_SKIP_EXCEL, GIFU_BOOKLET_PAGES, GUNMA_BOOKLET_PAGES, HAMAMATSU_CODE, HAMAMATSU_MIC_EXCEL, HOKKAIDO_BOOKLET_YEAR, IBARAKI_BOOKLET_PAGES, ISHIKAWA_BOOKLET_PAGES, IWATE_BOOKLET_PAGES, KANAGAWA_BOOKLET_PAGES, MIYAGI_BOOKLET_YEARS, NAGANO_BOOKLET_PAGES, NIIGATA_BOOKLET_PAGES, OKINAWA_BOOKLET_PAGES, SAPPORO_CODE, SAPPORO_MIC_EXCEL, SAITAMA_BOOKLET_PAGES, SAITAMA_CODE, SAITAMA_MIC_EXCEL, SENDAI_CODE, SENDAI_MIC_EXCEL, SHIZUOKA_BOOKLET_PAGES, SHIZUOKA_CODE, SHIZUOKA_MIC_EXCEL, TOCHIGI_BOOKLET_PAGES, TOKYO_BOOKLET_YEARS, TOYAMA_BOOKLET_PAGES, YAMAGATA_BOOKLET_PAGES, YAMANASHI_BOOKLET_PAGES } from "./sources.ts";
+import { AICHI_BOOKLET_PAGES, AKITA_BOOKLET_PAGES, AOMORI_BOOKLET_PAGES, CHIBA_BOOKLET_PAGES, CHIBA_CODE, CHIBA_MIC_EXCEL, ESTAT_MIN_YEAR, FUKUI_BOOKLET_PAGES, FUKUSHIMA_BOOKLET_PAGES, FUKUSHIMA_SKIP_EXCEL, GIFU_BOOKLET_PAGES, GUNMA_BOOKLET_PAGES, HAMAMATSU_CODE, HAMAMATSU_MIC_EXCEL, HOKKAIDO_BOOKLET_YEAR, IBARAKI_BOOKLET_PAGES, ISHIKAWA_BOOKLET_PAGES, IWATE_BOOKLET_PAGES, KANAGAWA_BOOKLET_PAGES, MIYAGI_BOOKLET_YEARS, NAGANO_BOOKLET_PAGES, NAGOYA_CODE, NAGOYA_MIC_EXCEL, NIIGATA_BOOKLET_PAGES, OKINAWA_BOOKLET_PAGES, SAPPORO_CODE, SAPPORO_MIC_EXCEL, SAITAMA_BOOKLET_PAGES, SAITAMA_CODE, SAITAMA_MIC_EXCEL, SENDAI_CODE, SENDAI_MIC_EXCEL, SHIZUOKA_BOOKLET_PAGES, SHIZUOKA_CODE, SHIZUOKA_MIC_EXCEL, TOCHIGI_BOOKLET_PAGES, TOKYO_BOOKLET_YEARS, TOYAMA_BOOKLET_PAGES, YAMAGATA_BOOKLET_PAGES, YAMANASHI_BOOKLET_PAGES } from "./sources.ts";
 
 const RAW_DIR = resolve(import.meta.dirname, "../data/raw");
 const OUT_DIR = resolve(import.meta.dirname, "../public/data");
@@ -40,6 +40,7 @@ const YAMANASHI_ESTAT_DIR = resolve(RAW_DIR, "estat-yamanashi");
 const NAGANO_ESTAT_DIR = resolve(RAW_DIR, "estat-nagano");
 const GIFU_ESTAT_DIR = resolve(RAW_DIR, "estat-gifu");
 const SHIZUOKA_ESTAT_DIR = resolve(RAW_DIR, "estat-shizuoka");
+const AICHI_ESTAT_DIR = resolve(RAW_DIR, "estat-aichi");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 const TOKYO_EXCEL_YEARS = [2019, ...TOKYO_BOOKLET_YEARS] as const;
 
@@ -262,6 +263,12 @@ function sourceDetail(gov: LocalGov): string {
   if (gov.prefecture === "静岡県") {
     return "2019–2024年度は静岡県「財政状況資料集」の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
   }
+  if (gov.code === NAGOYA_CODE) {
+    return "2019–2024年度は総務省「財政状況資料集」（政令指定都市）の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  }
+  if (gov.prefecture === "愛知県") {
+    return "2019–2024年度は愛知県「財政状況資料集」の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
+  }
   if (gov.code === SAPPORO_CODE) {
     return "2019–2024年度は総務省「財政状況資料集」（政令指定都市）の「普通会計の状況」。それ以前は現行団体コードで e-Stat に載る年度の地方財政状況調査（市町村分）。いずれも全国統一様式。";
   }
@@ -300,6 +307,7 @@ function estatDir(gov: LocalGov): string {
   if (gov.prefecture === "長野県") return NAGANO_ESTAT_DIR;
   if (gov.prefecture === "岐阜県") return GIFU_ESTAT_DIR;
   if (gov.prefecture === "静岡県") return SHIZUOKA_ESTAT_DIR;
+  if (gov.prefecture === "愛知県") return AICHI_ESTAT_DIR;
   if (gov.prefecture === "東京都") return TOKYO_ESTAT_DIR;
   throw new Error(`e-Stat の置き場がない: ${gov.prefecture}`);
 }
@@ -459,6 +467,18 @@ function excelJobs(gov: LocalGov): { year: number; path: string }[] {
   }
   if (gov.prefecture === "静岡県") {
     return Object.keys(SHIZUOKA_BOOKLET_PAGES).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
+  }
+  if (gov.code === NAGOYA_CODE) {
+    return Object.keys(NAGOYA_MIC_EXCEL).map((year) => ({
+      year: Number(year),
+      path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
+    }));
+  }
+  if (gov.prefecture === "愛知県") {
+    return Object.keys(AICHI_BOOKLET_PAGES).map((year) => ({
       year: Number(year),
       path: resolve(RAW_DIR, gov.code, `${year}.xlsx`),
     }));
