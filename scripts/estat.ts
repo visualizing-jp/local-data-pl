@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import {
@@ -63,6 +64,9 @@ export async function loadEstatFlows(opts: {
   area: string;
 }): Promise<{ revenue: FlowItem[]; expenditure: FlowItem[] }> {
   const dir = opts.dir ?? DEFAULT_DIR;
+  if (!existsSync(resolve(dir, ESTAT_REVENUE.file))) {
+    return { revenue: [], expenditure: [] };
+  }
   const revenueJson = await readJson(dir, ESTAT_REVENUE.file);
   const revenue: FlowItem[] = [];
   for (const row of valuesOf(revenueJson, ESTAT_REVENUE.file)) {

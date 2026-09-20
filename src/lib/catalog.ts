@@ -837,6 +837,25 @@ const NIIGATA: readonly LocalGov[] = [
   muni("awashimaura", "155861", "粟島浦村", "新潟県"),
 ];
 
+/** 富山県の現行市町村。slug はローマ字。立山町・朝日町は千葉の館山市・山形の朝日町と衝突しない名前。 */
+const TOYAMA: readonly LocalGov[] = [
+  muni("toyama", "162019", "富山市", "富山県"),
+  muni("takaoka", "162027", "高岡市", "富山県"),
+  muni("uozu", "162043", "魚津市", "富山県"),
+  muni("himi", "162051", "氷見市", "富山県"),
+  muni("namerikawa", "162060", "滑川市", "富山県"),
+  muni("kurobe", "162078", "黒部市", "富山県"),
+  muni("tonami", "162086", "砺波市", "富山県"),
+  muni("oyabe", "162094", "小矢部市", "富山県"),
+  muni("nanto", "162108", "南砺市", "富山県"),
+  muni("imizu", "162116", "射水市", "富山県"),
+  muni("funahashi", "163210", "舟橋村", "富山県"),
+  muni("kamiichi", "163228", "上市町", "富山県"),
+  muni("tateyamamachi", "163236", "立山町", "富山県"),
+  muni("nyuzen", "163422", "入善町", "富山県"),
+  muni("asahimachi", "163431", "朝日町", "富山県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -898,6 +917,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...TOKYO,
   ...KANAGAWA,
   ...NIIGATA,
+  ...TOYAMA,
   ...OKINAWA,
 ];
 
