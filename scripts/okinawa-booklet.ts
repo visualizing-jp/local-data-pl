@@ -55,7 +55,10 @@ export function parseCityBooklet(html: string, pageUrl: string, govs: readonly L
     const file = url.split("/").pop() ?? "";
     const coded = file.match(/^(\d{6})[-_]/)?.[1];
     const byFile = coded != null && allowed.has(coded) ? coded : undefined;
-    const byCity = byName.get(foldCity(cityLabel(label)));
+    const name = foldCity(cityLabel(label));
+    const byCity =
+      byName.get(name) ??
+      ["市", "町", "村"].map((suffix) => byName.get(name + suffix)).find((code) => code != null);
     const code = byFile ?? byCity;
     if (code == null || !allowed.has(code)) continue;
     found.set(code, url);

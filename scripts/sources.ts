@@ -394,6 +394,16 @@ export const HYOGO_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: "https://web.pref.hyogo.lg.jp/kk25/zaiseijoukyoushiryou06.html",
 };
 
+/** 奈良県「財政状況資料集」（県内市町村）。2019–2024。令和5年度だけ古いパス。 */
+export const NARA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.nara.lg.jp/n006/p152010.html",
+  2020: "https://www.pref.nara.lg.jp/n006/p152009.html",
+  2021: "https://www.pref.nara.lg.jp/n006/p152008.html",
+  2022: "https://www.pref.nara.lg.jp/n006/p152007.html",
+  2023: "https://www.pref.nara.lg.jp/n006/68615.html",
+  2024: "https://www.pref.nara.lg.jp/n006/p152004.html",
+};
+
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",

@@ -1333,6 +1333,49 @@ const HYOGO: readonly LocalGov[] = [
   muni("shinonsen", "285862", "新温泉町", "兵庫県"),
 ];
 
+/** 奈良県の現行市町村。slug はローマ字。川西町・三宅町・川上村は他県と同名団体と衝突しない名前。 */
+const NARA: readonly LocalGov[] = [
+  muni("nara", "292010", "奈良市", "奈良県"),
+  muni("yamatotakada", "292028", "大和高田市", "奈良県"),
+  muni("yamatokoriyama", "292036", "大和郡山市", "奈良県"),
+  muni("tenri", "292044", "天理市", "奈良県"),
+  muni("kashihara", "292052", "橿原市", "奈良県"),
+  muni("sakurai", "292061", "桜井市", "奈良県"),
+  muni("gojo", "292079", "五條市", "奈良県"),
+  muni("gose", "292087", "御所市", "奈良県"),
+  muni("ikoma", "292095", "生駒市", "奈良県"),
+  muni("kashiba", "292109", "香芝市", "奈良県"),
+  muni("katsuragi", "292117", "葛城市", "奈良県"),
+  muni("uda", "292125", "宇陀市", "奈良県"),
+  muni("yamazoe", "293229", "山添村", "奈良県"),
+  muni("heguri", "293423", "平群町", "奈良県"),
+  muni("sango", "293431", "三郷町", "奈良県"),
+  muni("ikaruga", "293440", "斑鳩町", "奈良県"),
+  muni("ando", "293458", "安堵町", "奈良県"),
+  muni("kawanishicho", "293610", "川西町", "奈良県"),
+  muni("miyakecho", "293628", "三宅町", "奈良県"),
+  muni("tawaramoto", "293636", "田原本町", "奈良県"),
+  muni("soni", "293857", "曽爾村", "奈良県"),
+  muni("mitsue", "293865", "御杖村", "奈良県"),
+  muni("takatori", "294012", "高取町", "奈良県"),
+  muni("asuka", "294021", "明日香村", "奈良県"),
+  muni("kanmaki", "294241", "上牧町", "奈良県"),
+  muni("oji", "294250", "王寺町", "奈良県"),
+  muni("koryo", "294268", "広陵町", "奈良県"),
+  muni("kawai", "294276", "河合町", "奈良県"),
+  muni("yoshino", "294411", "吉野町", "奈良県"),
+  muni("oyodo", "294420", "大淀町", "奈良県"),
+  muni("shimoichi", "294438", "下市町", "奈良県"),
+  muni("kurotaki", "294446", "黒滝村", "奈良県"),
+  muni("tenkawa", "294462", "天川村", "奈良県"),
+  muni("nosegawa", "294471", "野迫川村", "奈良県"),
+  muni("totsukawa", "294497", "十津川村", "奈良県"),
+  muni("shimokitayama", "294501", "下北山村", "奈良県"),
+  muni("kamikitayama", "294519", "上北山村", "奈良県"),
+  muni("kawakamimura", "294527", "川上村", "奈良県"),
+  muni("higashiyoshino", "294535", "東吉野村", "奈良県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -1407,6 +1450,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...KYOTO,
   ...OSAKA,
   ...HYOGO,
+  ...NARA,
   ...OKINAWA,
 ];
 
