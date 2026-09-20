@@ -1410,6 +1410,29 @@ const WAKAYAMA: readonly LocalGov[] = [
   muni("kushimoto", "304280", "串本町", "和歌山県"),
 ];
 
+/** 鳥取県の現行市町村。slug はローマ字。若桜町・大山町・南部町・日野町・江府町は他県と同名団体と衝突しない名前。 */
+const TOTTORI: readonly LocalGov[] = [
+  muni("tottori", "312011", "鳥取市", "鳥取県"),
+  muni("yonago", "312029", "米子市", "鳥取県"),
+  muni("kurayoshi", "312037", "倉吉市", "鳥取県"),
+  muni("sakaiminato", "312045", "境港市", "鳥取県"),
+  muni("iwamicho", "313025", "岩美町", "鳥取県"),
+  muni("wakasacho", "313254", "若桜町", "鳥取県"),
+  muni("chizu", "313289", "智頭町", "鳥取県"),
+  muni("yazu", "313297", "八頭町", "鳥取県"),
+  muni("misasa", "313645", "三朝町", "鳥取県"),
+  muni("yurihama", "313700", "湯梨浜町", "鳥取県"),
+  muni("kotoura", "313718", "琴浦町", "鳥取県"),
+  muni("hokuei", "313726", "北栄町", "鳥取県"),
+  muni("hiezu", "313840", "日吉津村", "鳥取県"),
+  muni("daisencho", "313866", "大山町", "鳥取県"),
+  muni("nanbuchotottori", "313891", "南部町", "鳥取県"),
+  muni("hokicho", "313904", "伯耆町", "鳥取県"),
+  muni("nichinancho", "314013", "日南町", "鳥取県"),
+  muni("hinomachitottori", "314021", "日野町", "鳥取県"),
+  muni("kofucho", "314030", "江府町", "鳥取県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -1486,6 +1509,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...HYOGO,
   ...NARA,
   ...WAKAYAMA,
+  ...TOTTORI,
   ...OKINAWA,
 ];
 

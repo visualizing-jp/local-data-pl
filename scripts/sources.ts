@@ -421,6 +421,16 @@ export const WAKAYAMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: "https://www.pref.wakayama.lg.jp/prefg/010600/03_zaisei/d00221930.html",
 };
 
+/** 鳥取県「財政状況資料集」（県内市町村）。2019–2024。 */
+export const TOTTORI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.tottori.lg.jp/283614.htm",
+  2020: "https://www.pref.tottori.lg.jp/303417.htm",
+  2021: "https://www.pref.tottori.lg.jp/309819.htm",
+  2022: "https://www.pref.tottori.lg.jp/316718.htm",
+  2023: "https://www.pref.tottori.lg.jp/319344.htm",
+  2024: "https://www.pref.tottori.lg.jp/327906.htm",
+};
+
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",
