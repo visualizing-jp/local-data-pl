@@ -1487,6 +1487,33 @@ const OKAYAMA: readonly LocalGov[] = [
   muni("kibichuo", "336815", "吉備中央町", "岡山県"),
 ];
 
+/** 広島県の現行市町村。slug はローマ字。三次市・府中町・熊野町・北広島町は他県と同名団体と衝突しない名前。 */
+const HIROSHIMA: readonly LocalGov[] = [
+  muni("hiroshima", "341002", "広島市", "広島県"),
+  muni("kure", "342025", "呉市", "広島県"),
+  muni("takehara", "342033", "竹原市", "広島県"),
+  muni("mihara", "342041", "三原市", "広島県"),
+  muni("onomichi", "342050", "尾道市", "広島県"),
+  muni("fukuyama", "342076", "福山市", "広島県"),
+  muni("fuchu", "342084", "府中市", "広島県"),
+  muni("miyoshishihiroshima", "342092", "三次市", "広島県"),
+  muni("shobara", "342106", "庄原市", "広島県"),
+  muni("otake", "342114", "大竹市", "広島県"),
+  muni("higashihiroshima", "342122", "東広島市", "広島県"),
+  muni("hatsukaichi", "342131", "廿日市市", "広島県"),
+  muni("akitakata", "342149", "安芸高田市", "広島県"),
+  muni("etajima", "342157", "江田島市", "広島県"),
+  muni("fuchucho", "343021", "府中町", "広島県"),
+  muni("kaita", "343048", "海田町", "広島県"),
+  muni("kumanocho", "343072", "熊野町", "広島県"),
+  muni("sakacho", "343099", "坂町", "広島県"),
+  muni("akiota", "343684", "安芸太田町", "広島県"),
+  muni("kitahiroshimacho", "343692", "北広島町", "広島県"),
+  muni("osakikamijima", "344311", "大崎上島町", "広島県"),
+  muni("sera", "344621", "世羅町", "広島県"),
+  muni("jinsekikogen", "345458", "神石高原町", "広島県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -1566,6 +1593,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...TOTTORI,
   ...SHIMANE,
   ...OKAYAMA,
+  ...HIROSHIMA,
   ...OKINAWA,
 ];
 

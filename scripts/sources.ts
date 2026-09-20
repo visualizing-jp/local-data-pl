@@ -451,6 +451,16 @@ export const OKAYAMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: "https://www.pref.okayama.jp/page/884702.html",
 };
 
+/** 広島県「県内市町の財政状況資料集」。2019–2024。広島市も県ページに載る。 */
+export const HIROSHIMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.hiroshima.lg.jp/soshiki/36/r01zaiseijoukyou.html",
+  2020: "https://www.pref.hiroshima.lg.jp/soshiki/36/r02zaiseijoukyou.html",
+  2021: "https://www.pref.hiroshima.lg.jp/soshiki/36/r03zaiseijoukyou.html",
+  2022: "https://www.pref.hiroshima.lg.jp/soshiki/36/r04zaiseijoukyou.html",
+  2023: "https://www.pref.hiroshima.lg.jp/soshiki/36/r05zaiseijoukyou.html",
+  2024: "https://www.pref.hiroshima.lg.jp/soshiki/36/r06zaiseijoukyou.html",
+};
+
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",
