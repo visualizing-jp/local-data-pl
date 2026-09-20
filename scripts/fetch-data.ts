@@ -299,7 +299,8 @@ async function fetchExcelPrefecture(
   for (const [yearRaw, pageUrl] of Object.entries(pages)) {
     const year = Number(yearRaw);
     const allPresent = expected.every((gov) => existsSync(resolve(RAW_DIR, gov.code, `${year}.xlsx`)));
-    if (!force && allPresent) {
+    const needsOverride = expected.some((gov) => EXCEL_OVERRIDES[`${gov.code}:${year}`]);
+    if (!force && allPresent && !needsOverride) {
       console.log(`cached ${year} ${prefecture}資料集（${expected.length}団体）`);
       continue;
     }
