@@ -645,6 +645,6 @@ https://www.pref.shimane.lg.jp/admin/sichoson/sichoson_info/zaisei/shiryousyuu/s
 
 リンク文言は「01_松江市」形式。ファイル名先頭の6桁コードで Excel に対応づける。一覧は `shiryousyuu.html`。年度ページは `R1.html`–`R6.html`。
 
-廃置分合後の現行コードにデータがある年度だけを載せる。
+廃置分合後の現行コードにデータがある年度だけを載せる。雲南市・奥出雲町・飯南町・美郷町・邑南町・隠岐の島町は 2004–。吉賀町は 2005–。
 
 パーマリンクは `?id=`（6桁）。松江市は `/?id=322016`。
