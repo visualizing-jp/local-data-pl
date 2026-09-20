@@ -51,6 +51,9 @@ import {
   AICHI_BOOKLET_PAGES,
   MIE_BOOKLET_PAGES,
   SHIGA_BOOKLET_PAGES,
+  KYOTO_BOOKLET_PAGES,
+  KYOTO_CODE,
+  KYOTO_MIC_EXCEL,
   HAMAMATSU_CODE,
   HAMAMATSU_MIC_EXCEL,
   NAGOYA_CODE,
@@ -106,6 +109,7 @@ const SHIZUOKA_ESTAT_DIR = resolve(RAW_DIR, "estat-shizuoka");
 const AICHI_ESTAT_DIR = resolve(RAW_DIR, "estat-aichi");
 const MIE_ESTAT_DIR = resolve(RAW_DIR, "estat-mie");
 const SHIGA_ESTAT_DIR = resolve(RAW_DIR, "estat-shiga");
+const KYOTO_ESTAT_DIR = resolve(RAW_DIR, "estat-kyoto");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 const ESTAT_ENDPOINT = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData";
 const HACHIOJI_2019 = `${DOWNLOAD_BASE}/${HACHIOJI_2019_FILE}`;
@@ -425,6 +429,17 @@ async function fetchExcelShiga(force: boolean) {
   await fetchExcelPrefecture("滋賀県", SHIGA_BOOKLET_PAGES, force);
 }
 
+async function fetchExcelKyoto(force: boolean) {
+  await fetchExcelPrefecture("京都府", KYOTO_BOOKLET_PAGES, force, parseCityBooklet, [KYOTO_CODE]);
+  for (const [yearRaw, url] of Object.entries(KYOTO_MIC_EXCEL)) {
+    const y = Number(yearRaw);
+    const dest = resolve(RAW_DIR, KYOTO_CODE, `${y}.xlsx`);
+    const existed = existsSync(dest);
+    await saveIfNeeded(dest, force, () => download(url), `${y} 京都市（総務省）`);
+    if (force || !existed) await sleep(80);
+  }
+}
+
 async function fetchExcelShizuoka(force: boolean) {
   await fetchExcelPrefecture("静岡県", SHIZUOKA_BOOKLET_PAGES, force, parseCityBooklet, [
     SHIZUOKA_CODE,
@@ -713,6 +728,7 @@ async function main() {
     { pref: "愛知県", run: fetchExcelAichi },
     { pref: "三重県", run: fetchExcelMie },
     { pref: "滋賀県", run: fetchExcelShiga },
+    { pref: "京都府", run: fetchExcelKyoto },
     { pref: "沖縄県", run: fetchExcelOkinawa },
   ];
   for (const job of excelJobs) {
@@ -751,6 +767,7 @@ async function main() {
     { pref: "愛知県", dir: AICHI_ESTAT_DIR },
     { pref: "三重県", dir: MIE_ESTAT_DIR },
     { pref: "滋賀県", dir: SHIGA_ESTAT_DIR },
+    { pref: "京都府", dir: KYOTO_ESTAT_DIR },
     { pref: "沖縄県", dir: OKINAWA_ESTAT_DIR },
   ];
   for (const job of estatJobs) {

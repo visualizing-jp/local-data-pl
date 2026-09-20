@@ -1211,6 +1211,36 @@ const SHIGA: readonly LocalGov[] = [
   muni("taga", "254436", "多賀町", "滋賀県"),
 ];
 
+/** 京都府の現行市町村。slug はローマ字。京都市は政令市。長岡京市は新潟の長岡市と衝突しない名前。 */
+const KYOTO: readonly LocalGov[] = [
+  muni("kyoto", "261009", "京都市", "京都府"),
+  muni("fukuchiyama", "262013", "福知山市", "京都府"),
+  muni("maizuru", "262021", "舞鶴市", "京都府"),
+  muni("ayabe", "262030", "綾部市", "京都府"),
+  muni("uji", "262048", "宇治市", "京都府"),
+  muni("miyazu", "262056", "宮津市", "京都府"),
+  muni("kameoka", "262064", "亀岡市", "京都府"),
+  muni("joyo", "262072", "城陽市", "京都府"),
+  muni("muko", "262081", "向日市", "京都府"),
+  muni("nagaokakyo", "262099", "長岡京市", "京都府"),
+  muni("yawata", "262102", "八幡市", "京都府"),
+  muni("kyotanabe", "262111", "京田辺市", "京都府"),
+  muni("kyotango", "262129", "京丹後市", "京都府"),
+  muni("nantan", "262137", "南丹市", "京都府"),
+  muni("kizugawa", "262145", "木津川市", "京都府"),
+  muni("oyamazaki", "263036", "大山崎町", "京都府"),
+  muni("kumiyama", "263222", "久御山町", "京都府"),
+  muni("ide", "263435", "井手町", "京都府"),
+  muni("ujitawara", "263443", "宇治田原町", "京都府"),
+  muni("kasagi", "263648", "笠置町", "京都府"),
+  muni("wazuka", "263656", "和束町", "京都府"),
+  muni("seika", "263664", "精華町", "京都府"),
+  muni("minamiyamashiro", "263672", "南山城村", "京都府"),
+  muni("kyotamba", "264075", "京丹波町", "京都府"),
+  muni("ine", "264636", "伊根町", "京都府"),
+  muni("yosano", "264652", "与謝野町", "京都府"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -1282,6 +1312,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...AICHI,
   ...MIE,
   ...SHIGA,
+  ...KYOTO,
   ...OKINAWA,
 ];
 

@@ -323,6 +323,28 @@ export const SHIGA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: "https://www.pref.shiga.lg.jp/bh00/23158.html",
 };
 
+/** 京都府「財政状況資料集」（府内市町村）。2019–2024。京都市は載らない。令和3だけパスが違う。 */
+export const KYOTO_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.kyoto.jp/tiho/01zaiseijoukyou.html",
+  2020: "https://www.pref.kyoto.jp/tiho/02zaiseijoukyou.html",
+  2021: "https://www.pref.kyoto.jp/tiho/3nenndo/03zaiseizyoukyousiryousyuu.html",
+  2022: "https://www.pref.kyoto.jp/tiho/04zaiseijoukyou.html",
+  2023: "https://www.pref.kyoto.jp/tiho/05zaiseijoukyou.html",
+  2024: "https://www.pref.kyoto.jp/tiho/06zaiseijoukyou.html",
+};
+
+/** 京都市は政令市のため府ページに無い。総務省の政令指定都市資料集。 */
+export const KYOTO_MIC_EXCEL: Readonly<Record<number, string>> = {
+  2019: "https://www.soumu.go.jp/main_content/000740651.xlsx",
+  2020: "https://www.soumu.go.jp/main_content/000841930.xlsx",
+  2021: "https://www.soumu.go.jp/main_content/000873253.xlsx",
+  2022: "https://www.soumu.go.jp/main_content/000970897.xlsx",
+  2023: "https://www.soumu.go.jp/main_content/000999776.xlsx",
+  2024: "https://www.soumu.go.jp/main_content/001063434.xlsx",
+};
+
+export const KYOTO_CODE = "261009";
+
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",
