@@ -106,6 +106,11 @@ export const FUKUSHIMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
 /** 県の2019掲載が公会計シートのみで「普通会計の状況」が無い。 */
 export const FUKUSHIMA_SKIP_EXCEL: ReadonlySet<string> = new Set(["073628:2019", "073644:2019", "074071:2019"]);
 
+/** 現行団体としては載せない e-Stat の下限。揖斐川町は合併前の揖斐町コードを引き継ぐが、2004–2018 が無く途切れる。 */
+export const ESTAT_MIN_YEAR: Readonly<Record<string, number>> = {
+  "214021": 2019,
+};
+
 /** 茨城県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const IBARAKI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.ibaraki.jp/somu/shichoson/zaisei/saisyutsubunnseki/r1/zaisei-jyokyo-shiryosyu.html",

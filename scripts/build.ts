@@ -14,7 +14,7 @@ import { cliPrefecture, requireCatalogPrefecture } from "./cli.ts";
 import { isPurposeLeaf, isRevenueLeaf, normalizeRevenueName, revenueGroup } from "../src/lib/taxonomy.ts";
 import type { CityFinance, FlowItem } from "../src/lib/types.ts";
 import { loadEstatFlows } from "./estat.ts";
-import { AKITA_BOOKLET_PAGES, AOMORI_BOOKLET_PAGES, CHIBA_BOOKLET_PAGES, CHIBA_CODE, CHIBA_MIC_EXCEL, FUKUI_BOOKLET_PAGES, FUKUSHIMA_BOOKLET_PAGES, FUKUSHIMA_SKIP_EXCEL, GIFU_BOOKLET_PAGES, GUNMA_BOOKLET_PAGES, HOKKAIDO_BOOKLET_YEAR, IBARAKI_BOOKLET_PAGES, ISHIKAWA_BOOKLET_PAGES, IWATE_BOOKLET_PAGES, KANAGAWA_BOOKLET_PAGES, MIYAGI_BOOKLET_YEARS, NAGANO_BOOKLET_PAGES, NIIGATA_BOOKLET_PAGES, OKINAWA_BOOKLET_PAGES, SAPPORO_CODE, SAPPORO_MIC_EXCEL, SAITAMA_BOOKLET_PAGES, SAITAMA_CODE, SAITAMA_MIC_EXCEL, SENDAI_CODE, SENDAI_MIC_EXCEL, TOCHIGI_BOOKLET_PAGES, TOKYO_BOOKLET_YEARS, TOYAMA_BOOKLET_PAGES, YAMAGATA_BOOKLET_PAGES, YAMANASHI_BOOKLET_PAGES } from "./sources.ts";
+import { AKITA_BOOKLET_PAGES, AOMORI_BOOKLET_PAGES, CHIBA_BOOKLET_PAGES, CHIBA_CODE, CHIBA_MIC_EXCEL, ESTAT_MIN_YEAR, FUKUI_BOOKLET_PAGES, FUKUSHIMA_BOOKLET_PAGES, FUKUSHIMA_SKIP_EXCEL, GIFU_BOOKLET_PAGES, GUNMA_BOOKLET_PAGES, HOKKAIDO_BOOKLET_YEAR, IBARAKI_BOOKLET_PAGES, ISHIKAWA_BOOKLET_PAGES, IWATE_BOOKLET_PAGES, KANAGAWA_BOOKLET_PAGES, MIYAGI_BOOKLET_YEARS, NAGANO_BOOKLET_PAGES, NIIGATA_BOOKLET_PAGES, OKINAWA_BOOKLET_PAGES, SAPPORO_CODE, SAPPORO_MIC_EXCEL, SAITAMA_BOOKLET_PAGES, SAITAMA_CODE, SAITAMA_MIC_EXCEL, SENDAI_CODE, SENDAI_MIC_EXCEL, TOCHIGI_BOOKLET_PAGES, TOKYO_BOOKLET_YEARS, TOYAMA_BOOKLET_PAGES, YAMAGATA_BOOKLET_PAGES, YAMANASHI_BOOKLET_PAGES } from "./sources.ts";
 
 const RAW_DIR = resolve(import.meta.dirname, "../data/raw");
 const OUT_DIR = resolve(import.meta.dirname, "../public/data");
@@ -493,9 +493,11 @@ async function buildGov(gov: LocalGov): Promise<CityFinance> {
     expenditureByYear.set(year, parsed.expenditure);
   }
 
+  const minYear = ESTAT_MIN_YEAR[gov.code];
   const years = [...new Set([...revenueByYear.keys(), ...expenditureByYear.keys()])]
     .sort((a, b) => a - b)
-    .filter((year) => (revenueByYear.get(year)?.length ?? 0) > 0 && (expenditureByYear.get(year)?.length ?? 0) > 0);
+    .filter((year) => (revenueByYear.get(year)?.length ?? 0) > 0 && (expenditureByYear.get(year)?.length ?? 0) > 0)
+    .filter((year) => minYear == null || year >= minYear);
 
   const revenue: FlowItem[] = [];
   const expenditure: FlowItem[] = [];
