@@ -201,6 +201,16 @@ export const ISHIKAWA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: "https://www.pref.ishikawa.lg.jp/sichousien/hikakubunseki/r6.html",
 };
 
+/** 福井県「財政状況資料集」（県内市町）。2019–2024。政令市は無い。令和元・2年度のパスだけ syuu。 */
+export const FUKUI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.fukui.lg.jp/doc/sityousinkou/r01zaiseisiryousyuu.html",
+  2020: "https://www.pref.fukui.lg.jp/doc/sityousinkou/r02zaiseisiryousyuu.html",
+  2021: "https://www.pref.fukui.lg.jp/doc/sityousinkou/r03zaiseisiryoushuu.html",
+  2022: "https://www.pref.fukui.lg.jp/doc/sityousinkou/r04zaiseisiryoushuu.html",
+  2023: "https://www.pref.fukui.lg.jp/doc/sityousinkou/r05zaiseisiryoushuu.html",
+  2024: "https://www.pref.fukui.lg.jp/doc/sityousinkou/r06zaiseisiryoushuu.html",
+};
+
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",

@@ -879,6 +879,27 @@ const ISHIKAWA: readonly LocalGov[] = [
   muni("noto", "174637", "能登町", "石川県"),
 ];
 
+/** 福井県の現行市町。slug はローマ字。大野市・坂井市・おおい町・池田町は他県と同名団体と衝突しない名前。 */
+const FUKUI: readonly LocalGov[] = [
+  muni("fukui", "182010", "福井市", "福井県"),
+  muni("tsuruga", "182028", "敦賀市", "福井県"),
+  muni("obama", "182044", "小浜市", "福井県"),
+  muni("onoshi", "182052", "大野市", "福井県"),
+  muni("katsuyama", "182061", "勝山市", "福井県"),
+  muni("sabae", "182079", "鯖江市", "福井県"),
+  muni("awara", "182087", "あわら市", "福井県"),
+  muni("echizenshi", "182095", "越前市", "福井県"),
+  muni("sakaishi", "182109", "坂井市", "福井県"),
+  muni("eiheiji", "183229", "永平寺町", "福井県"),
+  muni("ikedamachi", "183822", "池田町", "福井県"),
+  muni("minamiechizen", "184047", "南越前町", "福井県"),
+  muni("echizencho", "184233", "越前町", "福井県"),
+  muni("mihama", "184420", "美浜町", "福井県"),
+  muni("takahama", "184811", "高浜町", "福井県"),
+  muni("oicho", "184837", "おおい町", "福井県"),
+  muni("wakasa", "185019", "若狭町", "福井県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -942,6 +963,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...NIIGATA,
   ...TOYAMA,
   ...ISHIKAWA,
+  ...FUKUI,
   ...OKINAWA,
 ];
 
