@@ -486,6 +486,19 @@ export const TOKUSHIMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: TOKUSHIMA_BOOKLET_PAGE,
 };
 
+/** 香川県「県内市町の財政状況資料集」。現行ページは 2020–2024。2019 は Wayback。 */
+export const KAGAWA_BOOKLET_PAGE =
+  "https://www.pref.kagawa.lg.jp/jichisin/zaisei/siryo/wfcvwp161110145228.html";
+
+export const KAGAWA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://web.archive.org/web/20240304054214/https://www.pref.kagawa.lg.jp/jichisin/zaisei/siryo/wfcvwp161110145228.html",
+  2020: KAGAWA_BOOKLET_PAGE,
+  2021: KAGAWA_BOOKLET_PAGE,
+  2022: KAGAWA_BOOKLET_PAGE,
+  2023: KAGAWA_BOOKLET_PAGE,
+  2024: KAGAWA_BOOKLET_PAGE,
+};
+
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",

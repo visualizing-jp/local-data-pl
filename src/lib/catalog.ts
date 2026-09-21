@@ -1565,6 +1565,27 @@ const TOKUSHIMA: readonly LocalGov[] = [
   muni("higashimiyoshi", "364894", "東みよし町", "徳島県"),
 ];
 
+/** 香川県の現行市町。slug はローマ字。三木町は兵庫県三木市と衝突しない名前。 */
+const KAGAWA: readonly LocalGov[] = [
+  muni("takamatsu", "372013", "高松市", "香川県"),
+  muni("marugame", "372021", "丸亀市", "香川県"),
+  muni("sakaide", "372030", "坂出市", "香川県"),
+  muni("zentsuji", "372048", "善通寺市", "香川県"),
+  muni("kanonji", "372056", "観音寺市", "香川県"),
+  muni("sanuki", "372064", "さぬき市", "香川県"),
+  muni("higashikagawa", "372072", "東かがわ市", "香川県"),
+  muni("mitoyo", "372081", "三豊市", "香川県"),
+  muni("tonosho", "373222", "土庄町", "香川県"),
+  muni("shodoshima", "373249", "小豆島町", "香川県"),
+  muni("mikicho", "373419", "三木町", "香川県"),
+  muni("naoshima", "373648", "直島町", "香川県"),
+  muni("utazu", "373869", "宇多津町", "香川県"),
+  muni("ayagawa", "373877", "綾川町", "香川県"),
+  muni("kotohira", "374032", "琴平町", "香川県"),
+  muni("tadotsu", "374041", "多度津町", "香川県"),
+  muni("manno", "374067", "まんのう町", "香川県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -1647,6 +1668,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...HIROSHIMA,
   ...YAMAGUCHI,
   ...TOKUSHIMA,
+  ...KAGAWA,
   ...OKINAWA,
 ];
 
