@@ -1610,6 +1610,44 @@ const EHIME: readonly LocalGov[] = [
   muni("ainan", "385069", "愛南町", "愛媛県"),
 ];
 
+/** 高知県の現行市町村。slug はローマ字。香南市・香美市・大月町・三原村は他県と衝突しない名前。 */
+const KOCHI: readonly LocalGov[] = [
+  muni("kochi", "392014", "高知市", "高知県"),
+  muni("muroto", "392022", "室戸市", "高知県"),
+  muni("aki", "392031", "安芸市", "高知県"),
+  muni("nankoku", "392049", "南国市", "高知県"),
+  muni("tosa", "392057", "土佐市", "高知県"),
+  muni("susaki", "392065", "須崎市", "高知県"),
+  muni("sukumo", "392081", "宿毛市", "高知県"),
+  muni("tosashimizu", "392090", "土佐清水市", "高知県"),
+  muni("shimanto", "392103", "四万十市", "高知県"),
+  muni("konankochi", "392111", "香南市", "高知県"),
+  muni("kamishi", "392120", "香美市", "高知県"),
+  muni("toyo", "393011", "東洋町", "高知県"),
+  muni("nahari", "393029", "奈半利町", "高知県"),
+  muni("tano", "393037", "田野町", "高知県"),
+  muni("yasuda", "393045", "安田町", "高知県"),
+  muni("kitagawa", "393053", "北川村", "高知県"),
+  muni("umaji", "393061", "馬路村", "高知県"),
+  muni("geisei", "393070", "芸西村", "高知県"),
+  muni("motoyama", "393410", "本山町", "高知県"),
+  muni("otoyo", "393444", "大豊町", "高知県"),
+  muni("tosacho", "393631", "土佐町", "高知県"),
+  muni("okawa", "393649", "大川村", "高知県"),
+  muni("ino", "393860", "いの町", "高知県"),
+  muni("niyodogawa", "393878", "仁淀川町", "高知県"),
+  muni("nakatosa", "394017", "中土佐町", "高知県"),
+  muni("sakawa", "394025", "佐川町", "高知県"),
+  muni("ochi", "394033", "越知町", "高知県"),
+  muni("yusuhara", "394050", "梼原町", "高知県"),
+  muni("hidaka", "394106", "日高村", "高知県"),
+  muni("tsuno", "394114", "津野町", "高知県"),
+  muni("shimantocho", "394122", "四万十町", "高知県"),
+  muni("otsukicho", "394246", "大月町", "高知県"),
+  muni("miharamura", "394271", "三原村", "高知県"),
+  muni("kuroshio", "394289", "黒潮町", "高知県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -1694,6 +1732,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...TOKUSHIMA,
   ...KAGAWA,
   ...EHIME,
+  ...KOCHI,
   ...OKINAWA,
 ];
 

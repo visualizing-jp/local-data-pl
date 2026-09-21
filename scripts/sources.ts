@@ -40,6 +40,9 @@ export const HYOGO_SKIP_EXCEL: ReadonlySet<string> = new Set(["282251:2021"]);
 /** 県掲載が誤年度または公会計のみで、団体サイトにも当該年の普通会計 Excel が無い。 */
 export const NARA_SKIP_EXCEL: ReadonlySet<string> = new Set(["293229:2022", "293628:2023"]);
 
+/** 県ページが「準備中」で、村サイトにも当該年の普通会計 Excel が無い。 */
+export const KOCHI_SKIP_EXCEL: ReadonlySet<string> = new Set(["393649:2022", "393649:2023"]);
+
 /** 北海道内市町村の財政状況資料集。道サイトは最新年の ZIP だけを残す。札幌市は載らない。 */
 export const HOKKAIDO_BOOKLET_PAGE =
   "https://www.pref.hokkaido.lg.jp/ss/scs/zaisei/shi-zaisei-4-1-0.html";
@@ -507,6 +510,16 @@ export const EHIME_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2022: "https://www.pref.ehime.jp/page/51887.html",
   2023: "https://www.pref.ehime.jp/page/104227.html",
   2024: "https://www.pref.ehime.jp/page/140353.html",
+};
+
+/** 高知県「市町村財政状況資料集」。2019–2024。年ごとにページが分かれる。 */
+export const KOCHI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.kochi.lg.jp/doc/r01zaiseishiryo/",
+  2020: "https://www.pref.kochi.lg.jp/doc/r02zaiseishiryo/",
+  2021: "https://www.pref.kochi.lg.jp/doc/r03zaiseishiryo/",
+  2022: "https://www.pref.kochi.lg.jp/doc/r4zaiseishiryo/",
+  2023: "https://www.pref.kochi.lg.jp/doc/2025030300249/",
+  2024: "https://www.pref.kochi.lg.jp/doc/2026021700208/",
 };
 
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
