@@ -31,6 +31,7 @@ function verifyOne(data: CityFinance, filename: string): void {
     if (curr === prev + 1) continue;
     const tokyoGap2019 =
       gov.prefecture === "東京都" && gov.code !== "132012" && prev === 2018 && curr === 2020;
+    const sagaGap2019 = gov.prefecture === "佐賀県" && prev === 2018 && curr === 2020;
     const hokkaidoGapBooklet =
       gov.prefecture === "北海道" && gov.code !== "011002" && prev === 2018 && curr === 2024;
     const fukushimaGap2019 =
@@ -46,7 +47,15 @@ function verifyOne(data: CityFinance, filename: string): void {
         }
       }
     }
-    if (!tokyoGap2019 && !hokkaidoGapBooklet && !fukushimaGap2019 && !hyogoGap2021 && !naraSkipGap && !kochiSkipGap) {
+    if (
+      !tokyoGap2019 &&
+      !sagaGap2019 &&
+      !hokkaidoGapBooklet &&
+      !fukushimaGap2019 &&
+      !hyogoGap2021 &&
+      !naraSkipGap &&
+      !kochiSkipGap
+    ) {
       fail(`${filename}: 年度が連続していない: ${prev} → ${curr}`);
     }
   }

@@ -1712,6 +1712,30 @@ const FUKUOKA: readonly LocalGov[] = [
   muni("chikujo", "406473", "築上町", "福岡県"),
 ];
 
+/** 佐賀県の現行市町。slug はローマ字。政令市は無い。 */
+const SAGA: readonly LocalGov[] = [
+  muni("saga", "412015", "佐賀市", "佐賀県"),
+  muni("karatsu", "412023", "唐津市", "佐賀県"),
+  muni("tosu", "412031", "鳥栖市", "佐賀県"),
+  muni("taku", "412040", "多久市", "佐賀県"),
+  muni("imari", "412058", "伊万里市", "佐賀県"),
+  muni("takeo", "412066", "武雄市", "佐賀県"),
+  muni("kashimashi", "412074", "鹿島市", "佐賀県"),
+  muni("ogi", "412082", "小城市", "佐賀県"),
+  muni("ureshino", "412091", "嬉野市", "佐賀県"),
+  muni("kanzaki", "412104", "神埼市", "佐賀県"),
+  muni("yoshinogari", "413275", "吉野ヶ里町", "佐賀県"),
+  muni("kiyama", "413411", "基山町", "佐賀県"),
+  muni("kamimine", "413453", "上峰町", "佐賀県"),
+  muni("miyaki", "413461", "みやき町", "佐賀県"),
+  muni("genkai", "413879", "玄海町", "佐賀県"),
+  muni("arita", "414018", "有田町", "佐賀県"),
+  muni("omachicho", "414239", "大町町", "佐賀県"),
+  muni("kohoku", "414247", "江北町", "佐賀県"),
+  muni("shiroishicho", "414255", "白石町", "佐賀県"),
+  muni("tara", "414417", "太良町", "佐賀県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -1798,6 +1822,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...EHIME,
   ...KOCHI,
   ...FUKUOKA,
+  ...SAGA,
   ...OKINAWA,
 ];
 

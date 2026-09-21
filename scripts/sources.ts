@@ -555,6 +555,15 @@ export const FUKUOKA_MIC_EXCEL: Readonly<Record<number, string>> = {
   2024: "https://www.soumu.go.jp/main_content/001063441.xlsx",
 };
 
+/** 佐賀県「財政状況資料集」（県内市町）。現行ページは 2020–2024。2019 は県が削除。 */
+export const SAGA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2020: "https://www.pref.saga.lg.jp/kiji00385005/index.html",
+  2021: "https://www.pref.saga.lg.jp/kiji00395545/index.html",
+  2022: "https://www.pref.saga.lg.jp/kiji003101783/index.html",
+  2023: "https://www.pref.saga.lg.jp/kiji003112378/index.html",
+  2024: "https://www.pref.saga.lg.jp/kiji003118621/index.html",
+};
+
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",
