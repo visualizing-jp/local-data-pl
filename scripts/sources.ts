@@ -499,6 +499,16 @@ export const KAGAWA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: KAGAWA_BOOKLET_PAGE,
 };
 
+/** 愛媛県「財政状況資料集」（県内市町）。2019–2024。年ごとにページが分かれる。 */
+export const EHIME_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.ehime.jp/page/11976.html",
+  2020: "https://www.pref.ehime.jp/page/11977.html",
+  2021: "https://www.pref.ehime.jp/page/11984.html",
+  2022: "https://www.pref.ehime.jp/page/51887.html",
+  2023: "https://www.pref.ehime.jp/page/104227.html",
+  2024: "https://www.pref.ehime.jp/page/140353.html",
+};
+
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",

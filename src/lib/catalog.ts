@@ -1586,6 +1586,30 @@ const KAGAWA: readonly LocalGov[] = [
   muni("manno", "374067", "まんのう町", "香川県"),
 ];
 
+/** 愛媛県の現行市町。slug はローマ字。鬼北町は三重県紀北町と衝突しない名前。 */
+const EHIME: readonly LocalGov[] = [
+  muni("matsuyama", "382019", "松山市", "愛媛県"),
+  muni("imabari", "382027", "今治市", "愛媛県"),
+  muni("uwajima", "382035", "宇和島市", "愛媛県"),
+  muni("yawatahama", "382043", "八幡浜市", "愛媛県"),
+  muni("niihama", "382051", "新居浜市", "愛媛県"),
+  muni("saijo", "382060", "西条市", "愛媛県"),
+  muni("ozu", "382078", "大洲市", "愛媛県"),
+  muni("iyo", "382108", "伊予市", "愛媛県"),
+  muni("shikokuchuo", "382132", "四国中央市", "愛媛県"),
+  muni("seiyo", "382141", "西予市", "愛媛県"),
+  muni("toon", "382159", "東温市", "愛媛県"),
+  muni("kamijima", "383562", "上島町", "愛媛県"),
+  muni("kumakogen", "383864", "久万高原町", "愛媛県"),
+  muni("masaki", "384011", "松前町", "愛媛県"),
+  muni("tobe", "384020", "砥部町", "愛媛県"),
+  muni("uchiko", "384224", "内子町", "愛媛県"),
+  muni("ikata", "384429", "伊方町", "愛媛県"),
+  muni("matsuno", "384844", "松野町", "愛媛県"),
+  muni("kihokucho", "384887", "鬼北町", "愛媛県"),
+  muni("ainan", "385069", "愛南町", "愛媛県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -1669,6 +1693,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...YAMAGUCHI,
   ...TOKUSHIMA,
   ...KAGAWA,
+  ...EHIME,
   ...OKINAWA,
 ];
 

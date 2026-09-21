@@ -22,6 +22,7 @@ import { parseHyogoBooklet } from "./hyogo-booklet.ts";
 import { parseAichiBookletYear } from "./aichi-booklet.ts";
 import { parseTokushimaBookletYear } from "./tokushima-booklet.ts";
 import { parseKagawaBookletYear } from "./kagawa-booklet.ts";
+import { parseEhimeBooklet } from "./ehime-booklet.ts";
 import { parseCityBooklet } from "./okinawa-booklet.ts";
 import { parseTokyoBooklet } from "./tokyo-booklet.ts";
 import {
@@ -70,6 +71,7 @@ import {
   YAMAGUCHI_BOOKLET_PAGES,
   TOKUSHIMA_BOOKLET_PAGES,
   KAGAWA_BOOKLET_PAGES,
+  EHIME_BOOKLET_PAGES,
   SAKAI_CODE,
   SAKAI_MIC_EXCEL,
   HAMAMATSU_CODE,
@@ -139,6 +141,7 @@ const HIROSHIMA_ESTAT_DIR = resolve(RAW_DIR, "estat-hiroshima");
 const YAMAGUCHI_ESTAT_DIR = resolve(RAW_DIR, "estat-yamaguchi");
 const TOKUSHIMA_ESTAT_DIR = resolve(RAW_DIR, "estat-tokushima");
 const KAGAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-kagawa");
+const EHIME_ESTAT_DIR = resolve(RAW_DIR, "estat-ehime");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 const ESTAT_ENDPOINT = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData";
 const HACHIOJI_2019 = `${DOWNLOAD_BASE}/${HACHIOJI_2019_FILE}`;
@@ -537,6 +540,10 @@ async function fetchExcelTokushima(force: boolean) {
   }
 }
 
+async function fetchExcelEhime(force: boolean) {
+  await fetchExcelPrefecture("愛媛県", EHIME_BOOKLET_PAGES, force, parseEhimeBooklet);
+}
+
 async function fetchExcelKagawa(force: boolean) {
   const expected = CATALOG.filter((gov) => gov.prefecture === "香川県");
   const htmlByUrl = new Map<string, string>();
@@ -891,6 +898,7 @@ async function main() {
     { pref: "山口県", run: fetchExcelYamaguchi },
     { pref: "徳島県", run: fetchExcelTokushima },
     { pref: "香川県", run: fetchExcelKagawa },
+    { pref: "愛媛県", run: fetchExcelEhime },
     { pref: "沖縄県", run: fetchExcelOkinawa },
   ];
   for (const job of excelJobs) {
@@ -941,6 +949,7 @@ async function main() {
     { pref: "山口県", dir: YAMAGUCHI_ESTAT_DIR },
     { pref: "徳島県", dir: TOKUSHIMA_ESTAT_DIR },
     { pref: "香川県", dir: KAGAWA_ESTAT_DIR },
+    { pref: "愛媛県", dir: EHIME_ESTAT_DIR },
     { pref: "沖縄県", dir: OKINAWA_ESTAT_DIR },
   ];
   for (const job of estatJobs) {
