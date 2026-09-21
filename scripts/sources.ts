@@ -43,6 +43,9 @@ export const NARA_SKIP_EXCEL: ReadonlySet<string> = new Set(["293229:2022", "293
 /** 県ページが「準備中」で、村サイトにも当該年の普通会計 Excel が無い。 */
 export const KOCHI_SKIP_EXCEL: ReadonlySet<string> = new Set(["393649:2022", "393649:2023"]);
 
+export const KITAKYUSHU_CODE = "401005";
+export const FUKUOKA_CODE = "401307";
+
 /** 北海道内市町村の財政状況資料集。道サイトは最新年の ZIP だけを残す。札幌市は載らない。 */
 export const HOKKAIDO_BOOKLET_PAGE =
   "https://www.pref.hokkaido.lg.jp/ss/scs/zaisei/shi-zaisei-4-1-0.html";
@@ -520,6 +523,36 @@ export const KOCHI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2022: "https://www.pref.kochi.lg.jp/doc/r4zaiseishiryo/",
   2023: "https://www.pref.kochi.lg.jp/doc/2025030300249/",
   2024: "https://www.pref.kochi.lg.jp/doc/2026021700208/",
+};
+
+/** 福岡県「財政状況資料集」。政令指定都市を除く。2019–2024。 */
+export const FUKUOKA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.fukuoka.lg.jp/contents/zaiseisiryosyur1.html",
+  2020: "https://www.pref.fukuoka.lg.jp/contents/zaiseisiryosyur2.html",
+  2021: "https://www.pref.fukuoka.lg.jp/contents/zaiseisiryosyur3.html",
+  2022: "https://www.pref.fukuoka.lg.jp/contents/zaiseisiryosyur4.html",
+  2023: "https://www.pref.fukuoka.lg.jp/contents/zaiseisiryosyur5.html",
+  2024: "https://www.pref.fukuoka.lg.jp/contents/zaiseisiryosyur6.html",
+};
+
+/** 北九州市は政令市のため県ページに無い。総務省の政令指定都市資料集。 */
+export const KITAKYUSHU_MIC_EXCEL: Readonly<Record<number, string>> = {
+  2019: "https://www.soumu.go.jp/main_content/000740657.xlsx",
+  2020: "https://www.soumu.go.jp/main_content/000918166.xlsx",
+  2021: "https://www.soumu.go.jp/main_content/000918154.xlsx",
+  2022: "https://www.soumu.go.jp/main_content/000970321.xlsx",
+  2023: "https://www.soumu.go.jp/main_content/000999782.xlsx",
+  2024: "https://www.soumu.go.jp/main_content/001063440.xlsx",
+};
+
+/** 福岡市は政令市のため県ページに無い。総務省の政令指定都市資料集。 */
+export const FUKUOKA_MIC_EXCEL: Readonly<Record<number, string>> = {
+  2019: "https://www.soumu.go.jp/main_content/000740658.xlsx",
+  2020: "https://www.soumu.go.jp/main_content/000839188.xlsx",
+  2021: "https://www.soumu.go.jp/main_content/000873262.xlsx",
+  2022: "https://www.soumu.go.jp/main_content/000970322.xlsx",
+  2023: "https://www.soumu.go.jp/main_content/000999783.xlsx",
+  2024: "https://www.soumu.go.jp/main_content/001063441.xlsx",
 };
 
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */

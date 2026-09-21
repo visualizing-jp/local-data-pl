@@ -24,6 +24,7 @@ import { parseTokushimaBookletYear } from "./tokushima-booklet.ts";
 import { parseKagawaBookletYear } from "./kagawa-booklet.ts";
 import { parseEhimeBooklet } from "./ehime-booklet.ts";
 import { parseKochiBooklet } from "./kochi-booklet.ts";
+import { parseFukuokaBooklet } from "./fukuoka-booklet.ts";
 import { parseCityBooklet } from "./okinawa-booklet.ts";
 import { parseTokyoBooklet } from "./tokyo-booklet.ts";
 import {
@@ -75,6 +76,11 @@ import {
   EHIME_BOOKLET_PAGES,
   KOCHI_BOOKLET_PAGES,
   KOCHI_SKIP_EXCEL,
+  FUKUOKA_BOOKLET_PAGES,
+  FUKUOKA_CODE,
+  FUKUOKA_MIC_EXCEL,
+  KITAKYUSHU_CODE,
+  KITAKYUSHU_MIC_EXCEL,
   SAKAI_CODE,
   SAKAI_MIC_EXCEL,
   HAMAMATSU_CODE,
@@ -146,6 +152,7 @@ const TOKUSHIMA_ESTAT_DIR = resolve(RAW_DIR, "estat-tokushima");
 const KAGAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-kagawa");
 const EHIME_ESTAT_DIR = resolve(RAW_DIR, "estat-ehime");
 const KOCHI_ESTAT_DIR = resolve(RAW_DIR, "estat-kochi");
+const FUKUOKA_ESTAT_DIR = resolve(RAW_DIR, "estat-fukuoka");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 const ESTAT_ENDPOINT = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData";
 const HACHIOJI_2019 = `${DOWNLOAD_BASE}/${HACHIOJI_2019_FILE}`;
@@ -548,6 +555,27 @@ async function fetchExcelEhime(force: boolean) {
   await fetchExcelPrefecture("愛媛県", EHIME_BOOKLET_PAGES, force, parseEhimeBooklet);
 }
 
+async function fetchExcelFukuoka(force: boolean) {
+  await fetchExcelPrefecture("福岡県", FUKUOKA_BOOKLET_PAGES, force, parseFukuokaBooklet, [
+    KITAKYUSHU_CODE,
+    FUKUOKA_CODE,
+  ]);
+  for (const [yearRaw, url] of Object.entries(KITAKYUSHU_MIC_EXCEL)) {
+    const y = Number(yearRaw);
+    const dest = resolve(RAW_DIR, KITAKYUSHU_CODE, `${y}.xlsx`);
+    const existed = existsSync(dest);
+    await saveIfNeeded(dest, force, () => download(url), `${y} 北九州市（総務省）`);
+    if (force || !existed) await sleep(80);
+  }
+  for (const [yearRaw, url] of Object.entries(FUKUOKA_MIC_EXCEL)) {
+    const y = Number(yearRaw);
+    const dest = resolve(RAW_DIR, FUKUOKA_CODE, `${y}.xlsx`);
+    const existed = existsSync(dest);
+    await saveIfNeeded(dest, force, () => download(url), `${y} 福岡市（総務省）`);
+    if (force || !existed) await sleep(80);
+  }
+}
+
 async function fetchExcelKochi(force: boolean) {
   const expectedAll = CATALOG.filter((gov) => gov.prefecture === "高知県");
   for (const [yearRaw, pageUrl] of Object.entries(KOCHI_BOOKLET_PAGES)) {
@@ -934,6 +962,7 @@ async function main() {
     { pref: "香川県", run: fetchExcelKagawa },
     { pref: "愛媛県", run: fetchExcelEhime },
     { pref: "高知県", run: fetchExcelKochi },
+    { pref: "福岡県", run: fetchExcelFukuoka },
     { pref: "沖縄県", run: fetchExcelOkinawa },
   ];
   for (const job of excelJobs) {
@@ -986,6 +1015,7 @@ async function main() {
     { pref: "香川県", dir: KAGAWA_ESTAT_DIR },
     { pref: "愛媛県", dir: EHIME_ESTAT_DIR },
     { pref: "高知県", dir: KOCHI_ESTAT_DIR },
+    { pref: "福岡県", dir: FUKUOKA_ESTAT_DIR },
     { pref: "沖縄県", dir: OKINAWA_ESTAT_DIR },
   ];
   for (const job of estatJobs) {
