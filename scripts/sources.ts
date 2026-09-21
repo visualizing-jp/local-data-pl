@@ -564,6 +564,16 @@ export const SAGA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: "https://www.pref.saga.lg.jp/kiji003118621/index.html",
 };
 
+/** 長崎県「財政状況資料集」(県内市町)。2019–2024。 */
+export const NAGASAKI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.nagasaki.jp/doc/page-485404.html",
+  2020: "https://www.pref.nagasaki.jp/doc/page-544915.html",
+  2021: "https://www.pref.nagasaki.jp/doc/page-603645.html",
+  2022: "https://www.pref.nagasaki.jp/doc/page-658317.html",
+  2023: "https://www.pref.nagasaki.jp/doc/page-716169.html",
+  2024: "https://www.pref.nagasaki.jp/doc/45114.html",
+};
+
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",

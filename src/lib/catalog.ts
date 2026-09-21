@@ -1736,6 +1736,31 @@ const SAGA: readonly LocalGov[] = [
   muni("tara", "414417", "太良町", "佐賀県"),
 ];
 
+/** 長崎県の現行市町。slug はローマ字。政令市は無い。 */
+const NAGASAKI: readonly LocalGov[] = [
+  muni("nagasaki", "422011", "長崎市", "長崎県"),
+  muni("sasebo", "422029", "佐世保市", "長崎県"),
+  muni("shimabara", "422037", "島原市", "長崎県"),
+  muni("isahaya", "422045", "諫早市", "長崎県"),
+  muni("omura", "422053", "大村市", "長崎県"),
+  muni("hirado", "422070", "平戸市", "長崎県"),
+  muni("matsuura", "422088", "松浦市", "長崎県"),
+  muni("tsushimashi", "422096", "対馬市", "長崎県"),
+  muni("iki", "422100", "壱岐市", "長崎県"),
+  muni("goto", "422118", "五島市", "長崎県"),
+  muni("saikai", "422126", "西海市", "長崎県"),
+  muni("unzen", "422134", "雲仙市", "長崎県"),
+  muni("minamishimabara", "422142", "南島原市", "長崎県"),
+  muni("nagayo", "423076", "長与町", "長崎県"),
+  muni("togitsu", "423084", "時津町", "長崎県"),
+  muni("higashisonogi", "423211", "東彼杵町", "長崎県"),
+  muni("kawatana", "423220", "川棚町", "長崎県"),
+  muni("hasami", "423238", "波佐見町", "長崎県"),
+  muni("ojika", "423831", "小値賀町", "長崎県"),
+  muni("saza", "423912", "佐々町", "長崎県"),
+  muni("shinkamigoto", "424111", "新上五島町", "長崎県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -1823,6 +1848,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...KOCHI,
   ...FUKUOKA,
   ...SAGA,
+  ...NAGASAKI,
   ...OKINAWA,
 ];
 

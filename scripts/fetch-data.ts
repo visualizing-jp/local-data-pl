@@ -25,6 +25,7 @@ import { parseKagawaBookletYear } from "./kagawa-booklet.ts";
 import { parseEhimeBooklet } from "./ehime-booklet.ts";
 import { parseKochiBooklet } from "./kochi-booklet.ts";
 import { parseFukuokaBooklet } from "./fukuoka-booklet.ts";
+import { parseNagasakiBooklet } from "./nagasaki-booklet.ts";
 import { parseCityBooklet } from "./okinawa-booklet.ts";
 import { parseTokyoBooklet } from "./tokyo-booklet.ts";
 import {
@@ -82,6 +83,7 @@ import {
   KITAKYUSHU_CODE,
   KITAKYUSHU_MIC_EXCEL,
   SAGA_BOOKLET_PAGES,
+  NAGASAKI_BOOKLET_PAGES,
   SAKAI_CODE,
   SAKAI_MIC_EXCEL,
   HAMAMATSU_CODE,
@@ -155,6 +157,7 @@ const EHIME_ESTAT_DIR = resolve(RAW_DIR, "estat-ehime");
 const KOCHI_ESTAT_DIR = resolve(RAW_DIR, "estat-kochi");
 const FUKUOKA_ESTAT_DIR = resolve(RAW_DIR, "estat-fukuoka");
 const SAGA_ESTAT_DIR = resolve(RAW_DIR, "estat-saga");
+const NAGASAKI_ESTAT_DIR = resolve(RAW_DIR, "estat-nagasaki");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 const ESTAT_ENDPOINT = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData";
 const HACHIOJI_2019 = `${DOWNLOAD_BASE}/${HACHIOJI_2019_FILE}`;
@@ -559,6 +562,10 @@ async function fetchExcelEhime(force: boolean) {
 
 async function fetchExcelSaga(force: boolean) {
   await fetchExcelPrefecture("佐賀県", SAGA_BOOKLET_PAGES, force);
+}
+
+async function fetchExcelNagasaki(force: boolean) {
+  await fetchExcelPrefecture("長崎県", NAGASAKI_BOOKLET_PAGES, force, parseNagasakiBooklet);
 }
 
 async function fetchExcelFukuoka(force: boolean) {
@@ -970,6 +977,7 @@ async function main() {
     { pref: "高知県", run: fetchExcelKochi },
     { pref: "福岡県", run: fetchExcelFukuoka },
     { pref: "佐賀県", run: fetchExcelSaga },
+    { pref: "長崎県", run: fetchExcelNagasaki },
     { pref: "沖縄県", run: fetchExcelOkinawa },
   ];
   for (const job of excelJobs) {
@@ -1024,6 +1032,7 @@ async function main() {
     { pref: "高知県", dir: KOCHI_ESTAT_DIR },
     { pref: "福岡県", dir: FUKUOKA_ESTAT_DIR },
     { pref: "佐賀県", dir: SAGA_ESTAT_DIR },
+    { pref: "長崎県", dir: NAGASAKI_ESTAT_DIR },
     { pref: "沖縄県", dir: OKINAWA_ESTAT_DIR },
   ];
   for (const job of estatJobs) {
