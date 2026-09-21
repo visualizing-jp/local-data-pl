@@ -504,7 +504,8 @@ async function fetchExcelTokushima(force: boolean) {
   for (const [yearRaw, pageUrl] of Object.entries(TOKUSHIMA_BOOKLET_PAGES)) {
     const year = Number(yearRaw);
     const allPresent = expected.every((gov) => existsSync(resolve(RAW_DIR, gov.code, `${year}.xlsx`)));
-    if (!force && allPresent) {
+    const needsOverride = expected.some((gov) => EXCEL_OVERRIDES[`${gov.code}:${year}`]);
+    if (!force && allPresent && !needsOverride) {
       console.log(`cached ${year} 徳島県資料集（${expected.length}団体）`);
       continue;
     }
@@ -522,11 +523,12 @@ async function fetchExcelTokushima(force: boolean) {
       throw new Error(`徳島県 ${year}: 資料集に Excel がない: ${missing.join("、")}`);
     }
     for (const gov of expected) {
-      const url = links.get(gov.code);
+      const override = EXCEL_OVERRIDES[`${gov.code}:${year}`];
+      const url = override ?? links.get(gov.code);
       if (url == null) continue;
       const dest = resolve(RAW_DIR, gov.code, `${year}.xlsx`);
       const existed = existsSync(dest);
-      await saveIfNeeded(dest, force, () => download(url), `${year} ${gov.city}`);
+      await saveIfNeeded(dest, force || Boolean(override), () => download(url), `${year} ${gov.city}`);
       if (force || !existed) await sleep(80);
     }
   }
