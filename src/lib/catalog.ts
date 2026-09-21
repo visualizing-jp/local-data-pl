@@ -1537,6 +1537,34 @@ const YAMAGUCHI: readonly LocalGov[] = [
   muni("abu", "355020", "阿武町", "山口県"),
 ];
 
+/** 徳島県の現行市町村。slug はローマ字。阿南市・三好市・勝浦町・那賀町は他県と同名団体と衝突しない名前。 */
+const TOKUSHIMA: readonly LocalGov[] = [
+  muni("tokushima", "362018", "徳島市", "徳島県"),
+  muni("naruto", "362026", "鳴門市", "徳島県"),
+  muni("komatsushima", "362034", "小松島市", "徳島県"),
+  muni("ananshi", "362042", "阿南市", "徳島県"),
+  muni("yoshinogawa", "362051", "吉野川市", "徳島県"),
+  muni("awa", "362069", "阿波市", "徳島県"),
+  muni("mima", "362077", "美馬市", "徳島県"),
+  muni("miyoshitokushima", "362085", "三好市", "徳島県"),
+  muni("katsuracho", "363014", "勝浦町", "徳島県"),
+  muni("kamikatsu", "363022", "上勝町", "徳島県"),
+  muni("sanagochi", "363219", "佐那河内村", "徳島県"),
+  muni("ishii", "363413", "石井町", "徳島県"),
+  muni("kamiyama", "363421", "神山町", "徳島県"),
+  muni("nakacho", "363685", "那賀町", "徳島県"),
+  muni("mugi", "363839", "牟岐町", "徳島県"),
+  muni("minamicho", "363871", "美波町", "徳島県"),
+  muni("kaiyo", "363880", "海陽町", "徳島県"),
+  muni("matsushige", "364011", "松茂町", "徳島県"),
+  muni("kitajima", "364029", "北島町", "徳島県"),
+  muni("aizumi", "364037", "藍住町", "徳島県"),
+  muni("itano", "364045", "板野町", "徳島県"),
+  muni("kamiita", "364053", "上板町", "徳島県"),
+  muni("tsurugi", "364681", "つるぎ町", "徳島県"),
+  muni("higashimiyoshi", "364894", "東みよし町", "徳島県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -1618,6 +1646,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...OKAYAMA,
   ...HIROSHIMA,
   ...YAMAGUCHI,
+  ...TOKUSHIMA,
   ...OKINAWA,
 ];
 

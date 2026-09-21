@@ -471,6 +471,19 @@ export const YAMAGUCHI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: "https://www.pref.yamaguchi.lg.jp/soshiki/31/340223.html",
 };
 
+/** 徳島県「徳島県内市町村の財政状況資料集」。全市町村・全年度が同一ページ。 */
+export const TOKUSHIMA_BOOKLET_PAGE =
+  "https://www.pref.tokushima.lg.jp/ippannokata/kurashi/chihososei/2013041700035/";
+
+export const TOKUSHIMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: TOKUSHIMA_BOOKLET_PAGE,
+  2020: TOKUSHIMA_BOOKLET_PAGE,
+  2021: TOKUSHIMA_BOOKLET_PAGE,
+  2022: TOKUSHIMA_BOOKLET_PAGE,
+  2023: TOKUSHIMA_BOOKLET_PAGE,
+  2024: TOKUSHIMA_BOOKLET_PAGE,
+};
+
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",

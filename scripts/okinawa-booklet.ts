@@ -26,6 +26,7 @@ function cityLabel(html: string): string {
     .replace(/^\d{6}[_\s]+/u, "")
     .replace(/^\d+[_\s]*/u, "")
     .replace(/[_\s]+\d{4}\s*$/u, "")
+    .replace(/R(?:元|\d+)\s*$/u, "")
     .replace(/[、,]+$/u, "")
     .trim();
 }
