@@ -1832,6 +1832,36 @@ const OITA: readonly LocalGov[] = [
   muni("kusu", "444626", "玖珠町", "大分県"),
 ];
 
+/** 宮崎県の現行市町村。slug はローマ字。政令市は無い。 */
+const MIYAZAKI: readonly LocalGov[] = [
+  muni("miyazaki", "452017", "宮崎市", "宮崎県"),
+  muni("miyakonojo", "452025", "都城市", "宮崎県"),
+  muni("nobeoka", "452033", "延岡市", "宮崎県"),
+  muni("nichinan", "452041", "日南市", "宮崎県"),
+  muni("kobayashi", "452050", "小林市", "宮崎県"),
+  muni("hyuga", "452068", "日向市", "宮崎県"),
+  muni("kushima", "452076", "串間市", "宮崎県"),
+  muni("saito", "452084", "西都市", "宮崎県"),
+  muni("ebino", "452092", "えびの市", "宮崎県"),
+  muni("mimata", "453412", "三股町", "宮崎県"),
+  muni("takaharu", "453617", "高原町", "宮崎県"),
+  muni("kunitomi", "453820", "国富町", "宮崎県"),
+  muni("aya", "453838", "綾町", "宮崎県"),
+  muni("takanabe", "454010", "高鍋町", "宮崎県"),
+  muni("shintomi", "454028", "新富町", "宮崎県"),
+  muni("nishimera", "454036", "西米良村", "宮崎県"),
+  muni("kijo", "454044", "木城町", "宮崎県"),
+  muni("kawaminami", "454052", "川南町", "宮崎県"),
+  muni("tsunomachi", "454061", "都農町", "宮崎県"),
+  muni("kadogawa", "454214", "門川町", "宮崎県"),
+  muni("morotsuka", "454290", "諸塚村", "宮崎県"),
+  muni("shiiba", "454303", "椎葉村", "宮崎県"),
+  muni("misatochomiyazaki", "454311", "美郷町", "宮崎県"),
+  muni("takachiho", "454419", "高千穂町", "宮崎県"),
+  muni("hinokage", "454427", "日之影町", "宮崎県"),
+  muni("gokase", "454435", "五ヶ瀬町", "宮崎県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -1922,6 +1952,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...NAGASAKI,
   ...KUMAMOTO,
   ...OITA,
+  ...MIYAZAKI,
   ...OKINAWA,
 ];
 

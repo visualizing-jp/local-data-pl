@@ -596,6 +596,16 @@ export const OITA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: OITA_BOOKLET_PAGE,
 };
 
+/** 宮崎県「市町村財政状況資料集」（県内市町村）。2019–2024。 */
+export const MIYAZAKI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.miyazaki.lg.jp/shichoson/kense/shichoson/20210323154742.html",
+  2020: "https://www.pref.miyazaki.lg.jp/shichoson/kense/shichoson/20220318084914.html",
+  2021: "https://www.pref.miyazaki.lg.jp/shichoson/kense/shichoson/20230320101621.html",
+  2022: "https://www.pref.miyazaki.lg.jp/shichoson/kense/shichoson/20240306142400.html",
+  2023: "https://www.pref.miyazaki.lg.jp/shichoson/kense/shichoson/20250317130801.html",
+  2024: "https://www.pref.miyazaki.lg.jp/shichoson/kense/shichoson/20260317105750.html",
+};
+
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",

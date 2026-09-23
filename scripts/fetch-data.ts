@@ -88,6 +88,7 @@ import {
   NAGASAKI_BOOKLET_PAGES,
   KUMAMOTO_BOOKLET_PAGES,
   OITA_BOOKLET_PAGES,
+  MIYAZAKI_BOOKLET_PAGES,
   SAKAI_CODE,
   SAKAI_MIC_EXCEL,
   HAMAMATSU_CODE,
@@ -164,6 +165,7 @@ const SAGA_ESTAT_DIR = resolve(RAW_DIR, "estat-saga");
 const NAGASAKI_ESTAT_DIR = resolve(RAW_DIR, "estat-nagasaki");
 const KUMAMOTO_ESTAT_DIR = resolve(RAW_DIR, "estat-kumamoto");
 const OITA_ESTAT_DIR = resolve(RAW_DIR, "estat-oita");
+const MIYAZAKI_ESTAT_DIR = resolve(RAW_DIR, "estat-miyazaki");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 const ESTAT_ENDPOINT = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData";
 const HACHIOJI_2019 = `${DOWNLOAD_BASE}/${HACHIOJI_2019_FILE}`;
@@ -614,6 +616,10 @@ async function fetchExcelOita(force: boolean) {
   }
 }
 
+async function fetchExcelMiyazaki(force: boolean) {
+  await fetchExcelPrefecture("宮崎県", MIYAZAKI_BOOKLET_PAGES, force);
+}
+
 async function fetchExcelFukuoka(force: boolean) {
   await fetchExcelPrefecture("福岡県", FUKUOKA_BOOKLET_PAGES, force, parseFukuokaBooklet, [
     KITAKYUSHU_CODE,
@@ -1026,6 +1032,7 @@ async function main() {
     { pref: "長崎県", run: fetchExcelNagasaki },
     { pref: "熊本県", run: fetchExcelKumamoto },
     { pref: "大分県", run: fetchExcelOita },
+    { pref: "宮崎県", run: fetchExcelMiyazaki },
     { pref: "沖縄県", run: fetchExcelOkinawa },
   ];
   for (const job of excelJobs) {
@@ -1083,6 +1090,7 @@ async function main() {
     { pref: "長崎県", dir: NAGASAKI_ESTAT_DIR },
     { pref: "熊本県", dir: KUMAMOTO_ESTAT_DIR },
     { pref: "大分県", dir: OITA_ESTAT_DIR },
+    { pref: "宮崎県", dir: MIYAZAKI_ESTAT_DIR },
     { pref: "沖縄県", dir: OKINAWA_ESTAT_DIR },
   ];
   for (const job of estatJobs) {
