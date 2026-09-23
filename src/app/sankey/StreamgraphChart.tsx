@@ -4,6 +4,7 @@ import { area, curveBasis } from "d3-shape";
 import "d3-transition";
 import { useSize } from "../hooks/useSize.ts";
 import { formatShare, formatYen } from "./buildGraph.ts";
+import { chartFrame, estimateTextWidth, tipPoint } from "./chartFrame.ts";
 import type { StreamScale } from "../../lib/permalink.ts";
 import type { CityFinance, SeriesKind } from "../../lib/types.ts";
 import { buildStream, type StreamLayer } from "./buildStreamgraph.ts";
@@ -21,7 +22,7 @@ function prefersReducedMotion(): boolean {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
-function labeledYears(years: number[]): number[] {
+function labeledYears(years: number[], step: number): number[] {
   const first = years[0];
   const last = years[years.length - 1];
   const labels = new Set<number>();
@@ -29,7 +30,7 @@ function labeledYears(years: number[]): number[] {
   if (last != null) labels.add(last);
   for (const y of years) {
     if (first == null || last == null) continue;
-    if (y % 5 === 0 && y - first >= 3 && last - y >= 3) labels.add(y);
+    if (y % step === 0 && y - first >= 3 && last - y >= 3) labels.add(y);
   }
   return [...labels].sort((a, b) => a - b);
 }
@@ -57,11 +58,12 @@ export function StreamgraphChart({ data, kind, scale }: StreamgraphChartProps) {
     null,
   );
   const graph = useMemo(() => buildStream(data, kind, scale), [data, kind, scale]);
+  const frame = chartFrame(size.width);
   const noun = kind === "revenue" ? "歳入" : "歳出";
 
   useEffect(() => {
     const svg = svgRef.current;
-    if (!svg || size.width < 40 || size.height < 40 || graph.layers.length === 0) return;
+    if (!svg || frame.width < 40 || frame.height < 40 || graph.layers.length === 0) return;
 
     const govChanged = codeRef.current !== data.code;
     const scaleChanged = scaleRef.current !== scale;
@@ -72,9 +74,9 @@ export function StreamgraphChart({ data, kind, scale }: StreamgraphChartProps) {
     scaleRef.current = scale;
     setHover(null);
 
-    const margin = { top: 28, right: 16, bottom: 16, left: 16 };
-    const innerW = Math.max(40, size.width - margin.left - margin.right);
-    const innerH = Math.max(40, size.height - margin.top - margin.bottom);
+    const margin = { top: 28, right: 24, bottom: 12, left: 24 };
+    const innerW = Math.max(40, frame.width - margin.left - margin.right);
+    const innerH = Math.max(40, frame.height - margin.top - margin.bottom);
     const ySpan = graph.yMax - graph.yMin || 1;
     const xOf = (year: number) => {
       if (graph.years.length <= 1) return margin.left + innerW / 2;
@@ -111,6 +113,7 @@ export function StreamgraphChart({ data, kind, scale }: StreamgraphChartProps) {
       .attr("d", (d) => path(d.points) ?? "")
       .style("opacity", 1);
 
+    const labelSize = frame.width <= 480 ? 10 : 11;
     const labelData = graph.layers.flatMap((layer) => {
       let best = layer.points[0];
       if (best == null) return [];
@@ -119,7 +122,19 @@ export function StreamgraphChart({ data, kind, scale }: StreamgraphChartProps) {
       }
       const h = Math.abs(yOf(best.y1) - yOf(best.y0));
       if (h < 12) return [];
-      return [{ item: layer.item, point: best }];
+      const textWidth = estimateTextWidth(layer.item, labelSize);
+      if (textWidth > frame.width - 4) return [];
+      const mid = xOf(best.year);
+      let x = mid;
+      let anchor: "start" | "middle" | "end" = "middle";
+      if (mid - textWidth / 2 < 2) {
+        x = 2;
+        anchor = "start";
+      } else if (mid + textWidth / 2 > frame.width - 2) {
+        x = frame.width - 2;
+        anchor = "end";
+      }
+      return [{ item: layer.item, point: best, x, anchor }];
     });
 
     const labelSel = root
@@ -133,27 +148,30 @@ export function StreamgraphChart({ data, kind, scale }: StreamgraphChartProps) {
       .append("text")
       .attr("class", "label-name")
       .merge(labelSel)
-      .attr("x", (d) => xOf(d.point.year))
+      .attr("x", (d) => d.x)
       .attr("y", (d) => (yOf(d.point.y0) + yOf(d.point.y1)) / 2)
       .attr("dy", "0.35em")
-      .attr("text-anchor", "middle")
+      .attr("text-anchor", (d) => d.anchor)
+      .style("font-size", `${labelSize}px`)
       .text((d) => d.item);
 
     const yearSel = root
       .select<SVGGElement>("g.years")
       .selectAll<SVGTextElement, number>("text")
-      .data(labeledYears(graph.years), (d) => String(d));
+      .data(labeledYears(graph.years, frame.width <= 480 ? 10 : 5), (d) => String(d));
 
+    const firstYear = graph.years[0];
+    const lastYear = graph.years[graph.years.length - 1];
     yearSel.exit().remove();
     yearSel
       .enter()
       .append("text")
       .attr("class", "year-col")
-      .attr("text-anchor", "middle")
-      .attr("dy", "0.9em")
+      .attr("dy", "0.85em")
       .merge(yearSel)
-      .attr("x", (d) => xOf(d))
-      .attr("y", 0)
+      .attr("text-anchor", (d) => (d === firstYear ? "start" : d === lastYear ? "end" : "middle"))
+      .attr("x", (d) => (d === firstYear ? 4 : d === lastYear ? frame.width - 4 : xOf(d)))
+      .attr("y", 8)
       .text((d) => String(d));
 
     const highlight = (item: string | null) => {
@@ -165,17 +183,19 @@ export function StreamgraphChart({ data, kind, scale }: StreamgraphChartProps) {
     };
 
     const showTip = (event: PointerEvent, layer: StreamLayer) => {
-      const box = svg.getBoundingClientRect();
-      const year = nearestYear(graph.years, event.clientX - box.left, xOf);
+      const bounds = svg.getBoundingClientRect();
+      const localX = ((event.clientX - bounds.left) / Math.max(bounds.width, 1)) * frame.width;
+      const year = nearestYear(graph.years, localX, xOf);
       const point = layer.points.find((p) => p.year === year);
       const yearTotal = graph.totals.get(year) ?? 0;
       const yen = formatYen(point?.value ?? 0);
       const share = formatShare(point?.value ?? 0, yearTotal);
+      const tip = tipPoint(event, bounds);
       setHover({
         title: `${year}　${layer.item}`,
         body: scale === "relative" ? `${share}（${yen}）` : `${yen}（${share}）`,
-        x: event.clientX - box.left,
-        y: event.clientY - box.top,
+        x: tip.x,
+        y: tip.y,
       });
     };
 
@@ -189,14 +209,16 @@ export function StreamgraphChart({ data, kind, scale }: StreamgraphChartProps) {
         highlight(null);
         setHover(null);
       });
-  }, [data.code, graph, kind, scale, size.height, size.width]);
+  }, [data.code, frame.height, frame.width, graph, kind, scale]);
 
   return (
     <div className="sankey-wrap sankey-wrap--series" ref={wrapRef}>
       <svg
         ref={svgRef}
-        width={size.width}
-        height={size.height}
+        viewBox={frame.width > 0 ? `0 0 ${frame.width} ${frame.height}` : undefined}
+        preserveAspectRatio="xMidYMid"
+        width={frame.width || undefined}
+        height={frame.height || undefined}
         role="img"
         aria-label={`${noun}の時系列（streamgraph）`}
       >

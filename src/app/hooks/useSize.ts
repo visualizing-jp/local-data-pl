@@ -10,16 +10,16 @@ export function useSize<T extends HTMLElement>() {
 
     const measure = () => {
       const box = el.getBoundingClientRect();
-      setSize({ width: box.width, height: box.height });
+      const width = Math.floor(box.width);
+      const height = Math.floor(box.height);
+      setSize((prev) => (prev.width === width && prev.height === height ? prev : { width, height }));
     };
     measure();
 
     const observer = new ResizeObserver(measure);
     observer.observe(el);
-    window.addEventListener("resize", measure);
     return () => {
       observer.disconnect();
-      window.removeEventListener("resize", measure);
     };
   }, []);
 

@@ -11,6 +11,7 @@ import {
   type GraphLink,
   type GraphNode,
 } from "./buildGraph.ts";
+import { chartFrame, estimateTextWidth, tipPoint } from "./chartFrame.ts";
 import { linkStroke, nodeFill, LINK_STROKE_OPACITY } from "./colors.ts";
 import type { CityFinance } from "../../lib/types.ts";
 
@@ -41,6 +42,38 @@ function showLabel(node: SNode): boolean {
   return node.kind === "balance" || nodeHeight(node) >= 11;
 }
 
+function textFits(text: string, node: SNode, fontSize: number, layoutWidth: number): boolean {
+  if (text === "") return true;
+  const width = estimateTextWidth(text, fontSize);
+  if (node.kind === "total") {
+    const x = ((node.x0 ?? 0) + (node.x1 ?? 0)) / 2;
+    return x - width / 2 >= 2 && x + width / 2 <= layoutWidth - 2;
+  }
+  if (node.kind === "revenue") return (node.x0 ?? 0) - 8 - width >= 2;
+  return (node.x1 ?? 0) + 8 + width <= layoutWidth - 2;
+}
+
+function layoutBox(width: number, height: number) {
+  const phone = width <= 480;
+  const tablet = width <= 768;
+  const nodeWidth = phone ? 12 : 18;
+  const minInner = nodeWidth * 4 + (phone ? 40 : 80);
+  let left = phone ? 112 : tablet ? 156 : width >= 1000 ? 216 : 180;
+  let right = phone ? 104 : tablet ? 132 : width >= 1000 ? 168 : 140;
+  if (width - left - right < minInner) {
+    const side = Math.max(0, width - minInner);
+    left = Math.round(side * 0.52);
+    right = side - left;
+  }
+  return {
+    nodeWidth,
+    margin: { top: 20, right, bottom: 32, left },
+    nameSize: phone ? 10 : 11,
+    metaSize: phone ? 9 : 10,
+    nodePadding: height < 520 ? 5 : 10,
+  };
+}
+
 export function SankeyChart({ data, year }: SankeyChartProps) {
   const [wrapRef, size] = useSize<HTMLDivElement>();
   const svgRef = useRef<SVGSVGElement>(null);
@@ -51,10 +84,11 @@ export function SankeyChart({ data, year }: SankeyChartProps) {
     null,
   );
   const graph = useMemo(() => buildYearGraph(data, year), [data, year]);
+  const frame = chartFrame(size.width);
 
   useEffect(() => {
     const svg = svgRef.current;
-    if (!svg || size.width < 40 || size.height < 40) return;
+    if (!svg || frame.width < 40 || frame.height < 40) return;
 
     const yearChanged = yearRef.current !== year;
     const govChanged = codeRef.current !== data.code;
@@ -65,21 +99,16 @@ export function SankeyChart({ data, year }: SankeyChartProps) {
     codeRef.current = data.code;
     setHover(null);
 
-    const layoutWidth = Math.max(size.width, 880);
-    const margin = {
-      top: 16,
-      right: layoutWidth < 1000 ? 120 : 124,
-      bottom: 16,
-      left: layoutWidth < 1000 ? 120 : 140,
-    };
+    const box = layoutBox(frame.width, frame.height);
+    const { margin } = box;
     const layout = d3Sankey<GraphNode, GraphLink>()
       .nodeId((d) => d.id)
-      .nodeWidth(18)
-      .nodePadding(size.height < 560 ? 6 : 10)
+      .nodeWidth(box.nodeWidth)
+      .nodePadding(box.nodePadding)
       .nodeSort((a, b) => a.order - b.order)
       .extent([
         [margin.left, margin.top],
-        [layoutWidth - margin.right, size.height - margin.bottom],
+        [frame.width - margin.right, frame.height - margin.bottom],
       ]);
 
     const laid = layout({
@@ -199,7 +228,11 @@ export function SankeyChart({ data, year }: SankeyChartProps) {
         return d.kind === "revenue" ? "end" : "start";
       })
       .attr("dy", "-0.15em")
-      .text((d) => (showLabel(d) ? d.label : ""));
+      .style("font-size", `${box.nameSize}px`)
+      .text((d) => {
+        if (!showLabel(d)) return "";
+        return textFits(d.label, d, box.nameSize, frame.width) ? d.label : "";
+      });
     labelMerge.select(".label-meta")
       .attr("class", (d) => (d.kind === "total" ? "label-meta is-on-ink" : "label-meta"))
       .attr("text-anchor", (d) => {
@@ -207,10 +240,14 @@ export function SankeyChart({ data, year }: SankeyChartProps) {
         return d.kind === "revenue" ? "end" : "start";
       })
       .attr("dy", "1.05em")
+      .style("font-size", `${box.metaSize}px`)
       .text((d) => {
-        if (!showLabel(d)) return "";
-        if (d.kind === "total") return formatYen(graph.total);
-        return `${formatShare(d.value, graph.total)}  ${formatYen(d.value)}`;
+        if (!showLabel(d) || !textFits(d.label, d, box.nameSize, frame.width)) return "";
+        const text =
+          d.kind === "total"
+            ? formatYen(graph.total)
+            : `${formatShare(d.value, graph.total)}  ${formatYen(d.value)}`;
+        return textFits(text, d, box.metaSize, frame.width) ? text : "";
       });
 
     const relatedIds = (node: SNode) => {
@@ -227,12 +264,12 @@ export function SankeyChart({ data, year }: SankeyChartProps) {
     };
 
     const showTip = (event: PointerEvent, node: SNode) => {
-      const box = svg.getBoundingClientRect();
+      const point = tipPoint(event, svg.getBoundingClientRect());
       setHover({
         title: node.label,
         body: `${formatYen(node.value)}（歳入比 ${formatShare(node.value, graph.total)}）`,
-        x: event.clientX - box.left,
-        y: event.clientY - box.top,
+        x: point.x,
+        y: point.y,
       });
     };
 
@@ -255,11 +292,19 @@ export function SankeyChart({ data, year }: SankeyChartProps) {
         nodeMerge.style("opacity", 1);
         setHover(null);
       });
-  }, [data.code, graph, size.height, size.width, year]);
+  }, [data.code, frame.height, frame.width, graph, year]);
 
   return (
     <div className="sankey-wrap" ref={wrapRef}>
-      <svg ref={svgRef} width={Math.max(size.width, 880)} height={size.height} role="img" aria-label={`${year}年度の歳入歳出`}>
+      <svg
+        ref={svgRef}
+        viewBox={frame.width > 0 ? `0 0 ${frame.width} ${frame.height}` : undefined}
+        preserveAspectRatio="xMidYMid"
+        width={frame.width || undefined}
+        height={frame.height || undefined}
+        role="img"
+        aria-label={`${year}年度の歳入歳出`}
+      >
         <g className="links" />
         <g className="nodes" />
         <g className="labels" />

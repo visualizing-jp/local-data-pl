@@ -61,10 +61,13 @@ body {
   justify-content: space-between;
   gap: 24px;
   flex-wrap: wrap;
+  min-width: 0;
 }
 
 h1 {
   margin: 0;
+  min-width: 0;
+  max-width: 100%;
   font-family: var(--display);
   font-weight: 600;
   font-size: clamp(28px, 4vw, 42px);
@@ -110,8 +113,10 @@ h1 .sep {
   transition: border-color 150ms ease;
 }
 
-.place-select:hover {
-  border-bottom-color: var(--shu);
+@media (hover: hover) and (pointer: fine) {
+  .place-select:hover {
+    border-bottom-color: var(--shu);
+  }
 }
 
 .place-select:focus-visible {
@@ -210,10 +215,11 @@ h1 .sep {
 
 .year-slider {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   gap: 16px;
   align-items: center;
   margin: 22px 0 8px;
+  min-width: 0;
 }
 
 .year-slider__step {
@@ -230,8 +236,10 @@ h1 .sep {
     background-color 150ms ease;
 }
 
-.year-slider__step:hover:not(:disabled) {
-  background: #fff;
+@media (hover: hover) and (pointer: fine) {
+  .year-slider__step:hover:not(:disabled) {
+    background: #fff;
+  }
 }
 
 .year-slider__step:active:not(:disabled) {
@@ -343,16 +351,15 @@ h1 .sep {
 
 .sankey-wrap {
   position: relative;
-  height: min(68vh, 640px);
-  min-height: 460px;
   margin-top: 8px;
-  overflow-x: auto;
-  overflow-y: hidden;
+  min-width: 0;
 }
 
 .sankey-wrap svg {
   display: block;
-  overflow: visible;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
 }
 
 .sankey-wrap--series {
@@ -395,7 +402,6 @@ h1 .sep {
 
 .sankey-tip {
   position: absolute;
-  transform: translate(12px, -28px);
   pointer-events: none;
   background: var(--ink);
   color: #f4f7f8;
@@ -455,7 +461,7 @@ h1 .sep {
   border: 0;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 768px) {
   .page {
     padding: 18px 16px 36px;
   }
@@ -468,17 +474,28 @@ h1 .sep {
     grid-template-columns: 1fr;
   }
 
-  .sankey-wrap {
-    min-height: 480px;
-  }
-
   .view-nav {
     width: 100%;
+  }
+
+  .view-nav button,
+  .year-slider__step {
+    min-height: 44px;
   }
 
   .view-nav button {
     padding-left: 8px;
     padding-right: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: 16px 12px 32px;
+  }
+
+  .year-slider {
+    gap: 8px;
   }
 }
 
