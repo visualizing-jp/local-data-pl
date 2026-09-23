@@ -9,7 +9,7 @@ import { resolve } from "node:path";
 import { CATALOG } from "../src/lib/catalog.ts";
 import type { CityFinance } from "../src/lib/types.ts";
 import { PURPOSE_INDEX } from "../src/lib/taxonomy.ts";
-import { FUKUSHIMA_SKIP_EXCEL, HYOGO_SKIP_EXCEL, NARA_SKIP_EXCEL } from "./sources.ts";
+import { FUKUSHIMA_SKIP_EXCEL, HYOGO_SKIP_EXCEL, KOCHI_SKIP_EXCEL, NARA_SKIP_EXCEL } from "./sources.ts";
 
 const DIR = resolve(import.meta.dirname, "../public/data");
 const REF_2022_MILLION = 237_366;
@@ -31,13 +31,31 @@ function verifyOne(data: CityFinance, filename: string): void {
     if (curr === prev + 1) continue;
     const tokyoGap2019 =
       gov.prefecture === "東京都" && gov.code !== "132012" && prev === 2018 && curr === 2020;
+    const sagaGap2019 = gov.prefecture === "佐賀県" && prev === 2018 && curr === 2020;
     const hokkaidoGapBooklet =
       gov.prefecture === "北海道" && gov.code !== "011002" && prev === 2018 && curr === 2024;
     const fukushimaGap2019 =
       FUKUSHIMA_SKIP_EXCEL.has(`${gov.code}:2019`) && prev === 2018 && curr === 2020;
     const hyogoGap2021 = HYOGO_SKIP_EXCEL.has(`${gov.code}:2021`) && prev === 2020 && curr === 2022;
     const naraSkipGap = NARA_SKIP_EXCEL.has(`${gov.code}:${prev + 1}`) && curr === prev + 2;
-    if (!tokyoGap2019 && !hokkaidoGapBooklet && !fukushimaGap2019 && !hyogoGap2021 && !naraSkipGap) {
+    let kochiSkipGap = curr > prev + 1;
+    if (kochiSkipGap) {
+      for (let year = prev + 1; year < curr; year++) {
+        if (!KOCHI_SKIP_EXCEL.has(`${gov.code}:${year}`)) {
+          kochiSkipGap = false;
+          break;
+        }
+      }
+    }
+    if (
+      !tokyoGap2019 &&
+      !sagaGap2019 &&
+      !hokkaidoGapBooklet &&
+      !fukushimaGap2019 &&
+      !hyogoGap2021 &&
+      !naraSkipGap &&
+      !kochiSkipGap
+    ) {
       fail(`${filename}: 年度が連続していない: ${prev} → ${curr}`);
     }
   }

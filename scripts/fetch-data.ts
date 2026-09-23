@@ -20,6 +20,14 @@ import { parseMiyagiBookletYear } from "./miyagi-booklet.ts";
 import { parseFukushimaBooklet } from "./fukushima-booklet.ts";
 import { parseHyogoBooklet } from "./hyogo-booklet.ts";
 import { parseAichiBookletYear } from "./aichi-booklet.ts";
+import { parseTokushimaBookletYear } from "./tokushima-booklet.ts";
+import { parseKagawaBookletYear } from "./kagawa-booklet.ts";
+import { parseEhimeBooklet } from "./ehime-booklet.ts";
+import { parseKochiBooklet } from "./kochi-booklet.ts";
+import { parseFukuokaBooklet } from "./fukuoka-booklet.ts";
+import { parseNagasakiBooklet } from "./nagasaki-booklet.ts";
+import { parseKumamotoBooklet } from "./kumamoto-booklet.ts";
+import { parseOitaBookletYear } from "./oita-booklet.ts";
 import { parseCityBooklet } from "./okinawa-booklet.ts";
 import { parseTokyoBooklet } from "./tokyo-booklet.ts";
 import {
@@ -61,6 +69,27 @@ import {
   HYOGO_BOOKLET_PAGES,
   NARA_BOOKLET_PAGES,
   WAKAYAMA_BOOKLET_PAGES,
+  TOTTORI_BOOKLET_PAGES,
+  SHIMANE_BOOKLET_PAGES,
+  OKAYAMA_BOOKLET_PAGES,
+  HIROSHIMA_BOOKLET_PAGES,
+  YAMAGUCHI_BOOKLET_PAGES,
+  TOKUSHIMA_BOOKLET_PAGES,
+  KAGAWA_BOOKLET_PAGES,
+  EHIME_BOOKLET_PAGES,
+  KOCHI_BOOKLET_PAGES,
+  KOCHI_SKIP_EXCEL,
+  FUKUOKA_BOOKLET_PAGES,
+  FUKUOKA_CODE,
+  FUKUOKA_MIC_EXCEL,
+  KITAKYUSHU_CODE,
+  KITAKYUSHU_MIC_EXCEL,
+  SAGA_BOOKLET_PAGES,
+  NAGASAKI_BOOKLET_PAGES,
+  KUMAMOTO_BOOKLET_PAGES,
+  OITA_BOOKLET_PAGES,
+  MIYAZAKI_BOOKLET_PAGES,
+  KAGOSHIMA_BOOKLET_PAGES,
   SAKAI_CODE,
   SAKAI_MIC_EXCEL,
   HAMAMATSU_CODE,
@@ -123,6 +152,22 @@ const OSAKA_ESTAT_DIR = resolve(RAW_DIR, "estat-osaka");
 const HYOGO_ESTAT_DIR = resolve(RAW_DIR, "estat-hyogo");
 const NARA_ESTAT_DIR = resolve(RAW_DIR, "estat-nara");
 const WAKAYAMA_ESTAT_DIR = resolve(RAW_DIR, "estat-wakayama");
+const TOTTORI_ESTAT_DIR = resolve(RAW_DIR, "estat-tottori");
+const SHIMANE_ESTAT_DIR = resolve(RAW_DIR, "estat-shimane");
+const OKAYAMA_ESTAT_DIR = resolve(RAW_DIR, "estat-okayama");
+const HIROSHIMA_ESTAT_DIR = resolve(RAW_DIR, "estat-hiroshima");
+const YAMAGUCHI_ESTAT_DIR = resolve(RAW_DIR, "estat-yamaguchi");
+const TOKUSHIMA_ESTAT_DIR = resolve(RAW_DIR, "estat-tokushima");
+const KAGAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-kagawa");
+const EHIME_ESTAT_DIR = resolve(RAW_DIR, "estat-ehime");
+const KOCHI_ESTAT_DIR = resolve(RAW_DIR, "estat-kochi");
+const FUKUOKA_ESTAT_DIR = resolve(RAW_DIR, "estat-fukuoka");
+const SAGA_ESTAT_DIR = resolve(RAW_DIR, "estat-saga");
+const NAGASAKI_ESTAT_DIR = resolve(RAW_DIR, "estat-nagasaki");
+const KUMAMOTO_ESTAT_DIR = resolve(RAW_DIR, "estat-kumamoto");
+const OITA_ESTAT_DIR = resolve(RAW_DIR, "estat-oita");
+const MIYAZAKI_ESTAT_DIR = resolve(RAW_DIR, "estat-miyazaki");
+const KAGOSHIMA_ESTAT_DIR = resolve(RAW_DIR, "estat-kagoshima");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 const ESTAT_ENDPOINT = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData";
 const HACHIOJI_2019 = `${DOWNLOAD_BASE}/${HACHIOJI_2019_FILE}`;
@@ -465,6 +510,209 @@ async function fetchExcelWakayama(force: boolean) {
   await fetchExcelPrefecture("和歌山県", WAKAYAMA_BOOKLET_PAGES, force);
 }
 
+async function fetchExcelTottori(force: boolean) {
+  await fetchExcelPrefecture("鳥取県", TOTTORI_BOOKLET_PAGES, force);
+}
+
+async function fetchExcelShimane(force: boolean) {
+  await fetchExcelPrefecture("島根県", SHIMANE_BOOKLET_PAGES, force);
+}
+
+async function fetchExcelOkayama(force: boolean) {
+  await fetchExcelPrefecture("岡山県", OKAYAMA_BOOKLET_PAGES, force);
+}
+
+async function fetchExcelHiroshima(force: boolean) {
+  await fetchExcelPrefecture("広島県", HIROSHIMA_BOOKLET_PAGES, force);
+}
+
+async function fetchExcelYamaguchi(force: boolean) {
+  await fetchExcelPrefecture("山口県", YAMAGUCHI_BOOKLET_PAGES, force);
+}
+
+async function fetchExcelTokushima(force: boolean) {
+  const expected = CATALOG.filter((gov) => gov.prefecture === "徳島県");
+  const htmlByUrl = new Map<string, string>();
+  for (const [yearRaw, pageUrl] of Object.entries(TOKUSHIMA_BOOKLET_PAGES)) {
+    const year = Number(yearRaw);
+    const allPresent = expected.every((gov) => existsSync(resolve(RAW_DIR, gov.code, `${year}.xlsx`)));
+    const needsOverride = expected.some((gov) => EXCEL_OVERRIDES[`${gov.code}:${year}`]);
+    if (!force && allPresent && !needsOverride) {
+      console.log(`cached ${year} 徳島県資料集（${expected.length}団体）`);
+      continue;
+    }
+    let html = htmlByUrl.get(pageUrl);
+    if (html == null) {
+      console.log(`index ${year} ${pageUrl}`);
+      html = (await download(pageUrl)).toString("utf8");
+      htmlByUrl.set(pageUrl, html);
+    } else {
+      console.log(`index ${year} ${pageUrl}（再利用）`);
+    }
+    const links = parseTokushimaBookletYear(html, pageUrl, expected, year);
+    const missing = expected.filter((gov) => !links.has(gov.code)).map((gov) => gov.city);
+    if (missing.length > 0) {
+      throw new Error(`徳島県 ${year}: 資料集に Excel がない: ${missing.join("、")}`);
+    }
+    for (const gov of expected) {
+      const override = EXCEL_OVERRIDES[`${gov.code}:${year}`];
+      const url = override ?? links.get(gov.code);
+      if (url == null) continue;
+      const dest = resolve(RAW_DIR, gov.code, `${year}.xlsx`);
+      const existed = existsSync(dest);
+      await saveIfNeeded(dest, force || Boolean(override), () => download(url), `${year} ${gov.city}`);
+      if (force || !existed) await sleep(80);
+    }
+  }
+}
+
+async function fetchExcelEhime(force: boolean) {
+  await fetchExcelPrefecture("愛媛県", EHIME_BOOKLET_PAGES, force, parseEhimeBooklet);
+}
+
+async function fetchExcelSaga(force: boolean) {
+  await fetchExcelPrefecture("佐賀県", SAGA_BOOKLET_PAGES, force);
+}
+
+async function fetchExcelNagasaki(force: boolean) {
+  await fetchExcelPrefecture("長崎県", NAGASAKI_BOOKLET_PAGES, force, parseNagasakiBooklet);
+}
+
+async function fetchExcelKumamoto(force: boolean) {
+  await fetchExcelPrefecture("熊本県", KUMAMOTO_BOOKLET_PAGES, force, parseKumamotoBooklet);
+}
+
+async function fetchExcelOita(force: boolean) {
+  const expected = CATALOG.filter((gov) => gov.prefecture === "大分県");
+  const htmlByUrl = new Map<string, string>();
+  for (const [yearRaw, pageUrl] of Object.entries(OITA_BOOKLET_PAGES)) {
+    const year = Number(yearRaw);
+    const allPresent = expected.every((gov) => existsSync(resolve(RAW_DIR, gov.code, `${year}.xlsx`)));
+    const needsOverride = expected.some((gov) => EXCEL_OVERRIDES[`${gov.code}:${year}`]);
+    if (!force && allPresent && !needsOverride) {
+      console.log(`cached ${year} 大分県資料集（${expected.length}団体）`);
+      continue;
+    }
+    let html = htmlByUrl.get(pageUrl);
+    if (html == null) {
+      console.log(`index ${year} ${pageUrl}`);
+      html = (await download(pageUrl)).toString("utf8");
+      htmlByUrl.set(pageUrl, html);
+    } else {
+      console.log(`index ${year} ${pageUrl}（再利用）`);
+    }
+    const links = parseOitaBookletYear(html, pageUrl, expected, year);
+    const missing = expected.filter((gov) => !links.has(gov.code)).map((gov) => gov.city);
+    if (missing.length > 0) {
+      throw new Error(`大分県 ${year}: 資料集に Excel がない: ${missing.join("、")}`);
+    }
+    for (const gov of expected) {
+      const override = EXCEL_OVERRIDES[`${gov.code}:${year}`];
+      const url = override ?? links.get(gov.code);
+      if (url == null) continue;
+      const dest = resolve(RAW_DIR, gov.code, `${year}.xlsx`);
+      const existed = existsSync(dest);
+      await saveIfNeeded(dest, force || Boolean(override), () => download(url), `${year} ${gov.city}`);
+      if (force || !existed) await sleep(80);
+    }
+  }
+}
+
+async function fetchExcelMiyazaki(force: boolean) {
+  await fetchExcelPrefecture("宮崎県", MIYAZAKI_BOOKLET_PAGES, force);
+}
+
+async function fetchExcelKagoshima(force: boolean) {
+  await fetchExcelPrefecture("鹿児島県", KAGOSHIMA_BOOKLET_PAGES, force);
+}
+
+async function fetchExcelFukuoka(force: boolean) {
+  await fetchExcelPrefecture("福岡県", FUKUOKA_BOOKLET_PAGES, force, parseFukuokaBooklet, [
+    KITAKYUSHU_CODE,
+    FUKUOKA_CODE,
+  ]);
+  for (const [yearRaw, url] of Object.entries(KITAKYUSHU_MIC_EXCEL)) {
+    const y = Number(yearRaw);
+    const dest = resolve(RAW_DIR, KITAKYUSHU_CODE, `${y}.xlsx`);
+    const existed = existsSync(dest);
+    await saveIfNeeded(dest, force, () => download(url), `${y} 北九州市（総務省）`);
+    if (force || !existed) await sleep(80);
+  }
+  for (const [yearRaw, url] of Object.entries(FUKUOKA_MIC_EXCEL)) {
+    const y = Number(yearRaw);
+    const dest = resolve(RAW_DIR, FUKUOKA_CODE, `${y}.xlsx`);
+    const existed = existsSync(dest);
+    await saveIfNeeded(dest, force, () => download(url), `${y} 福岡市（総務省）`);
+    if (force || !existed) await sleep(80);
+  }
+}
+
+async function fetchExcelKochi(force: boolean) {
+  const expectedAll = CATALOG.filter((gov) => gov.prefecture === "高知県");
+  for (const [yearRaw, pageUrl] of Object.entries(KOCHI_BOOKLET_PAGES)) {
+    const year = Number(yearRaw);
+    const expected = expectedAll.filter((gov) => !KOCHI_SKIP_EXCEL.has(`${gov.code}:${year}`));
+    const allPresent = expected.every((gov) => existsSync(resolve(RAW_DIR, gov.code, `${year}.xlsx`)));
+    const needsOverride = expected.some((gov) => EXCEL_OVERRIDES[`${gov.code}:${year}`]);
+    if (!force && allPresent && !needsOverride) {
+      console.log(`cached ${year} 高知県資料集（${expected.length}団体）`);
+      continue;
+    }
+    console.log(`index ${year} ${pageUrl}`);
+    const html = (await download(pageUrl)).toString("utf8");
+    const links = parseKochiBooklet(html, pageUrl, expected);
+    const missing = expected.filter((gov) => !links.has(gov.code)).map((gov) => gov.city);
+    if (missing.length > 0) {
+      throw new Error(`高知県 ${year}: 資料集に Excel がない: ${missing.join("、")}`);
+    }
+    for (const gov of expected) {
+      const override = EXCEL_OVERRIDES[`${gov.code}:${year}`];
+      const url = override ?? links.get(gov.code);
+      if (url == null) continue;
+      const dest = resolve(RAW_DIR, gov.code, `${year}.xlsx`);
+      const existed = existsSync(dest);
+      await saveIfNeeded(dest, force || Boolean(override), () => download(url), `${year} ${gov.city}`);
+      if (force || !existed) await sleep(80);
+    }
+  }
+}
+
+async function fetchExcelKagawa(force: boolean) {
+  const expected = CATALOG.filter((gov) => gov.prefecture === "香川県");
+  const htmlByUrl = new Map<string, string>();
+  for (const [yearRaw, pageUrl] of Object.entries(KAGAWA_BOOKLET_PAGES)) {
+    const year = Number(yearRaw);
+    const allPresent = expected.every((gov) => existsSync(resolve(RAW_DIR, gov.code, `${year}.xlsx`)));
+    const needsOverride = expected.some((gov) => EXCEL_OVERRIDES[`${gov.code}:${year}`]);
+    if (!force && allPresent && !needsOverride) {
+      console.log(`cached ${year} 香川県資料集（${expected.length}団体）`);
+      continue;
+    }
+    let html = htmlByUrl.get(pageUrl);
+    if (html == null) {
+      console.log(`index ${year} ${pageUrl}`);
+      html = (await download(pageUrl)).toString("utf8");
+      htmlByUrl.set(pageUrl, html);
+    } else {
+      console.log(`index ${year} ${pageUrl}（再利用）`);
+    }
+    const links = parseKagawaBookletYear(html, pageUrl, expected, year);
+    const missing = expected.filter((gov) => !links.has(gov.code)).map((gov) => gov.city);
+    if (missing.length > 0) {
+      throw new Error(`香川県 ${year}: 資料集に Excel がない: ${missing.join("、")}`);
+    }
+    for (const gov of expected) {
+      const override = EXCEL_OVERRIDES[`${gov.code}:${year}`];
+      const url = override ?? links.get(gov.code);
+      if (url == null) continue;
+      const dest = resolve(RAW_DIR, gov.code, `${year}.xlsx`);
+      const existed = existsSync(dest);
+      await saveIfNeeded(dest, force || Boolean(override), () => download(url), `${year} ${gov.city}`);
+      if (force || !existed) await sleep(80);
+    }
+  }
+}
+
 async function fetchExcelOsaka(force: boolean) {
   await fetchExcelPrefecture("大阪府", OSAKA_BOOKLET_PAGES, force, parseCityBooklet, [OSAKA_CODE, SAKAI_CODE]);
   for (const [yearRaw, url] of Object.entries(OSAKA_MIC_EXCEL)) {
@@ -776,6 +1024,22 @@ async function main() {
     { pref: "兵庫県", run: fetchExcelHyogo },
     { pref: "奈良県", run: fetchExcelNara },
     { pref: "和歌山県", run: fetchExcelWakayama },
+    { pref: "鳥取県", run: fetchExcelTottori },
+    { pref: "島根県", run: fetchExcelShimane },
+    { pref: "岡山県", run: fetchExcelOkayama },
+    { pref: "広島県", run: fetchExcelHiroshima },
+    { pref: "山口県", run: fetchExcelYamaguchi },
+    { pref: "徳島県", run: fetchExcelTokushima },
+    { pref: "香川県", run: fetchExcelKagawa },
+    { pref: "愛媛県", run: fetchExcelEhime },
+    { pref: "高知県", run: fetchExcelKochi },
+    { pref: "福岡県", run: fetchExcelFukuoka },
+    { pref: "佐賀県", run: fetchExcelSaga },
+    { pref: "長崎県", run: fetchExcelNagasaki },
+    { pref: "熊本県", run: fetchExcelKumamoto },
+    { pref: "大分県", run: fetchExcelOita },
+    { pref: "宮崎県", run: fetchExcelMiyazaki },
+    { pref: "鹿児島県", run: fetchExcelKagoshima },
     { pref: "沖縄県", run: fetchExcelOkinawa },
   ];
   for (const job of excelJobs) {
@@ -819,6 +1083,22 @@ async function main() {
     { pref: "兵庫県", dir: HYOGO_ESTAT_DIR },
     { pref: "奈良県", dir: NARA_ESTAT_DIR },
     { pref: "和歌山県", dir: WAKAYAMA_ESTAT_DIR },
+    { pref: "鳥取県", dir: TOTTORI_ESTAT_DIR },
+    { pref: "島根県", dir: SHIMANE_ESTAT_DIR },
+    { pref: "岡山県", dir: OKAYAMA_ESTAT_DIR },
+    { pref: "広島県", dir: HIROSHIMA_ESTAT_DIR },
+    { pref: "山口県", dir: YAMAGUCHI_ESTAT_DIR },
+    { pref: "徳島県", dir: TOKUSHIMA_ESTAT_DIR },
+    { pref: "香川県", dir: KAGAWA_ESTAT_DIR },
+    { pref: "愛媛県", dir: EHIME_ESTAT_DIR },
+    { pref: "高知県", dir: KOCHI_ESTAT_DIR },
+    { pref: "福岡県", dir: FUKUOKA_ESTAT_DIR },
+    { pref: "佐賀県", dir: SAGA_ESTAT_DIR },
+    { pref: "長崎県", dir: NAGASAKI_ESTAT_DIR },
+    { pref: "熊本県", dir: KUMAMOTO_ESTAT_DIR },
+    { pref: "大分県", dir: OITA_ESTAT_DIR },
+    { pref: "宮崎県", dir: MIYAZAKI_ESTAT_DIR },
+    { pref: "鹿児島県", dir: KAGOSHIMA_ESTAT_DIR },
     { pref: "沖縄県", dir: OKINAWA_ESTAT_DIR },
   ];
   for (const job of estatJobs) {
