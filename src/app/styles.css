@@ -83,17 +83,18 @@ h1 .sep {
   white-space: nowrap;
 }
 
-.place-pref {
-  margin-right: 0.35em;
-}
-
 .place-field {
   display: inline-block;
   max-width: 100%;
 }
 
+.place-field + .place-field {
+  margin-left: 0.35em;
+}
+
 .place-select {
   appearance: none;
+  field-sizing: content;
   max-width: min(100%, 22rem);
   margin: 0;
   padding: 0 1.35em 2px 0;

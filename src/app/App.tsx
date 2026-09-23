@@ -127,7 +127,6 @@ export function App() {
         <p className="eyebrow">普通会計決算 · マネーフロー</p>
         <div className="masthead__row">
           <h1>
-            <span className="place-pref">{gov.prefecture}</span>
             <GovSelect gov={gov} onGov={chooseGov} />
             <span className="sep">の財政収支</span>
           </h1>
