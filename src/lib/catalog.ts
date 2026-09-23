@@ -1862,6 +1862,53 @@ const MIYAZAKI: readonly LocalGov[] = [
   muni("gokase", "454435", "五ヶ瀬町", "宮崎県"),
 ];
 
+/** 鹿児島県の現行市町村。slug はローマ字。政令市は無い。 */
+const KAGOSHIMA: readonly LocalGov[] = [
+  muni("kagoshima", "462012", "鹿児島市", "鹿児島県"),
+  muni("kanoya", "462039", "鹿屋市", "鹿児島県"),
+  muni("makurazaki", "462047", "枕崎市", "鹿児島県"),
+  muni("akune", "462063", "阿久根市", "鹿児島県"),
+  muni("izumishi", "462080", "出水市", "鹿児島県"),
+  muni("ibusuki", "462101", "指宿市", "鹿児島県"),
+  muni("nishinoomote", "462136", "西之表市", "鹿児島県"),
+  muni("tarumizu", "462144", "垂水市", "鹿児島県"),
+  muni("satsumasendai", "462152", "薩摩川内市", "鹿児島県"),
+  muni("hioki", "462161", "日置市", "鹿児島県"),
+  muni("soo", "462179", "曽於市", "鹿児島県"),
+  muni("kirishima", "462187", "霧島市", "鹿児島県"),
+  muni("ichikikushikino", "462195", "いちき串木野市", "鹿児島県"),
+  muni("minamisatsuma", "462209", "南さつま市", "鹿児島県"),
+  muni("shibushi", "462217", "志布志市", "鹿児島県"),
+  muni("amami", "462225", "奄美市", "鹿児島県"),
+  muni("minamikyushu", "462233", "南九州市", "鹿児島県"),
+  muni("isa", "462241", "伊佐市", "鹿児島県"),
+  muni("aira", "462250", "姶良市", "鹿児島県"),
+  muni("mishimamura", "463035", "三島村", "鹿児島県"),
+  muni("toshimason", "463043", "十島村", "鹿児島県"),
+  muni("satsumacho", "463922", "さつま町", "鹿児島県"),
+  muni("nagashimacho", "464040", "長島町", "鹿児島県"),
+  muni("yusui", "464520", "湧水町", "鹿児島県"),
+  muni("osakicho", "464686", "大崎町", "鹿児島県"),
+  muni("higashikushira", "464821", "東串良町", "鹿児島県"),
+  muni("kinko", "464902", "錦江町", "鹿児島県"),
+  muni("minamiosumi", "464911", "南大隅町", "鹿児島県"),
+  muni("kimotsuki", "464929", "肝付町", "鹿児島県"),
+  muni("nakatane", "465011", "中種子町", "鹿児島県"),
+  muni("minatane", "465020", "南種子町", "鹿児島県"),
+  muni("yakushima", "465054", "屋久島町", "鹿児島県"),
+  muni("yamatoson", "465232", "大和村", "鹿児島県"),
+  muni("uke", "465241", "宇検村", "鹿児島県"),
+  muni("setouchicho", "465259", "瀬戸内町", "鹿児島県"),
+  muni("tatsugo", "465275", "龍郷町", "鹿児島県"),
+  muni("kikai", "465291", "喜界町", "鹿児島県"),
+  muni("tokunoshima", "465305", "徳之島町", "鹿児島県"),
+  muni("amagicho", "465313", "天城町", "鹿児島県"),
+  muni("isen", "465321", "伊仙町", "鹿児島県"),
+  muni("wadomari", "465330", "和泊町", "鹿児島県"),
+  muni("chinacho", "465348", "知名町", "鹿児島県"),
+  muni("yoron", "465356", "与論町", "鹿児島県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -1953,6 +2000,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...KUMAMOTO,
   ...OITA,
   ...MIYAZAKI,
+  ...KAGOSHIMA,
   ...OKINAWA,
 ];
 

@@ -606,6 +606,16 @@ export const MIYAZAKI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: "https://www.pref.miyazaki.lg.jp/shichoson/kense/shichoson/20260317105750.html",
 };
 
+/** 鹿児島県「市町村の財政状況資料集」（県内市町村）。2019–2024。 */
+export const KAGOSHIMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.kagoshima.jp/ab08/kensei/shityoson/zaisei/r01zaiseishiryoushu.html",
+  2020: "https://www.pref.kagoshima.jp/ab08/kensei/shityoson/zaisei/r02zaiseishiryoushu.html",
+  2021: "https://www.pref.kagoshima.jp/ab08/kensei/shityoson/zaisei/r03zaiseishiryoushu.html",
+  2022: "https://www.pref.kagoshima.jp/ab08/kensei/shityoson/zaisei/r04zaiseishiryoushu.html",
+  2023: "https://www.pref.kagoshima.jp/ab08/kensei/shityoson/zaisei/r05zaiseishiryoushu.html",
+  2024: "https://www.pref.kagoshima.jp/ab08/kensei/shityoson/zaisei/r06zaiseishiryoushu.html",
+};
+
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",
