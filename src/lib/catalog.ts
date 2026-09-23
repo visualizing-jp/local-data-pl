@@ -1810,6 +1810,28 @@ const KUMAMOTO: readonly LocalGov[] = [
   muni("reihoku", "435317", "苓北町", "熊本県"),
 ];
 
+/** 大分県の現行市町村。slug はローマ字。政令市は無い。 */
+const OITA: readonly LocalGov[] = [
+  muni("oita", "442011", "大分市", "大分県"),
+  muni("beppu", "442020", "別府市", "大分県"),
+  muni("nakatsu", "442038", "中津市", "大分県"),
+  muni("hita", "442046", "日田市", "大分県"),
+  muni("saiki", "442054", "佐伯市", "大分県"),
+  muni("usuki", "442062", "臼杵市", "大分県"),
+  muni("tsukumi", "442071", "津久見市", "大分県"),
+  muni("taketa", "442089", "竹田市", "大分県"),
+  muni("bungotakada", "442097", "豊後高田市", "大分県"),
+  muni("kitsuki", "442101", "杵築市", "大分県"),
+  muni("usa", "442119", "宇佐市", "大分県"),
+  muni("bungoono", "442127", "豊後大野市", "大分県"),
+  muni("yufu", "442135", "由布市", "大分県"),
+  muni("kunisaki", "442143", "国東市", "大分県"),
+  muni("himeshima", "443221", "姫島村", "大分県"),
+  muni("hiji", "443417", "日出町", "大分県"),
+  muni("kokonoe", "444618", "九重町", "大分県"),
+  muni("kusu", "444626", "玖珠町", "大分県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -1899,6 +1921,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...SAGA,
   ...NAGASAKI,
   ...KUMAMOTO,
+  ...OITA,
   ...OKINAWA,
 ];
 

@@ -27,6 +27,7 @@ import { parseKochiBooklet } from "./kochi-booklet.ts";
 import { parseFukuokaBooklet } from "./fukuoka-booklet.ts";
 import { parseNagasakiBooklet } from "./nagasaki-booklet.ts";
 import { parseKumamotoBooklet } from "./kumamoto-booklet.ts";
+import { parseOitaBookletYear } from "./oita-booklet.ts";
 import { parseCityBooklet } from "./okinawa-booklet.ts";
 import { parseTokyoBooklet } from "./tokyo-booklet.ts";
 import {
@@ -86,6 +87,7 @@ import {
   SAGA_BOOKLET_PAGES,
   NAGASAKI_BOOKLET_PAGES,
   KUMAMOTO_BOOKLET_PAGES,
+  OITA_BOOKLET_PAGES,
   SAKAI_CODE,
   SAKAI_MIC_EXCEL,
   HAMAMATSU_CODE,
@@ -161,6 +163,7 @@ const FUKUOKA_ESTAT_DIR = resolve(RAW_DIR, "estat-fukuoka");
 const SAGA_ESTAT_DIR = resolve(RAW_DIR, "estat-saga");
 const NAGASAKI_ESTAT_DIR = resolve(RAW_DIR, "estat-nagasaki");
 const KUMAMOTO_ESTAT_DIR = resolve(RAW_DIR, "estat-kumamoto");
+const OITA_ESTAT_DIR = resolve(RAW_DIR, "estat-oita");
 const OKINAWA_ESTAT_DIR = resolve(RAW_DIR, "estat-okinawa");
 const ESTAT_ENDPOINT = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData";
 const HACHIOJI_2019 = `${DOWNLOAD_BASE}/${HACHIOJI_2019_FILE}`;
@@ -575,6 +578,42 @@ async function fetchExcelKumamoto(force: boolean) {
   await fetchExcelPrefecture("熊本県", KUMAMOTO_BOOKLET_PAGES, force, parseKumamotoBooklet);
 }
 
+async function fetchExcelOita(force: boolean) {
+  const expected = CATALOG.filter((gov) => gov.prefecture === "大分県");
+  const htmlByUrl = new Map<string, string>();
+  for (const [yearRaw, pageUrl] of Object.entries(OITA_BOOKLET_PAGES)) {
+    const year = Number(yearRaw);
+    const allPresent = expected.every((gov) => existsSync(resolve(RAW_DIR, gov.code, `${year}.xlsx`)));
+    const needsOverride = expected.some((gov) => EXCEL_OVERRIDES[`${gov.code}:${year}`]);
+    if (!force && allPresent && !needsOverride) {
+      console.log(`cached ${year} 大分県資料集（${expected.length}団体）`);
+      continue;
+    }
+    let html = htmlByUrl.get(pageUrl);
+    if (html == null) {
+      console.log(`index ${year} ${pageUrl}`);
+      html = (await download(pageUrl)).toString("utf8");
+      htmlByUrl.set(pageUrl, html);
+    } else {
+      console.log(`index ${year} ${pageUrl}（再利用）`);
+    }
+    const links = parseOitaBookletYear(html, pageUrl, expected, year);
+    const missing = expected.filter((gov) => !links.has(gov.code)).map((gov) => gov.city);
+    if (missing.length > 0) {
+      throw new Error(`大分県 ${year}: 資料集に Excel がない: ${missing.join("、")}`);
+    }
+    for (const gov of expected) {
+      const override = EXCEL_OVERRIDES[`${gov.code}:${year}`];
+      const url = override ?? links.get(gov.code);
+      if (url == null) continue;
+      const dest = resolve(RAW_DIR, gov.code, `${year}.xlsx`);
+      const existed = existsSync(dest);
+      await saveIfNeeded(dest, force || Boolean(override), () => download(url), `${year} ${gov.city}`);
+      if (force || !existed) await sleep(80);
+    }
+  }
+}
+
 async function fetchExcelFukuoka(force: boolean) {
   await fetchExcelPrefecture("福岡県", FUKUOKA_BOOKLET_PAGES, force, parseFukuokaBooklet, [
     KITAKYUSHU_CODE,
@@ -986,6 +1025,7 @@ async function main() {
     { pref: "佐賀県", run: fetchExcelSaga },
     { pref: "長崎県", run: fetchExcelNagasaki },
     { pref: "熊本県", run: fetchExcelKumamoto },
+    { pref: "大分県", run: fetchExcelOita },
     { pref: "沖縄県", run: fetchExcelOkinawa },
   ];
   for (const job of excelJobs) {
@@ -1042,6 +1082,7 @@ async function main() {
     { pref: "佐賀県", dir: SAGA_ESTAT_DIR },
     { pref: "長崎県", dir: NAGASAKI_ESTAT_DIR },
     { pref: "熊本県", dir: KUMAMOTO_ESTAT_DIR },
+    { pref: "大分県", dir: OITA_ESTAT_DIR },
     { pref: "沖縄県", dir: OKINAWA_ESTAT_DIR },
   ];
   for (const job of estatJobs) {

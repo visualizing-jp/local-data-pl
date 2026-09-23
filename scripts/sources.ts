@@ -584,6 +584,18 @@ export const KUMAMOTO_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: "https://www.pref.kumamoto.jp/soshiki/12/262179.html",
 };
 
+/** 大分県「市町村財政のすがた」。全市町村・全市年度が1ページ。 */
+export const OITA_BOOKLET_PAGE = "https://www.pref.oita.jp/soshiki/11650/zaisei-01.html";
+
+export const OITA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: OITA_BOOKLET_PAGE,
+  2020: OITA_BOOKLET_PAGE,
+  2021: OITA_BOOKLET_PAGE,
+  2022: OITA_BOOKLET_PAGE,
+  2023: OITA_BOOKLET_PAGE,
+  2024: OITA_BOOKLET_PAGE,
+};
+
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",
