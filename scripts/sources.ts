@@ -32,6 +32,8 @@ export const EXCEL_OVERRIDES: Readonly<Record<string, string>> = {
     "https://vill.higashiyoshino.nara.jp/life/wp-content/uploads/sites/2/2023/04/zai05-39higashiyoshino.xlsx",
   "363022:2023":
     "https://www.kamikatsu.jp/docs/2025032700016/file_contents/R5kessan_zaiseijokyousiryoshu.xlsx",
+  "462241:2023":
+    "https://www.city.isa.kagoshima.jp/wp-content/uploads/2026/05/f14a982a28725bb7ea13f55a7496fea1-1.xlsx",
 };
 
 /** 県掲載が公会計シートのみで、市サイトも PDF しか無い。 */

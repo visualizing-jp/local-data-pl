@@ -882,6 +882,6 @@ https://www.pref.miyazaki.lg.jp/shichoson/kense/shichoson/20260317105750.html
 
 https://www.pref.kagoshima.jp/ab08/kensei/shityoson/zaisei/r06zaiseishiryoushu.html
 
-年ごとにページが分かれる。リンク文言に市町村名。ファイル名に 6 桁コードは無い。政令指定都市は無い。
+年ごとにページが分かれる。リンク文言に市町村名。ファイル名に 6 桁コードは無い。政令指定都市は無い。県の令和5年度ページの伊佐市リンクは県本体の資料集になっているため、市サイトの令和5年度 Excel で差し替える。
 
 パーマリンクは `?id=`（6桁）。鹿児島市は `/?id=462012`。
