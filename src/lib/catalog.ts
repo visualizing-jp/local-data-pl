@@ -1761,6 +1761,55 @@ const NAGASAKI: readonly LocalGov[] = [
   muni("shinkamigoto", "424111", "新上五島町", "長崎県"),
 ];
 
+/** 熊本県の現行市町村。slug はローマ字。政令市の熊本市も県ページに載る。 */
+const KUMAMOTO: readonly LocalGov[] = [
+  muni("kumamoto", "431001", "熊本市", "熊本県"),
+  muni("yatsushiro", "432024", "八代市", "熊本県"),
+  muni("hitoyoshi", "432032", "人吉市", "熊本県"),
+  muni("arao", "432041", "荒尾市", "熊本県"),
+  muni("minamata", "432059", "水俣市", "熊本県"),
+  muni("tamana", "432067", "玉名市", "熊本県"),
+  muni("yamaga", "432083", "山鹿市", "熊本県"),
+  muni("kikuchi", "432105", "菊池市", "熊本県"),
+  muni("uto", "432113", "宇土市", "熊本県"),
+  muni("kamiamakusa", "432121", "上天草市", "熊本県"),
+  muni("uki", "432130", "宇城市", "熊本県"),
+  muni("aso", "432148", "阿蘇市", "熊本県"),
+  muni("amakusa", "432156", "天草市", "熊本県"),
+  muni("koshi", "432164", "合志市", "熊本県"),
+  muni("misatocho", "433489", "美里町", "熊本県"),
+  muni("gyokuto", "433641", "玉東町", "熊本県"),
+  muni("nankan", "433675", "南関町", "熊本県"),
+  muni("nagasu", "433683", "長洲町", "熊本県"),
+  muni("nagomi", "433691", "和水町", "熊本県"),
+  muni("ozumachi", "434035", "大津町", "熊本県"),
+  muni("kikuyo", "434043", "菊陽町", "熊本県"),
+  muni("minamioguni", "434230", "南小国町", "熊本県"),
+  muni("ogunimachi", "434248", "小国町", "熊本県"),
+  muni("ubuyama", "434256", "産山村", "熊本県"),
+  muni("takamoricho", "434281", "高森町", "熊本県"),
+  muni("nishiharamura", "434329", "西原村", "熊本県"),
+  muni("minamiaso", "434337", "南阿蘇村", "熊本県"),
+  muni("mifune", "434418", "御船町", "熊本県"),
+  muni("kashimacho", "434426", "嘉島町", "熊本県"),
+  muni("mashiki", "434434", "益城町", "熊本県"),
+  muni("kosa", "434442", "甲佐町", "熊本県"),
+  muni("yamatocho", "434477", "山都町", "熊本県"),
+  muni("hikawa", "434680", "氷川町", "熊本県"),
+  muni("ashikita", "434825", "芦北町", "熊本県"),
+  muni("tsunagi", "434841", "津奈木町", "熊本県"),
+  muni("nishiki", "435015", "錦町", "熊本県"),
+  muni("taragi", "435058", "多良木町", "熊本県"),
+  muni("yunomae", "435066", "湯前町", "熊本県"),
+  muni("mizukami", "435074", "水上村", "熊本県"),
+  muni("sagaramura", "435104", "相良村", "熊本県"),
+  muni("itsuki", "435112", "五木村", "熊本県"),
+  muni("yamae", "435121", "山江村", "熊本県"),
+  muni("kumamura", "435139", "球磨村", "熊本県"),
+  muni("asagiri", "435147", "あさぎり町", "熊本県"),
+  muni("reihoku", "435317", "苓北町", "熊本県"),
+];
+
 /** 沖縄県の現行市町村。コードは県の財政状況資料集ファイル名（全国地方公共団体コード）に一致。 */
 const OKINAWA: readonly LocalGov[] = [
   muni("naha", "472018", "那覇市", "沖縄県"),
@@ -1849,6 +1898,7 @@ export const CATALOG: readonly LocalGov[] = [
   ...FUKUOKA,
   ...SAGA,
   ...NAGASAKI,
+  ...KUMAMOTO,
   ...OKINAWA,
 ];
 

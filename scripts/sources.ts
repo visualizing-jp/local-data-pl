@@ -574,6 +574,16 @@ export const NAGASAKI_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2024: "https://www.pref.nagasaki.jp/doc/45114.html",
 };
 
+/** 熊本県「財政状況資料集」(県内市町村)。2019–2024。政令市の熊本市も県ページに載る。 */
+export const KUMAMOTO_BOOKLET_PAGES: Readonly<Record<number, string>> = {
+  2019: "https://www.pref.kumamoto.jp/soshiki/12/88825.html",
+  2020: "https://www.pref.kumamoto.jp/soshiki/12/129336.html",
+  2021: "https://www.pref.kumamoto.jp/soshiki/12/167470.html",
+  2022: "https://www.pref.kumamoto.jp/soshiki/12/199529.html",
+  2023: "https://www.pref.kumamoto.jp/soshiki/12/229418.html",
+  2024: "https://www.pref.kumamoto.jp/soshiki/12/262179.html",
+};
+
 /** 群馬県「財政状況資料集」（県内市町村）。2019–2024。 */
 export const GUNMA_BOOKLET_PAGES: Readonly<Record<number, string>> = {
   2019: "https://www.pref.gunma.jp/site/shichousonzai/14499.html",
