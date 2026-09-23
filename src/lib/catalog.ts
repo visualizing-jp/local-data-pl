@@ -2029,3 +2029,8 @@ export function govsByPrefecture(): { prefecture: string; govs: readonly LocalGo
   }
   return groups;
 }
+
+/** カタログ順の先頭（県庁所在市など）を返す。 */
+export function firstGovInPrefecture(prefecture: string): LocalGov | undefined {
+  return CATALOG.find((gov) => gov.prefecture === prefecture);
+}
